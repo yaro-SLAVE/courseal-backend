@@ -1,1 +1,1 @@
-# CourSeal_Back-end
+# Backend for Courseal service

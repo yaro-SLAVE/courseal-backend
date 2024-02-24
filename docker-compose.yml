@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: '${POSTGRES_DB}'
+      POSTGRES_USER: '${POSTGRES_USER}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - courseal-network
+
+  courseal:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://postgres:5432/${POSTGRES_DB}'
+      SPRING_DATASOURCE_USERNAME: '${POSTGRES_USER}'
+      SPRING_DATASOURCE_PASSWORD: '${POSTGRES_PASSWORD}'
+    ports:
+      - '${COURSEAL_PORT}:8080'
+    volumes:
+      - courseal-data:/app/data
+    networks:
+      - courseal-network
+    depends_on:
+      - postgres
+
+volumes:
+  db-data:
+  courseal-data:
+
+networks:
+  courseal-network:
+    driver: bridge
