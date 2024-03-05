@@ -18,4 +18,24 @@ public class CoursealBackendApplication {
 	public String apiInfo() {
 		return "TODO: actual api info";
 	}
+
+	@GetMapping("api/auth/signup")
+	public String apiAuthSignup(){
+		return "auth/signup";
+	}
+
+	@GetMapping("api/auth/signin")
+	public String apiAuthSignin(){
+		return "auth/signin";
+	}
+
+	@GetMapping("api/auth/refresh")
+	public String apiAuthRefresh(){
+		return "auth/refresh";
+	}
+
+	@GetMapping("api/auth/logout")
+	public String apiAuthLogout(){
+		return "auth/Logout";
+	}
 }
