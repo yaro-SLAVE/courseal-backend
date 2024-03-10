@@ -13,19 +13,25 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int refresh_token_id;
+    @Column(name = "refresh_token_id")
+    private int refreshTokenId;
+    private String refreshToken;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "refreshTokens_users",
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private int user_id;
-    private boolean is_valid;
-    private LocalDateTime date_created;
+    @Column(name = "user_id")
+    private int userId;
+    @Column(name = "is_valid")
+    private boolean isValid;
+    @Column(name = "date_created")
+    private LocalDateTime dateCreated;
 
     public RefreshToken(){}
 
-    public RefreshToken(boolean is_valid, LocalDateTime date_created){
-        this.is_valid = is_valid;
-        this.date_created = date_created;
+    public RefreshToken(int userId, boolean isValid, LocalDateTime dateCreated){
+        this.userId = userId;
+        this.isValid = isValid;
+        this.dateCreated = dateCreated;
     }
 }

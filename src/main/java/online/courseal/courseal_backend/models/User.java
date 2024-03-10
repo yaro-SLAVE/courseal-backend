@@ -1,6 +1,8 @@
 package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -16,78 +18,39 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
+    @Getter
     private int userId;
     @Column(name = "usertag")
+    @Getter
+    @Setter
     private String userTag;
     @Column(name = "username")
+    @Getter
+    @Setter
     private String userName;
+    @Getter
+    @Setter
     private String password;
+    @Getter
+    @Setter
     private String email;
     @Column(name = "date_created")
+    @Getter
+    @Setter
     private LocalDateTime dateCreated;
     @Column(name = "can_create_courses")
+    @Getter
+    @Setter
     private boolean canCreate;
 
     public User(){}
 
-    public User(String userTag, String userName, String password, String email, LocalDateTime dateCreated, Boolean canCreate){
+    public User(String userTag, String userName, String password, String email, LocalDateTime dateCreated, boolean canCreate){
         this.userTag = userTag;
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.dateCreated = dateCreated;
-        this.canCreate = canCreate;
-    }
-
-    public int getUserId(){
-        return this.userId;
-    }
-
-    public String getUserTag(){
-        return this.userTag;
-    }
-
-    public String getUserName(){
-        return this.userName;
-    }
-
-    public String getPassword(){
-        return this.password;
-    }
-
-    public String getEmail(){
-        return this.email;
-    }
-
-    public LocalDateTime getDateCreated(){
-        return this.dateCreated;
-    }
-
-    public boolean getCanCreate(){
-        return this.canCreate;
-    }
-
-    public void setUserTag(String userTag){
-        this.userTag = userTag;
-    }
-
-    public void setUserName(String userName){
-        this.userName = userName;
-    }
-
-    public void setPassword(String password){
-        this.password = password;
-    }
-
-    public void setEmail(String email){
-        this.email = email;
-    }
-
-    public void setDateCreated(LocalDateTime dateCreated){
-        this.dateCreated = dateCreated;
-    }
-
-    public void setCanCreate(boolean canCreate){
         this.canCreate = canCreate;
     }
 }
