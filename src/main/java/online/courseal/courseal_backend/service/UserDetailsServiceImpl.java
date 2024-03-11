@@ -12,11 +12,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
+
     @Override
-    public UserDetails loadUserByUsername(String usertag) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userTag) throws UsernameNotFoundException {
         User user = userRepository
-                .findByUsertag(usertag)
-                .orElseThrow(() -> new UsernameNotFoundException("User no found with usertag: " + usertag));
+                .findByUserTag(userTag)
+                .orElseThrow(() -> new UsernameNotFoundException("User no found with userTag: " + userTag));
         return UserDetailsImpl.build(user);
     }
 }

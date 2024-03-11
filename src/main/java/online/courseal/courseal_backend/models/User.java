@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Entity
 @Table(name = "Users",
     uniqueConstraints = {
@@ -18,28 +19,21 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    @Getter
     private int userId;
     @Column(name = "usertag")
-    @Getter
     @Setter
     private String userTag;
     @Column(name = "username")
-    @Getter
     @Setter
     private String userName;
-    @Getter
     @Setter
     private String password;
-    @Getter
     @Setter
     private String email;
     @Column(name = "date_created")
-    @Getter
     @Setter
     private LocalDateTime dateCreated;
     @Column(name = "can_create_courses")
-    @Getter
     @Setter
     private boolean canCreate;
 

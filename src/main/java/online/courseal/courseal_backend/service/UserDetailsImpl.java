@@ -1,6 +1,7 @@
 package online.courseal.courseal_backend.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 import online.courseal.courseal_backend.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,67 +12,49 @@ import java.util.Collection;
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1l;
 
-    private int user_id;
-    private String usertag;
+    private int userId;
+    @Getter
+    private String userTag;
+    @Getter
     private String username;
     @JsonIgnore
+    @Getter
     private String password;
+    @Getter
     private String email;
-    private LocalDateTime date_created;
-    private boolean can_create_courses;
+    @Getter
+    private LocalDateTime dateCreated;
+    @Getter
+    private boolean canCreateCourses;
 
-    public UserDetailsImpl(int user_id, String usertag, String username, String password,
-                           String email, LocalDateTime date_created,
-                           boolean can_create_courses){
-        this.user_id = user_id;
-        this.usertag = usertag;
+    public UserDetailsImpl(int userId, String userTag, String username, String password,
+                           String email, LocalDateTime dateCreated,
+                           boolean canCreateCourses){
+        this.userId = userId;
+        this.userTag = userTag;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.date_created = date_created;
-        this.can_create_courses = can_create_courses;
+        this.dateCreated = dateCreated;
+        this.canCreateCourses = canCreateCourses;
     }
 
     public static UserDetailsImpl build(User user){
         return new UserDetailsImpl(
-                user.getUserId(),
-                user.getUserTag(),
-                user.getUserName(),
-                user.getPassword(),
-                user.getEmail(),
-                user.getDateCreated(),
-                user.getCanCreate());
+            user.getUserId(),
+            user.getUserTag(),
+            user.getUserName(),
+            user.getPassword(),
+            user.getEmail(),
+            user.getDateCreated(),
+            user.isCanCreate()
+        );
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public String getUsertag(){
-        return this.usertag;
-    }
-
-    public String getEmail(){
-        return this.email;
-    }
-
-    public LocalDateTime getDate_created(){
-        return this.date_created;
-    }
-
-    public boolean getCan_created_courses(){
-        return this.can_create_courses;
     }
 
     @Override
