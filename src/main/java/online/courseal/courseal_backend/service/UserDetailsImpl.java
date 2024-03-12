@@ -9,22 +9,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+@Getter
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1l;
 
     private int userId;
-    @Getter
     private String userTag;
-    @Getter
     private String username;
     @JsonIgnore
-    @Getter
     private String password;
-    @Getter
     private String email;
-    @Getter
     private LocalDateTime dateCreated;
-    @Getter
     private boolean canCreateCourses;
 
     public UserDetailsImpl(int userId, String userTag, String username, String password,
