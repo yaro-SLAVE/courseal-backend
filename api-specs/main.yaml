@@ -1,5 +1,4 @@
 # TODO: actual error codes with description
-# TODO: custom data types
 # TODO: file splitting
 
 openapi: 3.0.3
@@ -69,7 +68,7 @@ paths:
                   type: string
                   description: The displayed username. Can be changed later
                 password:
-                  type: password
+                  type: string
                   description: Plain-text password
         required: true
       responses:
@@ -99,7 +98,7 @@ paths:
                   type: string
                   description: The usertag used during registration without the "@" symbol.
                 password:
-                  type: password
+                  type: string
                   description: Plain-text password
         required: true
       responses:
@@ -108,14 +107,10 @@ paths:
           headers:
             Set-Cookie:
               schema:
-                type: string
-                description: Cookie containing the generated refresh token
-                example: REFRESH_TOKEN=qwerty; Path=/api/refresh/; HttpOnly; Expires=123456
+                $ref: "#/components/schemas/refresh_token_cookie"
             "\0Set-Cookie":
               schema:
-                type: string
-                description: Cookie containing the generated JWT
-                example: JSESSIONID=abccdef; Path=/api/; HttpOnly; Expires=123456
+                $ref: "#/components/schemas/jwt_cookie"
         '409':
           description: Incorrect usertag or password
   /api/auth/refresh:
@@ -125,26 +120,18 @@ paths:
       summary: Refresh the JWT
       description: Uses refresh token to generate a new pair of JWT and refresh token. The old refresh token gets invalidated.
       parameters:
-        - in: header
-          name: Cookie
-          description: Refresh token
-          schema:
-            type: string
-            example: REFRESH_TOKEN=qwerty
+        - $ref: "#/components/parameters/refresh_token"
       responses:
         '200':
           description: OK
           headers:
             Set-Cookie:
               schema:
-                type: string
-                description: Cookie containing the generated refresh token
-                example: REFRESH_TOKEN=qwerty; Path=/api/refresh/; HttpOnly; Expires=123456
+                $ref: "#/components/schemas/refresh_token_cookie"
             "\0Set-Cookie":
               schema:
-                type: string
-                description: Cookie containing the generated JWT
-                example: JSESSIONID=abccdef; Path=/api/; HttpOnly; Expires=123456
+                $ref: "#/components/schemas/jwt_cookie"
+
         '401':
           description: Refresh token is invalid
   /api/auth/logout:
@@ -154,14 +141,32 @@ paths:
       summary: Logs out of the session
       description: Invalidates refresh token without generating a new one
       parameters:
-        - in: header
-          name: Cookie
-          description: Refresh token
-          schema:
-            type: string
-            example: REFRESH_TOKEN=qwerty
+        - $ref: "#/components/parameters/refresh_token"
       responses:
         '200':
           description: OK
         '401':
           description: Refresh token is invalid
+components:
+  parameters:
+    refresh_token:
+      in: header
+      name: Refresh token cookie
+      schema:
+        type: string
+        example: courseal_refresh=qwerty
+    jwt:
+      in: header
+      name: JWT cookie
+      schema:
+        type: string
+        example: courseal_jwt=ab.cd.ef
+  schemas:
+    refresh_token_cookie:
+      type: string
+      description: Cookie containing the generated refresh token
+      example: courseal_refresh=qwerty; Path=/api/auth/refresh/; HttpOnly; Expires=123456
+    jwt_cookie:
+      type: string
+      description: Cookie containing the generated JWT
+      example: courseal_jwt=ab.cd.ef; Path=/api/; HttpOnly; Expires=123456
