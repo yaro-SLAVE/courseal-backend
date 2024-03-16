@@ -1,0 +1,12 @@
+get:
+  tags:
+    - public
+  summary: Returns information about the currently running instance of Courseal
+  description: This mostly includes customizable values
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/server_info.yaml"

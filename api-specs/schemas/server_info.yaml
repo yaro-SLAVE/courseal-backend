@@ -1,0 +1,12 @@
+title: Courseal server info
+type: object
+properties:
+  server_name:
+    type: string
+    description: The instance's name
+  server_description:
+    type: string
+    description: Description of the currently running instance
+  server_sign_up_enabled:
+    type: boolean
+    description: Is registration of new accounts allowed on this instance
