@@ -1,3 +1,7 @@
+# TODO: actual error codes with description
+# TODO: custom data types
+# TODO: file splitting
+
 openapi: 3.0.3
 info:
   title: Courseal API
@@ -8,9 +12,19 @@ servers:
 tags:
   - name: auth
     description: Everything about authorization
+  - name: public
+    description: Requests that don't require the user to be authenticated
+  - name: user
+    description: Everything user related
+  - name: course-management
+    description: Everything about course management
+  - name: course-enrollment
+    description: Everything about course enrollment
 paths:
   /api/courseal-info:
     get:
+      tags:
+        - public
       summary: Returns information about the currently running instance of Courseal
       description: This mostly includes customizable values
       responses:
@@ -34,17 +48,18 @@ paths:
                   server_sign_up_enabled:
                     type: boolean
                     description: Is registration of new accounts allowed on this instance
-  /api/auth/signup:
+  /api/user/register:
     post:
       tags:
-        - auth
+        - user
+        - public
       summary: Creates a new account
       description: First checks if the account can be created. On creation returns a successful response.
       requestBody:
         content:
           application/json:
             schema:
-              title: Sign-up info
+              title: Registration info
               type: object
               properties:
                 usertag:
@@ -54,7 +69,7 @@ paths:
                   type: string
                   description: The displayed username. Can be changed later
                 password:
-                  type: string
+                  type: password
                   description: Plain-text password
         required: true
       responses:
@@ -66,24 +81,25 @@ paths:
           description: Forbidden. This response is sent if registration of new accounts is disabled
         '409':
           description: Account already exists
-  /api/auth/signin:
+  /api/auth/login:
     post:
       tags:
         - auth
+        - public
       summary: Logins into account
       description: Checks if the provided account info matches and returns a pair of JWT and refresh token
       requestBody:
         content:
           application/json:
             schema:
-              title: Sign-in info
+              title: Login info
               type: object
               properties:
                 usertag:
                   type: string
                   description: The usertag used during registration without the "@" symbol.
                 password:
-                  type: string
+                  type: password
                   description: Plain-text password
         required: true
       responses:
@@ -94,12 +110,12 @@ paths:
               schema:
                 type: string
                 description: Cookie containing the generated refresh token
-                example: REFRESH_TOKEN=qwerty; Path=/api/refresh/; HttpOnly
+                example: REFRESH_TOKEN=qwerty; Path=/api/refresh/; HttpOnly; Expires=123456
             "\0Set-Cookie":
               schema:
                 type: string
                 description: Cookie containing the generated JWT
-                example: JSESSIONID=abccdef; Path=/api/; HttpOnly
+                example: JSESSIONID=abccdef; Path=/api/; HttpOnly; Expires=123456
         '409':
           description: Incorrect usertag or password
   /api/auth/refresh:
@@ -123,12 +139,12 @@ paths:
               schema:
                 type: string
                 description: Cookie containing the generated refresh token
-                example: REFRESH_TOKEN=qwerty; Path=/api/refresh/; HttpOnly
+                example: REFRESH_TOKEN=qwerty; Path=/api/refresh/; HttpOnly; Expires=123456
             "\0Set-Cookie":
               schema:
                 type: string
                 description: Cookie containing the generated JWT
-                example: JSESSIONID=abccdef; Path=/api/; HttpOnly
+                example: JSESSIONID=abccdef; Path=/api/; HttpOnly; Expires=123456
         '401':
           description: Refresh token is invalid
   /api/auth/logout:
