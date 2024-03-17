@@ -7,6 +7,7 @@ import online.courseal.courseal_backend.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -16,12 +17,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableTransactionManagement(proxyTargetClass = true)
+@EnableJpaRepositories(basePackages = {"online.courseal.courseal_backend"})
 public class WebSecurityConfig {
 
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Bean
+    public UserDetailsServiceImpl userDetailsService() {
+        return new UserDetailsServiceImpl();
+    }
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;

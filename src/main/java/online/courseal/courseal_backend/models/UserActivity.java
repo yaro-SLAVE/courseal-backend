@@ -1,3 +1,4 @@
+/*
 package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
@@ -18,13 +19,12 @@ public class UserActivity {
     @Getter
     private int userActivityId;
 
-    @Column(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_activities",
+    @JoinTable(name = "user_id",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     @Getter
-    private int userId;
+    private User userId;
 
     @Getter
     @Setter
@@ -35,9 +35,10 @@ public class UserActivity {
 
     public UserActivity(){}
 
-    public UserActivity(int userId, LocalDate day, int xp){
+    public UserActivity(User userId, LocalDate day, int xp){
         this.userId = userId;
         this.day = day;
         this.xp = xp;
     }
 }
+*/

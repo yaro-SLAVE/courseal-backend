@@ -1,10 +1,12 @@
 package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
 
 @Getter
 @Entity
@@ -14,12 +16,13 @@ import java.time.LocalDateTime;
         @UniqueConstraint(columnNames = "usertag"),
         @UniqueConstraint(columnNames = "email")
     })
+@Data
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int userId;
+    private Integer userId;
     @Column(name = "usertag")
     @Setter
     private String userTag;
@@ -39,12 +42,9 @@ public class User {
 
     public User(){}
 
-    public User(String userTag, String userName, String password, String email, LocalDateTime dateCreated, boolean canCreate){
+    public User(String userTag, String userName, String password){
         this.userTag = userTag;
         this.userName = userName;
         this.password = password;
-        this.email = email;
-        this.dateCreated = dateCreated;
-        this.canCreate = canCreate;
     }
 }

@@ -13,21 +13,21 @@ import java.util.Collection;
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1l;
 
-    private int userId;
+    private Integer userId;
     private String userTag;
-    private String username;
+    private String userName;
     @JsonIgnore
     private String password;
     private String email;
     private LocalDateTime dateCreated;
     private boolean canCreateCourses;
 
-    public UserDetailsImpl(int userId, String userTag, String username, String password,
+    public UserDetailsImpl(Integer userId, String userTag, String username, String password,
                            String email, LocalDateTime dateCreated,
                            boolean canCreateCourses){
         this.userId = userId;
         this.userTag = userTag;
-        this.username = username;
+        this.userName = username;
         this.password = password;
         this.email = email;
         this.dateCreated = dateCreated;
@@ -53,6 +53,11 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -69,6 +74,31 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        UserDetailsImpl other = (UserDetailsImpl) obj;
+        if (userId == null) {
+            if (other.userId != null)
+                return false;
+        } else if (!userId.equals(other.userId))
+            return false;
         return true;
     }
 }
