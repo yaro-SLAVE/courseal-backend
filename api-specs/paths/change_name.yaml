@@ -1,0 +1,21 @@
+post:
+  tags:
+    - user
+  summary: Changes the username
+  description: Checks if the new provided username is valid and applies it if so
+  parameters:
+    - $ref: "../parameters/jwt.yaml"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          title: New username
+          type: string
+    required: true
+  responses:
+    '200':
+      description: OK
+    '400':
+      description: Bad request
+    '401':
+      description: JWT is invalid

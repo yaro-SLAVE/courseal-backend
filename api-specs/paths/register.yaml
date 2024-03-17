@@ -1,0 +1,32 @@
+post:
+  tags:
+    - user
+    - public
+  summary: Creates a new account
+  description: First checks if the account can be created. On creation returns a successful response.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          title: Registration info
+          type: object
+          properties:
+            usertag:
+              type: string
+              description: The part of a "@usertag" without the "@" symbol. Can only contain "a-z", "0-9", and "_.-" symbols
+            username:
+              type: string
+              description: The displayed username. Can be changed later
+            password:
+              type: string
+              description: Plain-text password
+    required: true
+  responses:
+    '200':
+      description: OK
+    '400':
+      description: Bad request
+    '403':
+      description: Forbidden. This response is sent if registration of new accounts is disabled
+    '409':
+      description: Account already exists

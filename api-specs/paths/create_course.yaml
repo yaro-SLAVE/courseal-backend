@@ -1,0 +1,27 @@
+post:
+  tags:
+    - course-management
+  summary: Creates a new course
+  description: Check if the user can create courses and if the provided details are valid, then creates a new course
+  parameters:
+    - $ref: "../parameters/jwt.yaml"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          title: Course info
+          type: object
+          properties:
+            course_name:
+              type: string
+              description: The course's name that will be shown to other users
+    required: true
+  responses:
+    '200':
+      description: OK
+    '400':
+      description: Bad request
+    '403':
+      description: Forbidden. Can't create courses
+    '401':
+      description: JWT is invalid

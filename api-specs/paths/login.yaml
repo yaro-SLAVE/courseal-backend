@@ -1,0 +1,32 @@
+post:
+  tags:
+    - auth
+    - public
+  summary: Logins into account
+  description: Checks if the provided account info matches and returns a pair of JWT and refresh token
+  requestBody:
+    content:
+      application/json:
+        schema:
+          title: Login info
+          type: object
+          properties:
+            usertag:
+              type: string
+              description: The usertag used during registration without the "@" symbol.
+            password:
+              type: string
+              description: Plain-text password
+    required: true
+  responses:
+    '200':
+      description: OK
+      headers:
+        Set-Cookie:
+          schema:
+            $ref: "../schemas/refresh_token_cookie.yaml"
+        "\0Set-Cookie":
+          schema:
+            $ref: "../schemas/jwt_cookie.yaml"
+    '409':
+      description: Incorrect usertag or password
