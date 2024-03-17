@@ -1,0 +1,19 @@
+get:
+  tags:
+    - auth
+  summary: Refresh the JWT
+  description: Uses refresh token to generate a new pair of JWT and refresh token. The old refresh token gets invalidated.
+  parameters:
+    - $ref: "../parameters/refresh_token.yaml"
+  responses:
+    '200':
+      description: OK
+      headers:
+        Set-Cookie:
+          schema:
+            $ref: "../schemas/refresh_token_cookie.yaml"
+        "\0Set-Cookie":
+          schema:
+            $ref: "../schemas/jwt_cookie.yaml"
+    '401':
+      description: Refresh token is invalid

@@ -1,0 +1,40 @@
+# TODO: actual error codes with description
+
+openapi: 3.0.3
+info:
+  title: Courseal API
+  description: API for the Courseal service
+  version: 1.0.0
+servers:
+  - url: https://courseal.online/
+
+tags:
+  - name: auth
+    description: Everything about authorization
+  - name: public
+    description: Requests that don't require the user to be authenticated
+  - name: user
+    description: Everything user related
+  - name: course-management
+    description: Everything about course management
+  - name: course-enrollment
+    description: Everything about course enrollment
+
+paths:
+  /api/courseal-info:
+    $ref: "./paths/courseal_info.yaml"
+
+  /api/auth/login:
+    $ref: "./paths/login.yaml"
+  /api/auth/refresh:
+    $ref: "./paths/refresh.yaml"
+  /api/auth/logout:
+    $ref: "./paths/logout.yaml"
+
+  /api/user/register:
+    $ref: "./paths/register.yaml"
+  /api/user/change-name:
+    $ref: "./paths/change_name.yaml"
+
+  /api/course-management/create-course:
+    $ref: "./paths/create_course.yaml"

@@ -1,0 +1,5 @@
+in: cookie
+name: JWT cookie
+schema:
+  type: string
+  example: courseal_jwt=ab.cd.ef

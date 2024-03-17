@@ -1,0 +1,4 @@
+title: Refresh cookie
+type: string
+description: Cookie containing the generated refresh token
+example: courseal_refresh=qwerty; Path=/api/auth/refresh/; HttpOnly; Expires=123456

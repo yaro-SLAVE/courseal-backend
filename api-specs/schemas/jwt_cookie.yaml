@@ -1,0 +1,4 @@
+title: JWT cookie
+type: string
+description: Cookie containing the generated JWT
+example: courseal_jwt=ab.cd.ef; Path=/api/; HttpOnly; Expires=123456
