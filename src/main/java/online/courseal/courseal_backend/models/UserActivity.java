@@ -18,7 +18,8 @@ public class UserActivity {
     @Getter
     private int userActivityId;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_id", nullable=false)
     @Getter
     private User user;
 

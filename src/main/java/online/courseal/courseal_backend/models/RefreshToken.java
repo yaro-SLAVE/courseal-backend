@@ -20,7 +20,8 @@ public class RefreshToken {
     private int refreshTokenId;
     @Setter
     private String refreshToken;
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_id", nullable=false)
     @Setter
     private User user;
     @Column(name = "is_valid")
