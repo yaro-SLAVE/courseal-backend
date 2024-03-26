@@ -15,10 +15,12 @@ public class CoursealBackendApplication {
 		SpringApplication.run(CoursealBackendApplication.class, args);
 	}
 
+	/*
 	@GetMapping("/api/courseal-info")
 	public String apiInfo() {
 		return "TODO: actual api info";
 	}
+	 */
 
 	@GetMapping("api/user/register")
 	public String apiUserRegister(){

@@ -10,7 +10,6 @@ public class ServerInfoController {
     private final String description = "The coolest education platform!!!";
     private final boolean canRegistering = true;
 
-    @PostMapping
     public ServerInfo serverInfo(){
         return new ServerInfo(serverName, description, canRegistering);
     }
