@@ -1,4 +1,3 @@
-/*
 package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
@@ -21,12 +20,9 @@ public class RefreshToken {
     private int refreshTokenId;
     @Setter
     private String refreshToken;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_id",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToOne
     @Setter
-    private User userId;
+    private User user;
     @Column(name = "is_valid")
     @Setter
     private boolean isValid;
@@ -36,11 +32,10 @@ public class RefreshToken {
 
     public RefreshToken(){}
 
-    public RefreshToken(String refreshToken, User userId, boolean isValid, LocalDateTime dateCreated){
+    public RefreshToken(String refreshToken, User user, boolean isValid, LocalDateTime dateCreated){
         this.refreshToken = refreshToken;
-        this.userId = userId;
+        this.user = user;
         this.isValid = isValid;
         this.dateCreated = dateCreated;
     }
 }
-*/
