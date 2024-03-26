@@ -20,14 +20,19 @@ public class CoursealBackendApplication {
 		return "TODO: actual api info";
 	}
 
-	@GetMapping("api/auth/signup")
-	public String apiAuthSignup(){
+	@GetMapping("api/user/register")
+	public String apiUserRegister(){
 		return "auth/signup";
 	}
 
-	@GetMapping("api/auth/signin")
-	public String apiAuthSignin(){
-		return "auth/signin";
+	@GetMapping("api/user/change-name")
+	public String apiUserChangeName(){
+		return "user/change-name";
+	}
+
+	@GetMapping("api/auth/login")
+	public String apiAuthLogin(){
+		return "auth/login";
 	}
 
 	@GetMapping("api/auth/refresh")
@@ -38,5 +43,10 @@ public class CoursealBackendApplication {
 	@GetMapping("api/auth/logout")
 	public String apiAuthLogout(){
 		return "auth/Logout";
+	}
+
+	@GetMapping("api/course-management/create-course")
+	public String apiCourseManagementCreateCourse(){
+		return "course-management/create-course";
 	}
 }
