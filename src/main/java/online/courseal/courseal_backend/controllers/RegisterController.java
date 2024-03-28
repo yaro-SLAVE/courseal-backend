@@ -1,8 +1,11 @@
 package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.configs.jwt.JwtUtils;
+import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.pojo.JwtResponse;
 import online.courseal.courseal_backend.pojo.LoginRequest;
+import online.courseal.courseal_backend.pojo.MessageResponse;
+import online.courseal.courseal_backend.pojo.SignupRequest;
 import online.courseal.courseal_backend.repository.UserRepository;
 import online.courseal.courseal_backend.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,21 +30,26 @@ public class RegisterController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @PostMapping
-    public ResponseEntity<?> authUser(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getUserTag(),
-                loginRequest.getPassword()));
+    @GetMapping
+    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest){
+        if (userRepository.existsByUserTag(signupRequest.getUserTag())){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse());
+        }
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+        if (userRepository.existsByUserName(signupRequest.getUserName())){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse());
+        }
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = new User(signupRequest.getUserTag(),
+                signupRequest.getUserName(),
+                passwordEncoder.encode(signupRequest.getPassword()));
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getUserId(),
-                userDetails.getUsername(),
-                userDetails.getUserTag(),
-                userDetails.getEmail()));
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new MessageResponse());
     }
 }

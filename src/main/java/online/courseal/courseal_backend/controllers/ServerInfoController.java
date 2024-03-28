@@ -10,6 +10,7 @@ public class ServerInfoController {
     private final String description = "The coolest education platform!!!";
     private final boolean canRegistering = true;
 
+    @GetMapping
     public ServerInfo serverInfo(){
         return new ServerInfo(serverName, description, canRegistering);
     }

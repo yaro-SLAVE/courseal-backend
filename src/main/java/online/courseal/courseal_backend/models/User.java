@@ -1,6 +1,9 @@
 package online.courseal.courseal_backend.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

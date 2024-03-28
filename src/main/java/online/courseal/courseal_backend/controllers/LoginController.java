@@ -30,7 +30,7 @@ public class LoginController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<?> authUser(@RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUserTag(),

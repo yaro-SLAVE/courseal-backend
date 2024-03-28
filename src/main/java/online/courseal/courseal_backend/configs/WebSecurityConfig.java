@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 @EnableJpaRepositories(basePackages = {"online.courseal.courseal_backend"})
-@ComponentScan("online.courseal.courseal_backend.config.controllers")
+@ComponentScan("online.courseal.courseal_backend.controllers")
 @EnableWebSecurity
 public class WebSecurityConfig {
 
@@ -74,7 +74,8 @@ public class WebSecurityConfig {
                 authorizationManagerRequestMatcherRegistry
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/user/register").permitAll()
-                        .requestMatchers("api/courseal-info").permitAll()
+                        .requestMatchers("/api/auth/refresh").permitAll()
+                        .requestMatchers("/api/courseal-info").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
