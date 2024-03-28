@@ -3,7 +3,7 @@ package online.courseal.courseal_backend.configs;
 import jakarta.servlet.Filter;
 import online.courseal.courseal_backend.configs.jwt.AuthEntryPointJwt;
 import online.courseal.courseal_backend.configs.jwt.AuthTokenFilter;
-import online.courseal.courseal_backend.service.UserDetailsServiceImpl;
+import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,11 +16,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration

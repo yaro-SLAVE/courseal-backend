@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.service;
+package online.courseal.courseal_backend.services;
 
 import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.repository.UserRepository;

@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.pojo;
+package online.courseal.courseal_backend.responses;
 
 import lombok.Getter;
 import lombok.Setter;

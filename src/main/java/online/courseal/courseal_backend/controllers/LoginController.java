@@ -1,21 +1,23 @@
 package online.courseal.courseal_backend.controllers;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import online.courseal.courseal_backend.configs.jwt.JwtUtils;
-import online.courseal.courseal_backend.pojo.JwtResponse;
-import online.courseal.courseal_backend.pojo.LoginRequest;
+import online.courseal.courseal_backend.models.RefreshToken;
+import online.courseal.courseal_backend.requests.LoginRequest;
 import online.courseal.courseal_backend.repository.UserRepository;
-import online.courseal.courseal_backend.service.UserDetailsImpl;
+import online.courseal.courseal_backend.services.RefreshTokenService;
+import online.courseal.courseal_backend.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth/login")
+@RequestMapping("/api/auth")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class LoginController {
     @Autowired
@@ -26,20 +28,35 @@ public class LoginController {
     PasswordEncoder passwordEncoder;
     @Autowired
     JwtUtils jwtUtils;
+    @Autowired
+    RefreshTokenService refreshTokenService;
 
-    @GetMapping
-    public ResponseEntity<?> authUser(@RequestBody LoginRequest loginRequest){
+    @PostMapping("/login")
+    public void authUser(HttpServletResponse response, @RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getUserTag(),
+                loginRequest.getUsertag(),
                 loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        var jwtCookie = new Cookie("courseal_jwt", jwt);
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getUserId(),
-                userDetails.getUserTag()));
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUserId());
+
+        var tokenRefreshCookie = new Cookie("courseal_refresh", refreshToken.getRefreshToken());
+
+        response.addCookie(jwtCookie);
+        response.addCookie(tokenRefreshCookie);
+    }
+
+    @PostMapping("/refresh")
+    public void refreshToken(@Valid @CookieValue("courseal_refresh") String tokenRefreshCookie){
+        /*
+        return refreshTokenService
+                .findByToken(tokenRefreshCookie)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser);
+         */
     }
 }

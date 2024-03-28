@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
 @Entity
 @Table(name = "Courses",
         uniqueConstraints = {
@@ -14,14 +15,11 @@ public class Course {
     @Id
     @Column(name = "course_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     private int courseId;
     @Column(name = "course_name")
-    @Getter
     @Setter
     private String courseName;
     @Column(name = "course_description")
-    @Getter
     @Setter
     private String courseDescription;
 

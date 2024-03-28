@@ -3,13 +3,12 @@ package online.courseal.courseal_backend.configs.jwt;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import online.courseal.courseal_backend.service.UserDetailsServiceImpl;
+import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -41,12 +40,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     }
 
     private String parseJwt(HttpServletRequest request){
-        String headerAuth = request.getHeader("Authorization");
-
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")){
-            return headerAuth.substring(7, headerAuth.length());
+        var cookies = request.getCookies();
+        String jwt = null;
+        if (cookies != null) {
+            for (var cookie : cookies) {
+                if (cookie.getName().equals("courseal_jwt")) {
+                    jwt = cookie.getValue();
+                    break;
+                }
+            }
         }
 
-        return null;
+        return jwt;
     }
 }

@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.service;
+package online.courseal.courseal_backend.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -54,7 +54,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return userName;
     }
 
     @Override
