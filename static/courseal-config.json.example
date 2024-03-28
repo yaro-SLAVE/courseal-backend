@@ -1,0 +1,5 @@
+{
+    "server_name": "Default server name",
+    "server_description": "Default server description",
+    "server_register_enabled": true
+}
