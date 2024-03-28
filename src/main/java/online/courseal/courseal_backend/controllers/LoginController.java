@@ -1,11 +1,8 @@
 package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.configs.jwt.JwtUtils;
-import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.pojo.JwtResponse;
 import online.courseal.courseal_backend.pojo.LoginRequest;
-import online.courseal.courseal_backend.pojo.MessageResponse;
-import online.courseal.courseal_backend.pojo.SignupRequest;
 import online.courseal.courseal_backend.repository.UserRepository;
 import online.courseal.courseal_backend.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +40,6 @@ public class LoginController {
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getUserId(),
-                userDetails.getUsername(),
-                userDetails.getUserTag(),
-                userDetails.getEmail()));
+                userDetails.getUserTag()));
     }
 }
