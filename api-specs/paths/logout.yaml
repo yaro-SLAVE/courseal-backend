@@ -1,6 +1,7 @@
 get:
   tags:
     - auth
+    - refresh
   summary: Logs out of the session
   description: Invalidates refresh token without generating a new one
   parameters:

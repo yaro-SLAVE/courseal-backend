@@ -1,0 +1,8 @@
+title: Text formatted with EditorJS
+type: object
+properties:
+  task_type:
+    title: The task's type
+    type: object
+  task_body:
+    $ref: "editorjs.yaml"

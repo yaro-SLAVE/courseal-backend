@@ -11,6 +11,8 @@ tags:
     description: Everything about authorization
   - name: public
     description: Requests that don't require the user to be authenticated
+  - name: refresh
+    description: These request use up a refresh token
   - name: user
     description: Everything user related
   - name: course-management
@@ -33,6 +35,10 @@ paths:
     $ref: "./paths/register.yaml"
   /api/user/change-name:
     $ref: "./paths/change_name.yaml"
+  /api/user/change-password:
+    $ref: "./paths/change_password.yaml"
 
   /api/course-management/create-course:
     $ref: "./paths/create_course.yaml"
+  /api/course-management/create-task:
+    $ref: "./paths/create_task.yaml"
