@@ -19,7 +19,7 @@ post:
               description: Plain-text password
     required: true
   responses:
-    '200':
+    '204':
       description: OK
       headers:
         Set-Cookie:
@@ -28,5 +28,9 @@ post:
         "\0Set-Cookie":
           schema:
             $ref: "../schemas/jwt_cookie.yaml"
-    '409':
+    '403':
       description: Incorrect usertag or password
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_message.yaml"

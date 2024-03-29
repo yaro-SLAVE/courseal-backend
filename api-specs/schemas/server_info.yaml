@@ -7,6 +7,6 @@ properties:
   server_description:
     type: string
     description: Description of the currently running instance
-  server_sign_up_enabled:
+  server_registration_enabled:
     type: boolean
     description: Is registration of new accounts allowed on this instance

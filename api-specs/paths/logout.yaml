@@ -6,7 +6,11 @@ get:
   parameters:
     - $ref: "../parameters/refresh_token.yaml"
   responses:
-    '200':
+    '204':
       description: OK
-    '401':
+    '403':
       description: Refresh token is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_message.yaml"
