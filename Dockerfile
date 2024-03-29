@@ -6,5 +6,6 @@ RUN --mount=type=cache,target=/root/.m2 mvn -f /app/pom.xml clean package -Dmave
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=builder /app/target/*.jar /app/courseal.jar
+COPY --from=builder /app/static/* /app/static/
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/courseal.jar"]
+ENTRYPOINT ["java", "-jar", "courseal.jar"]
