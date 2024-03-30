@@ -23,16 +23,6 @@ public class CoursealBackendApplication {
 		return "user/change-name";
 	}
 
-	@GetMapping("api/auth/refresh")
-	public String apiAuthRefresh(){
-		return "auth/refresh";
-	}
-
-	@GetMapping("api/auth/logout")
-	public String apiAuthLogout(){
-		return "auth/Logout";
-	}
-
 	@GetMapping("api/course-management/create-course")
 	public String apiCourseManagementCreateCourse(){
 		return "course-management/create-course";

@@ -45,9 +45,10 @@ public class User {
 
     public User(){}
 
-    public User(String userTag, String userName, String password){
+    public User(String userTag, String userName, String password, LocalDateTime dateCreated){
         this.userTag = userTag;
         this.userName = userName;
         this.password = password;
+        this.dateCreated = dateCreated;
     }
 }

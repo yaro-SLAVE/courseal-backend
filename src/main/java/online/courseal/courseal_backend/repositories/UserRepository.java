@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.repository;
+package online.courseal.courseal_backend.repositories;
 
 import online.courseal.courseal_backend.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;

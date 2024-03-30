@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.repository;
+package online.courseal.courseal_backend.repositories;
 
 import online.courseal.courseal_backend.models.RefreshToken;
 import online.courseal.courseal_backend.models.User;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Integer> {
-    Optional<RefreshToken> findByToken(String Token);
+    Optional<RefreshToken> findByRefreshToken(String refreshToken);
 
     @Modifying
     int deleteByUser(User user);

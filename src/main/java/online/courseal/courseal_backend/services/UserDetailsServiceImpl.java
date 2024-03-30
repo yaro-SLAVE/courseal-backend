@@ -1,7 +1,7 @@
 package online.courseal.courseal_backend.services;
 
 import online.courseal.courseal_backend.models.User;
-import online.courseal.courseal_backend.repository.UserRepository;
+import online.courseal.courseal_backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

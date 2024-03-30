@@ -4,12 +4,14 @@ import online.courseal.courseal_backend.configs.jwt.JwtUtils;
 import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.responses.MessageResponse;
 import online.courseal.courseal_backend.requests.RegisterRequest;
-import online.courseal.courseal_backend.repository.UserRepository;
+import online.courseal.courseal_backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/user/register")
@@ -34,7 +36,8 @@ public class RegisterController {
 
         User user = new User(registerRequest.getUsertag(),
                 registerRequest.getUsername(),
-                passwordEncoder.encode(registerRequest.getPassword()));
+                passwordEncoder.encode(registerRequest.getPassword()),
+                LocalDateTime.now());
 
         userRepository.save(user);
 
