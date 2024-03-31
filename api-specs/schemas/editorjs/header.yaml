@@ -1,0 +1,23 @@
+title: The header editorjs block type
+type: object
+properties:
+  id:
+    type: string
+  type:
+    type: string
+    enum:
+      - "header"
+  data:
+    type: object
+    properties:
+      text:
+        type: string
+      level:
+        type: number
+        enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6

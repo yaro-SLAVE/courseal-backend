@@ -1,12 +1,30 @@
 get:
   tags:
     - auth
+    - refresh
   summary: Logs out of the session
   description: Invalidates refresh token without generating a new one
   parameters:
     - $ref: "../parameters/refresh_token.yaml"
   responses:
-    '200':
+    '204':
       description: OK
-    '401':
+      headers:
+        Set-Cookie:
+          schema:
+            title: Invalidating the refresh token
+            type: string
+            description: Cookie containing the generated refresh token
+            example: courseal_refresh=; Path=/api/auth/; HttpOnly; Max-Age=0
+        "\0Set-Cookie":
+          schema:
+              title: Invalidating the JWT
+              type: string
+              description: Cookie containing the generated JWT
+              example: courseal_jwt=; Path=/api/; HttpOnly; Max-Age=0
+    '403':
       description: Refresh token is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_message.yaml"

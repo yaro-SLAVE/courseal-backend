@@ -1,0 +1,9 @@
+title: A lesson of lecture type
+type: object
+properties:
+  type:
+    type: string
+    enum:
+      - "lecture"
+  lecture_content:
+    $ref: "../editorjs.yaml"

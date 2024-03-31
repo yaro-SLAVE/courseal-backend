@@ -1,0 +1,6 @@
+title: Text formatted with EditorJS
+type: array
+items:
+  oneOf:
+    - $ref: "./editorjs/paragraph.yaml"
+    - $ref: "./editorjs/header.yaml"

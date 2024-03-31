@@ -1,0 +1,16 @@
+title: Error message response
+type: object
+properties:
+  error:
+    type: string
+    description: A unique identifier for the error
+  message:
+    type: string
+    description: A brief human-readable message
+  detail:
+    type: string
+    description: A lengthier explanation of the error
+example:
+  error: "jwt-invalid"
+  message: "Provided JWT is invalid"
+  description: "The provided JWT either has expired or its cryptographic signature doesn't match the server's private key"

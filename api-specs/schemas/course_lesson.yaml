@@ -1,0 +1,7 @@
+title: A course's lesson
+type: object
+oneOf:
+  - $ref: "./course_lesson/lecture.yaml"
+  - $ref: "./course_lesson/practice.yaml"
+  - $ref: "./course_lesson/exam.yaml"
+  - $ref: "./course_lesson/training.yaml"

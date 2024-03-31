@@ -1,5 +1,3 @@
-# TODO: actual error codes with description
-
 openapi: 3.0.3
 info:
   title: Courseal API
@@ -13,12 +11,16 @@ tags:
     description: Everything about authorization
   - name: public
     description: Requests that don't require the user to be authenticated
+  - name: refresh
+    description: Requests that require a refresh token (but not JWT)
   - name: user
     description: Everything user related
   - name: course-management
     description: Everything about course management
   - name: course-enrollment
     description: Everything about course enrollment
+  - name: course-info
+    description: Public course information
 
 paths:
   /api/courseal-info:
@@ -35,6 +37,12 @@ paths:
     $ref: "./paths/register.yaml"
   /api/user/change-name:
     $ref: "./paths/change_name.yaml"
+  /api/user/change-password:
+    $ref: "./paths/change_password.yaml"
 
   /api/course-management/create-course:
     $ref: "./paths/create_course.yaml"
+  /api/course-management/create-task:
+    $ref: "./paths/create_task.yaml"
+  /api/course-management/create-lesson:
+    $ref: "./paths/create_lesson.yaml"

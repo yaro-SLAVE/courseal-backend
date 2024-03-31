@@ -1,23 +1,25 @@
 post:
   tags:
     - course-management
-  summary: Creates a new course
-  description: Check if the user can create courses and if the provided details are valid, then creates a new course
+  summary: Creates a new task for the course
+  description: Check if the user can create tasks in the course and creates one if so
   parameters:
     - $ref: "../parameters/jwt.yaml"
   requestBody:
     content:
       application/json:
         schema:
-          title: Course info
+          title: Course task info
           type: object
           properties:
-            course_name:
+            course_id:
+              type: number
+              description: The course's id
+            task_name:
               type: string
-              description: The course's name that will be shown to other users
-            course_description:
-              type: string
-              description: The course's description
+              description: The task's name
+            task:
+              $ref: "../schemas/course_task.yaml"
     required: true
   responses:
     '200':
@@ -27,9 +29,9 @@ post:
           schema:
             type: object
             properties:
-              course_id:
+              task_id:
                 type: number
-                description: The id of the newly created course
+                description: The id of the newly created task
     '400':
       description: Bad request
       content:
@@ -37,7 +39,7 @@ post:
           schema:
             $ref: "../schemas/error_message.yaml"
     '403':
-      description: JWT is invalid or can't create courses
+      description: JWT is invalid or can't create tasks
       content:
         application/json:
           schema:
