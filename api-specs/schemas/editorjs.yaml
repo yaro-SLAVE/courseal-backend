@@ -1,2 +1,5 @@
 title: Text formatted with EditorJS
 type: object
+oneOf:
+  - $ref: "./editorjs/paragraph.yaml"
+  - $ref: "./editorjs/header.yaml"

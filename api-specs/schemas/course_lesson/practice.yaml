@@ -1,0 +1,12 @@
+title: A lesson of practice type
+type: object
+properties:
+  type:
+    type: string
+    enum:
+      - "practice"
+  tasks:
+    title: An array of course task ids
+    type: array
+    items:
+      type: number

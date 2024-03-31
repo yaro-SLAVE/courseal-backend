@@ -1,0 +1,14 @@
+title: The paragraph editorjs block type
+type: object
+properties:
+  id:
+    type: string
+  type:
+    type: string
+    enum:
+      - "paragraph"
+  data:
+    type: object
+    properties:
+      text:
+        type: string

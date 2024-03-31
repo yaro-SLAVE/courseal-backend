@@ -12,13 +12,15 @@ tags:
   - name: public
     description: Requests that don't require the user to be authenticated
   - name: refresh
-    description: These request use up a refresh token
+    description: Requests that require a refresh token (but not JWT)
   - name: user
     description: Everything user related
   - name: course-management
     description: Everything about course management
   - name: course-enrollment
     description: Everything about course enrollment
+  - name: course-info
+    description: Public course information
 
 paths:
   /api/courseal-info:
@@ -42,3 +44,5 @@ paths:
     $ref: "./paths/create_course.yaml"
   /api/course-management/create-task:
     $ref: "./paths/create_task.yaml"
+  /api/course-management/create-lesson:
+    $ref: "./paths/create_lesson.yaml"

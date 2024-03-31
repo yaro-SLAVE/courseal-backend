@@ -1,25 +1,29 @@
 post:
   tags:
     - course-management
-  summary: Creates a new task for the course
-  description: Check if the user can create tasks in the course and creates one if so
+  summary: Creates a new lesson for the course
+  description: Check if the user can create lessons in the course and creates one if so
   parameters:
     - $ref: "../parameters/jwt.yaml"
   requestBody:
     content:
       application/json:
         schema:
-          title: Course task info
+          title: Course lesson info
           type: object
           properties:
             course_id:
               type: number
               description: The course's id
-            task_name:
+            lesson_name:
               type: string
-              description: The task's name
-            task:
-              $ref: "../schemas/course_task.yaml"
+              description: The lesson's name
+            lesson_level:
+              type: number
+              nullable: true
+              description: The lesson's tree level. Null means it's not in the tree
+            lesson:
+              $ref: "../schemas/course_lesson.yaml"
     required: true
   responses:
     '200':
@@ -39,7 +43,7 @@ post:
           schema:
             $ref: "../schemas/error_message.yaml"
     '403':
-      description: JWT is invalid or can't create tasks
+      description: JWT is invalid or can't lessons
       content:
         application/json:
           schema:

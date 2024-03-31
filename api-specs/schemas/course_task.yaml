@@ -1,8 +1,5 @@
-title: Text formatted with EditorJS
+title: A course's task
 type: object
-properties:
-  task_type:
-    title: The task's type
-    type: object
-  task_body:
-    $ref: "editorjs.yaml"
+oneOf:
+  - $ref: "./course_task/test_single_answer.yaml"
+  - $ref: "./course_task/test_multiple_answers.yaml"
