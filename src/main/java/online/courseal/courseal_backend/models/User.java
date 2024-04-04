@@ -35,6 +35,7 @@ public class User {
     @Setter
     private String password;
     @Setter
+    @Nullable
     private String email;
     @Column(name = "date_created")
     @Setter

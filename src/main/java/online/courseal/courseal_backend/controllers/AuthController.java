@@ -2,18 +2,14 @@ package online.courseal.courseal_backend.controllers;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import online.courseal.courseal_backend.configs.jwt.JwtUtils;
-import online.courseal.courseal_backend.exceptions.TokenRefreshException;
 import online.courseal.courseal_backend.models.RefreshToken;
 import online.courseal.courseal_backend.repositories.RefreshTokenRepository;
 import online.courseal.courseal_backend.requests.LoginRequest;
 import online.courseal.courseal_backend.repositories.UserRepository;
-import online.courseal.courseal_backend.responses.TokenRefreshResponse;
 import online.courseal.courseal_backend.services.RefreshTokenService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -67,8 +63,8 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@CookieValue(value = "courseal_refresh", required = false) String tokenRefreshCookie, HttpServletResponse response){
-        return refreshTokenService.findByToken(tokenRefreshCookie)
+    public String refreshToken(@CookieValue(value = "courseal_refresh", required = false) String tokenRefreshCookie, HttpServletResponse response){
+        refreshTokenService.findByToken(tokenRefreshCookie)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
                 .map(user -> {
@@ -79,10 +75,9 @@ public class AuthController {
                     RefreshToken refreshToken = refreshTokenService.findByToken(tokenRefreshCookie).get();
                     refreshToken.setValid(false);
                     refreshTokenRepository.save(refreshToken);
-                    return ResponseEntity.ok(new TokenRefreshResponse(jwt, newRefreshToken.getRefreshToken()));
-                })
-                .orElseThrow(() -> new TokenRefreshException(tokenRefreshCookie,
-                        "Refresh token is not in database!"));
+                    return null;
+                });
+        return null;
     }
 
     @GetMapping("/test")

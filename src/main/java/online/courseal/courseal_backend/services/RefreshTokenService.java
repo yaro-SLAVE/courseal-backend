@@ -42,7 +42,7 @@ public class RefreshTokenService{
 
     public RefreshToken verifyExpiration(RefreshToken refreshToken) {
         LocalDateTime dateExpired = refreshToken.getDateCreated().plusSeconds(refreshTokenDurationMs / 1000);
-        if (LocalDateTime.now().isAfter(dateExpired)) {
+        if (LocalDateTime.now().isAfter(dateExpired) && refreshToken.isValid()) {
             refreshTokenRepository.delete(refreshToken);
             throw new TokenRefreshException(refreshToken.getRefreshToken(), "Refresh token was expired. Please make a new login request");
         }
