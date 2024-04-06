@@ -16,8 +16,8 @@ public class CourseLessonLecture {
     @Column(name = "course_lesson_lecture_id", nullable = false)
     private Integer courseLessonLectureId;
     @Setter
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="course_lesson_id", nullable=false)
+    @OneToOne(optional=false)
+    @JoinColumn(name="course_lesson_id", unique=true, nullable=false, updatable=false)
     private CourseLesson courseLesson;
     @Setter
     @Column(nullable = false)
