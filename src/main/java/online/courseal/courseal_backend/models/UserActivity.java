@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class UserActivity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_activity_id")
+    @Column(name = "user_activity_id", nullable = false)
     @Getter
     private int userActivityId;
 
@@ -22,12 +22,13 @@ public class UserActivity {
     @JoinColumn(name="user_id", nullable=false)
     @Getter
     private User user;
-
     @Getter
     @Setter
+    @Column(nullable = false)
     private LocalDate day;
     @Getter
     @Setter
+    @Column(nullable = false)
     private int xp;
 
     public UserActivity(){}

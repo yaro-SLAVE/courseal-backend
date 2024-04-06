@@ -10,24 +10,26 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "RefreshTokens",
     uniqueConstraints = {
-        @UniqueConstraint(columnNames = "refresh_token_id")
+        @UniqueConstraint(columnNames = "refresh_token_id"),
+        @UniqueConstraint(columnNames = "refreshToken")
     })
 public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "refresh_token_id")
+    @Column(name = "refresh_token_id", nullable = false)
     private int refreshTokenId;
     @Setter
+    @Column(nullable = false)
     private String refreshToken;
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="user_id", nullable=false)
     @Setter
     private User user;
-    @Column(name = "is_valid")
+    @Column(name = "is_valid", nullable = false)
     @Setter
     private boolean isValid;
-    @Column(name = "date_created")
+    @Column(name = "date_created", nullable = false)
     @Setter
     private LocalDateTime dateCreated;
 

@@ -19,28 +19,28 @@ import java.time.LocalDateTime;
         @UniqueConstraint(columnNames = "usertag"),
         @UniqueConstraint(columnNames = "email")
     })
-@Data
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Integer userId;
-    @Column(name = "usertag")
+    @Column(name = "usertag", nullable = false)
     @Setter
     private String userTag;
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     @Setter
     private String userName;
     @Setter
+    @Column(nullable = false)
     private String password;
     @Setter
-    @Nullable
+    @Column(nullable = true)
     private String email;
-    @Column(name = "date_created")
+    @Column(name = "date_created", nullable = false)
     @Setter
     private LocalDateTime dateCreated;
-    @Column(name = "can_create_courses")
+    @Column(name = "can_create_courses", nullable = false)
     @Setter
     private boolean canCreate;
 

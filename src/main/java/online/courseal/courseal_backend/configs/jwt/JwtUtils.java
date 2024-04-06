@@ -35,11 +35,11 @@ public class JwtUtils {
                 .signWith(key, SignatureAlgorithm.HS512).compact();
     }
 
-    public String generateTokenFromUsername(String usertag) {
+    public String generateTokenFromUserTag(String userTag) {
 
         SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret.getBytes(StandardCharsets.UTF_8)));
         return Jwts.builder()
-                .setSubject(usertag)
+                .setSubject(userTag)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date())
                 .getTime() + jwtExpirationMs))

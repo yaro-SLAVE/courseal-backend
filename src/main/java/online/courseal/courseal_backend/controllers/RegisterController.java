@@ -23,8 +23,6 @@ public class RegisterController {
     UserRepository userRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
-    @Autowired
-    JwtUtils jwtUtils;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest){
