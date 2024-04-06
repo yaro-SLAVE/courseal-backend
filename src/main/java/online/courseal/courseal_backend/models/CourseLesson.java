@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "CourseLessons",
+@Table(name = "CourseLesson",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "course_lesson_id")
 })

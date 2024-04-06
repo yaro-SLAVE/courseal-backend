@@ -1,7 +1,8 @@
 package online.courseal.courseal_backend.controllers;
 
-import online.courseal.courseal_backend.configs.jwt.JwtUtils;
 import online.courseal.courseal_backend.models.User;
+import online.courseal.courseal_backend.requests.ChangeNameRequest;
+import online.courseal.courseal_backend.requests.ChangePasswordRequest;
 import online.courseal.courseal_backend.responses.MessageResponse;
 import online.courseal.courseal_backend.requests.RegisterRequest;
 import online.courseal.courseal_backend.repositories.UserRepository;
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/api/user/register")
+@RequestMapping("/api/user")
 @CrossOrigin(origins = "*", maxAge = 3600)
-public class RegisterController {
+public class UserController {
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
@@ -24,7 +25,7 @@ public class RegisterController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest){
         if (userRepository.existsByUserTag(registerRequest.getUsertag())){
             return ResponseEntity
@@ -40,5 +41,15 @@ public class RegisterController {
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse());
+    }
+
+    @PostMapping("/change-name")
+    public ResponseEntity<?> changeName(@RequestBody ChangeNameRequest changeNameRequest, @CookieValue(name = "courseal_jwt", required = false) String jwt){
+        return null;
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, @CookieValue(name = "courseal_jwt", required = false) String jwt){
+        return null;
     }
 }

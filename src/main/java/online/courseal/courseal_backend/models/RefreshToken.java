@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "RefreshTokens",
+@Table(name = "RefreshToken",
     uniqueConstraints = {
         @UniqueConstraint(columnNames = "refresh_token_id"),
         @UniqueConstraint(columnNames = "refreshToken")

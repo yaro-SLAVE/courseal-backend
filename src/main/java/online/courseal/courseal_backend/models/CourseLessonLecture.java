@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Table(name = "CourseLessonLectures",
+@Table(name = "CourseLessonLecture",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "course_lesson_lecture_id")
 })
