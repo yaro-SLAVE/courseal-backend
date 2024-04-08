@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.configs.editorjs.enums;
+package online.courseal.courseal_backend.editorjs.enums;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

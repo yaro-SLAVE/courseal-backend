@@ -1,8 +1,8 @@
-package online.courseal.courseal_backend.configs.editorjs;
+package online.courseal.courseal_backend.editorjs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import online.courseal.courseal_backend.configs.editorjs.data.EditorJSLatexData;
+import online.courseal.courseal_backend.editorjs.data.EditorJSLatexData;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

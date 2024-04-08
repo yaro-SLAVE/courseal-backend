@@ -1,10 +1,10 @@
-package online.courseal.courseal_backend.configs.editorjs.data;
+package online.courseal.courseal_backend.editorjs.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
-import online.courseal.courseal_backend.configs.editorjs.enums.EditorJSListStyle;
+import online.courseal.courseal_backend.editorjs.enums.EditorJSListStyle;
 
 import java.util.ArrayList;
 

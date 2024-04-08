@@ -1,7 +1,6 @@
-package online.courseal.courseal_backend.configs.editorjs;
+package online.courseal.courseal_backend.editorjs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
 
 import java.util.ArrayList;

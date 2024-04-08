@@ -1,10 +1,10 @@
-package online.courseal.courseal_backend.configs.editorjs.data;
+package online.courseal.courseal_backend.editorjs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EditorJSImageFile {
-    private String url;
+public class EditorJSDelimiter extends EditorJSBlock{
+    private Unit data;
 }
