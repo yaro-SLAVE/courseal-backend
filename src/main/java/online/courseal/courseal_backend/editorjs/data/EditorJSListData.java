@@ -1,17 +1,19 @@
 package online.courseal.courseal_backend.editorjs.data;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import online.courseal.courseal_backend.editorjs.enums.EditorJSListStyle;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class EditorJSListData {
     @Enumerated(EnumType.STRING)
     private EditorJSListStyle style;
-    private ArrayList<String> items;
+    private List<String> items;
 }

@@ -1,11 +1,13 @@
 package online.courseal.courseal_backend.editorjs.data;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import online.courseal.courseal_backend.editorjs.enums.EditorJSQuoteAlignment;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class EditorJSQuoteData {
     private String text;
     private String caption;

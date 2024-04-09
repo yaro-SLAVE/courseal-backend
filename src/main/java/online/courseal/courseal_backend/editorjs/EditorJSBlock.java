@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", include = JsonTypeInfo.As.EXTERNAL_PROPERTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes(value = {
         @JsonSubTypes.Type(value = EditorJSCode.class, name = "code"),
         @JsonSubTypes.Type(value = EditorJSDelimiter.class, name = "delimiter"),
@@ -19,6 +21,5 @@ import lombok.Data;
         @JsonSubTypes.Type(value = EditorJSQuote.class, name = "quote"),
         @JsonSubTypes.Type(value = EditorJSWarning.class, name = "warning")
 })
-public abstract class EditorJSBlock {
-    protected String id;
-}
+public abstract sealed class EditorJSBlock
+        permits EditorJSCode, EditorJSDelimiter, EditorJSHeader, EditorJSImage, EditorJSLatex, EditorJSList, EditorJSParagraph, EditorJSQuote, EditorJSWarning { }

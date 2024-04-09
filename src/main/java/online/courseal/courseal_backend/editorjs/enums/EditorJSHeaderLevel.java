@@ -1,12 +1,24 @@
 package online.courseal.courseal_backend.editorjs.enums;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum EditorJSHeaderLevel {
-    @JsonProperty(index = 1) H1,
-    @JsonProperty(index = 2) H2,
-    @JsonProperty(index = 3)H3,
-    @JsonProperty(index = 4)H4,
-    @JsonProperty(index = 5)H5,
-    @JsonProperty(index = 6)H6
+    H1(1),
+    H2(2),
+    H3(3),
+    H4(4),
+    H5(5),
+    H6(6);
+
+    private final int level;
+
+    EditorJSHeaderLevel(int level) {
+        this.level = level;
+    }
+
+    @JsonValue
+    public int getLevel() {
+        return this.level;
+    }
 }
