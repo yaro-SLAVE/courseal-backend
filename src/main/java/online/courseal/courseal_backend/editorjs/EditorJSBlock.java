@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", include = JsonTypeInfo.As.EXTERNAL_PROPERTY)
 @JsonSubTypes(value = {
         @JsonSubTypes.Type(value = EditorJSCode.class, name = "code"),
         @JsonSubTypes.Type(value = EditorJSDelimiter.class, name = "delimiter"),
