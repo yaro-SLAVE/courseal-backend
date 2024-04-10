@@ -1,6 +1,6 @@
 package online.courseal.courseal_backend.controllers;
 
-import online.courseal.courseal_backend.responses.ServerInfo;
+import online.courseal.courseal_backend.responses.records.ServerInfo;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
