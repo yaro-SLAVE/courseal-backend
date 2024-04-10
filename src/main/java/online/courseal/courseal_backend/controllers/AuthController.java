@@ -3,7 +3,6 @@ package online.courseal.courseal_backend.controllers;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import online.courseal.courseal_backend.configs.jwt.JwtUtils;
-import online.courseal.courseal_backend.exceptions.InvalidTokenException;
 import online.courseal.courseal_backend.models.RefreshToken;
 import online.courseal.courseal_backend.repositories.RefreshTokenRepository;
 import online.courseal.courseal_backend.requests.LoginRequest;
