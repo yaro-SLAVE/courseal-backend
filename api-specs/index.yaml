@@ -13,6 +13,8 @@ tags:
     description: Requests that don't require the user to be authenticated
   - name: refresh
     description: Requests that require a refresh token (but not JWT)
+  - name: user-management
+    description: Everything user-management related
   - name: user
     description: Everything user related
   - name: course-management
@@ -33,12 +35,18 @@ paths:
   /api/auth/logout:
     $ref: "./paths/logout.yaml"
 
-  /api/user/register:
+  /api/user-management/register:
     $ref: "./paths/register.yaml"
-  /api/user/change-name:
+  /api/user-management/change-name:
     $ref: "./paths/change_name.yaml"
-  /api/user/change-password:
+  /api/user-management/change-password:
     $ref: "./paths/change_password.yaml"
+
+  /api/user/{usertag}:
+    $ref: "./paths/user_info.yaml"
+  /api/user/{usertag}/activity:
+    $ref: "./paths/user_activity.yaml"
+
 
   /api/course-management/create-course:
     $ref: "./paths/create_course.yaml"

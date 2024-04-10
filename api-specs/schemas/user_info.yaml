@@ -1,0 +1,45 @@
+title: User info
+type: object
+properties:
+  usertag:
+    type: string
+    description: The user's usertag
+  username:
+    type: string
+    description: The user's username
+  date_created:
+    type: string
+    description: The user's creation date
+  xp:
+    type: number
+    description: The user's total xp
+  courses:
+    type: array
+    description: Courses the user is enrolled in
+    items:
+      type: object
+      description: Course description
+      properties:
+        course_id:
+          type: number
+          description: The course's id
+        xp:
+          type: number
+          description: The user's xp on that course
+  courses_maintainer:
+    type: array
+    description: Courses that this user is a maintainer of
+    items:
+      type: object
+      description: Course description
+      properties:
+        course_id:
+          type: number
+          description: The course's id
+        maintainer_permissions:
+          type: string
+          description: Permissions the user has over the course
+          enum:
+            - "full"
+            - "edit_course"
+            - "edit_lessons"

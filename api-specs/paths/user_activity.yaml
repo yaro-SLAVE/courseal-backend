@@ -1,0 +1,22 @@
+get:
+  tags:
+    - public
+    - user
+  summary: Returns information about the user's activity
+  description: This includes public information about the user's activity
+  parameters:
+    - name: usertag
+      in: path
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/user_activity.yaml"
+    '404':
+      description: User not found
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_message.yaml"

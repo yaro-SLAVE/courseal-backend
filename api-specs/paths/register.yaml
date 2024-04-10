@@ -1,6 +1,6 @@
 post:
   tags:
-    - user
+    - user-management
     - public
   summary: Creates a new account
   description: First checks if the account can be created. On creation returns a successful response.
