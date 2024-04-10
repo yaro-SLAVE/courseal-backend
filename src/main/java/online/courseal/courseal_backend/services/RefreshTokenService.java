@@ -1,6 +1,6 @@
 package online.courseal.courseal_backend.services;
 
-import online.courseal.courseal_backend.exceptions.errors.InvalidTokenException;
+import online.courseal.courseal_backend.errors.exceptions.InvalidRefreshTokenException;
 import online.courseal.courseal_backend.models.RefreshToken;
 import online.courseal.courseal_backend.repositories.RefreshTokenRepository;
 import online.courseal.courseal_backend.repositories.UserRepository;
@@ -44,7 +44,7 @@ public class RefreshTokenService{
         LocalDateTime dateExpired = refreshToken.getDateCreated().plusSeconds(refreshTokenDurationMs / 1000);
         if (LocalDateTime.now().isAfter(dateExpired) && refreshToken.isValid()) {
             refreshTokenRepository.delete(refreshToken);
-            throw new InvalidTokenException();
+            throw new InvalidRefreshTokenException();
         }
 
         return refreshToken;

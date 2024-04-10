@@ -1,10 +1,10 @@
-package online.courseal.courseal_backend.exceptions.errors;
+package online.courseal.courseal_backend.errors.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class AccountAlreadyExistsException extends ApplicationException{
-    public AccountAlreadyExistsException(){
-        status = HttpStatus.CONFLICT;
+public class IncorrectUsertagOrPasswordException extends ApplicationException{
+    public IncorrectUsertagOrPasswordException(){
+        status = HttpStatus.FORBIDDEN;
         error = "jwt-invalid";
         errorMessage = "Provided JWT is invalid";
         description = "The provided JWT either has expired or its cryptographic signature doesn't match the server's private key";

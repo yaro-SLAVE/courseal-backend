@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.exceptions.errors;
+package online.courseal.courseal_backend.errors.exceptions;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

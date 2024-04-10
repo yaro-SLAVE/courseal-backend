@@ -1,9 +1,9 @@
-package online.courseal.courseal_backend.exceptions.errors;
+package online.courseal.courseal_backend.errors.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class IncorrectUsertagOrPasswordException extends ApplicationException{
-    public IncorrectUsertagOrPasswordException(){
+public class InvalidRefreshTokenException extends ApplicationException{
+    public InvalidRefreshTokenException(){
         status = HttpStatus.FORBIDDEN;
         error = "jwt-invalid";
         errorMessage = "Provided JWT is invalid";
