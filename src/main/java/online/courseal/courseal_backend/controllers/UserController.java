@@ -1,5 +1,6 @@
 package online.courseal.courseal_backend.controllers;
 
+import online.courseal.courseal_backend.errors.exceptions.IncorrectUsertagException;
 import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.requests.ChangeNameRequest;
 import online.courseal.courseal_backend.requests.ChangePasswordRequest;
@@ -13,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/user")
@@ -27,6 +30,12 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest){
+        Pattern pattern = Pattern.compile("[a-z0-9-._]+");
+        Matcher matcher = pattern.matcher(registerRequest.getUsertag());
+
+        if (!matcher.hasMatch()){
+            throw new IncorrectUsertagException();
+        }
         if (userRepository.existsByUserTag(registerRequest.getUsertag())){
             return ResponseEntity
                     .badRequest()
