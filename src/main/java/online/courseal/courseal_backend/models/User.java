@@ -42,10 +42,11 @@ public class User {
 
     public User(){}
 
-    public User(String userTag, String userName, String password, LocalDateTime dateCreated){
+    public User(String userTag, String userName, String password, LocalDateTime dateCreated, Boolean canCreate){
         this.userTag = userTag;
         this.userName = userName;
         this.password = password;
         this.dateCreated = dateCreated;
+        this.canCreate = canCreate;
     }
 }

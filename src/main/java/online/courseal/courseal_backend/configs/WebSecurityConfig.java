@@ -86,11 +86,12 @@ public class WebSecurityConfig {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(request -> request
-                                .requestMatchers("/api/auth/login").permitAll()
-                                .requestMatchers("/api/user/register").permitAll()
-                                .requestMatchers("/api/auth/refresh").permitAll()
-                                .requestMatchers("/api/courseal-info").permitAll()
-                                .anyRequest().authenticated()
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/user-management/register").permitAll()
+                        .requestMatchers("/api/auth/refresh").permitAll()
+                        .requestMatchers("/api/courseal-info").permitAll()
+                        .requestMatchers("/api/user/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())

@@ -1,5 +1,6 @@
 package online.courseal.courseal_backend.services;
 
+import online.courseal.courseal_backend.errors.exceptions.UserNotFoundException;
 import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userTag) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userTag) throws UserNotFoundException {
         User user = userRepository
                 .findByUserTag(userTag)
-                .orElseThrow(() -> new UsernameNotFoundException("User no found with userTag: " + userTag));
+                .orElseThrow(UserNotFoundException::new);
         return UserDetailsImpl.build(user);
     }
 }
