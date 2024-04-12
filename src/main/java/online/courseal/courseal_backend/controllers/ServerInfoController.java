@@ -11,18 +11,10 @@ public class ServerInfoController {
     @GetMapping
     public ServerInfo serverInfo(){
         Server server = ServerConfig.getServerInfo();
-        if (server != null) {
-            return new ServerInfo(
-                    server.getServer_name(),
-                    server.getServer_description(),
-                    server.getServer_registration_enabled()
-            );
-        } else {
-            return new ServerInfo(
-                    "fuck",
-                    "fuck",
-                    false
-            );
-        }
+        return new ServerInfo(
+                server.getServer_name(),
+                server.getServer_description(),
+                server.getServer_registration_enabled()
+        );
     }
 }
