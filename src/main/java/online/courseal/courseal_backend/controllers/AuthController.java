@@ -94,8 +94,29 @@ public class AuthController {
         return null;
     }
 
-    @GetMapping("/test")
-    public String test(@CookieValue(value = "courseal_refresh", required = false) String data){
-        return data;
+    @GetMapping("/logout")
+    public String logout(@CookieValue(value = "courseal_refresh", required = false) String tokenRefreshCookie, HttpServletResponse response) {
+        refreshTokenService.findByToken(tokenRefreshCookie)
+                .map(refreshTokenService :: verifyExpiration)
+                .map(refreshToken -> {
+                    var jwtCookie = new Cookie("courseal_jwt", "");
+                    var refreshCookie = new Cookie("courseal_refresh", "");
+
+                    jwtCookie.setPath("/api");
+                    jwtCookie.setMaxAge(0);
+                    jwtCookie.setHttpOnly(true);
+
+                    refreshCookie.setPath("/api/auth");
+                    refreshCookie.setMaxAge(0);
+                    refreshCookie.setHttpOnly(true);
+
+                    response.addCookie(jwtCookie);
+                    response.addCookie(refreshCookie);
+
+                    refreshToken.setValid(false);
+                    refreshTokenRepository.save(refreshToken);
+                    return null;
+                });
+        return null;
     }
 }
