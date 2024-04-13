@@ -1,8 +1,8 @@
 package online.courseal.courseal_backend.controllers;
 
+import online.courseal.courseal_backend.configs.ServerConfig;
 import online.courseal.courseal_backend.errors.exceptions.IncorrectUsertagException;
 import online.courseal.courseal_backend.models.User;
-import online.courseal.courseal_backend.models.pojo.Server;
 import online.courseal.courseal_backend.requests.ChangeNameRequest;
 import online.courseal.courseal_backend.requests.ChangePasswordRequest;
 import online.courseal.courseal_backend.responses.MessageResponse;
@@ -26,7 +26,7 @@ public class UserManagementController {
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
-    Server server;
+    ServerConfig serverConfig;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest){
@@ -37,7 +37,7 @@ public class UserManagementController {
             throw new IncorrectUsertagException();
         }
 
-        Boolean canCreateCourses = server.getDefaultCanCreateCourses();
+        Boolean canCreateCourses = serverConfig.getServerInfo().getDefaultCanCreateCourses();
 
         if (userRepository.existsByUserTag(registerRequest.getUsertag())){
             return ResponseEntity
