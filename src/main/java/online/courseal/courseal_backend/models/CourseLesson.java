@@ -3,8 +3,8 @@ package online.courseal.courseal_backend.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import online.courseal.courseal_backend.models.enums.LessonType;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity

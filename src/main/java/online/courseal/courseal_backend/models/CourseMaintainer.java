@@ -3,6 +3,7 @@ package online.courseal.courseal_backend.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import online.courseal.courseal_backend.models.enums.CoursePermissions;
 
 @Entity
 @Getter

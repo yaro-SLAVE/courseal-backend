@@ -1,5 +1,6 @@
 package online.courseal.courseal_backend.requests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Service;
 @Getter
 @Setter
 public class CreateCourseRequest {
-    private String course_name;
-    private String course_description;
+    @JsonProperty("course_name")
+    private String courseName;
+    @JsonProperty("course_description")
+    private String courseDescription;
 }
