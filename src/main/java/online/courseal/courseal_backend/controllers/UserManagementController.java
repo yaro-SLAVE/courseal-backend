@@ -2,6 +2,7 @@ package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.configs.ServerConfig;
 import online.courseal.courseal_backend.errors.exceptions.IncorrectUsertagException;
+import online.courseal.courseal_backend.errors.exceptions.RegistrationEnabledException;
 import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.requests.ChangeNameRequest;
 import online.courseal.courseal_backend.requests.ChangePasswordRequest;
@@ -29,7 +30,11 @@ public class UserManagementController {
     ServerConfig serverConfig;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
+        if (!serverConfig.getServerInfo().getServerRegistrationEnabled()){
+            throw new RegistrationEnabledException();
+        }
+
         Pattern pattern = Pattern.compile("[a-z0-9-_.]+");
         Matcher matcher = pattern.matcher(registerRequest.getUsertag());
 
