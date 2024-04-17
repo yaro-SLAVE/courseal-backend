@@ -34,3 +34,7 @@ build/
 
 ### Docker ###
 .env
+
+### Courseal ###
+static/courseal-config.json
+static/courseal-logo.png

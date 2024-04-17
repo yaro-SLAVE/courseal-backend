@@ -3,7 +3,6 @@ services:
   postgres:
     image: postgres
     restart: unless-stopped
-    env_file: .env
     environment:
       POSTGRES_DB: '${POSTGRES_DB}'
       POSTGRES_USER: '${POSTGRES_USER}'
@@ -16,11 +15,13 @@ services:
   courseal:
     build: .
     restart: unless-stopped
-    env_file: .env
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:postgresql://postgres:5432/${POSTGRES_DB}'
       SPRING_DATASOURCE_USERNAME: '${POSTGRES_USER}'
       SPRING_DATASOURCE_PASSWORD: '${POSTGRES_PASSWORD}'
+      REFRESH_EXPIRATION_MS: '${REFRESH_EXPIRATION_MS}'
+      JWT_EXPIRATION_MS: '${JWT_EXPIRATION_MS}'
+      JWT_BASE64_SECRET_KEY: '${JWT_BASE64_SECRET_KEY}'
     ports:
       - '${COURSEAL_PORT}:8080'
     volumes:
