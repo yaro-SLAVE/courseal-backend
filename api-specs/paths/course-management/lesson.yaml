@@ -19,10 +19,6 @@ post:
             lesson_name:
               type: string
               description: The lesson's name
-            lesson_level:
-              type: number
-              nullable: true
-              description: The lesson's tree level. Null means it's not in the tree
             lesson:
               $ref: "../../schemas/course_lesson.yaml"
     required: true
@@ -34,9 +30,9 @@ post:
           schema:
             type: object
             properties:
-              task_id:
+              lesson_id:
                 type: number
-                description: The id of the newly created task
+                description: The id of the newly created lesson
     '400':
       description: Bad request
       content:
@@ -77,10 +73,6 @@ get:
                 lesson_name:
                   type: string
                   description: The lesson's name
-                lesson_level:
-                  type: number
-                  nullable: true
-                  description: The lesson's tree level. Null means it's not in the tree
                 lesson:
                   $ref: "../../schemas/course_lesson.yaml"
     '400':

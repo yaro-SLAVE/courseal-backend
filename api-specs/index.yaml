@@ -57,3 +57,5 @@ paths:
     $ref: "./paths/course-management/task.yaml"
   /api/course-management/{course_id}/lesson:
     $ref: "./paths/course-management/lesson.yaml"
+  /api/course-management/{course_id}/structure:
+    $ref: "./paths/course-management/structure.yaml"
