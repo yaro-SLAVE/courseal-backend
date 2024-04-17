@@ -1,5 +1,6 @@
 {
     "server_name": "Default server name",
     "server_description": "Default server description",
-    "server_register_enabled": true
+    "server_registration_enabled": true,
+    "default_can_create_courses": true
 }
