@@ -1,5 +1,6 @@
 package online.courseal.courseal_backend.errors.exceptions;
 
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.http.HttpStatus;
 
 public class InvalidJwtException extends ApplicationException{
