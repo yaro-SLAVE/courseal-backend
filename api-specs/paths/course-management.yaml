@@ -1,0 +1,65 @@
+post:
+  tags:
+    - course-management
+  summary: Creates a new course
+  description: Check if the user can create courses and if the provided details are valid, then creates a new course
+  parameters:
+    - $ref: "../parameters/jwt.yaml"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          title: Course info
+          type: object
+          properties:
+            course_name:
+              type: string
+              description: The course's name that will be shown to other users
+            course_description:
+              type: string
+              description: The course's description
+    required: true
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              course_id:
+                type: number
+                description: The id of the newly created course
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_message.yaml"
+    '403':
+      description: JWT is invalid or can't create courses
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_message.yaml"
+
+get:
+  tags:
+    - course-management
+  summary: Returns the list of available courses
+  description: Returns the list of courses that the user is a maintainer of
+  parameters:
+    - $ref: "../parameters/jwt.yaml"
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/courses_maintainer.yaml"
+    '403':
+      description: JWT is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/error_message.yaml"

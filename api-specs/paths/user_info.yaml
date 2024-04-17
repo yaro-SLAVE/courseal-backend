@@ -7,6 +7,8 @@ get:
   parameters:
     - name: usertag
       in: path
+      schema:
+        type: string
   responses:
     '200':
       description: OK

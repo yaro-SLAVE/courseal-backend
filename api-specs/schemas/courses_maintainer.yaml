@@ -1,0 +1,16 @@
+type: array
+description: Courses that this user is a maintainer of
+items:
+  type: object
+  description: Course description
+  properties:
+    course_id:
+      type: number
+      description: The course's id
+    maintainer_permissions:
+      type: string
+      description: Permissions the user has over the course
+      enum:
+        - "full"
+        - "edit_course"
+        - "edit_lessons"

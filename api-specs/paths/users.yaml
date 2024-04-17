@@ -1,0 +1,29 @@
+get:
+  tags:
+    - public
+    - user
+  summary: Returns the list of users
+  description: Return the list of users applying provided filters and sorting by the amount of xp
+  parameters:
+    - name: search
+      in: query
+      schema:
+        description: A part of the user's usertag or username by which to perform the search
+        type: string
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            title: The list of users
+            type: array
+            items:
+              type: object
+              properties:
+                usertag:
+                  type: string
+                username:
+                  type: string
+                xp:
+                  type: number

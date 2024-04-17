@@ -10,9 +10,15 @@ properties:
   date_created:
     type: string
     description: The user's creation date
+  can_create_courses:
+    type: boolean
+    description: Whether the user can create new courses
   xp:
     type: number
     description: The user's total xp
+  profile_image_url:
+    type: string
+    description: Link to the user's profile image
   courses:
     type: array
     description: Courses the user is enrolled in
@@ -27,19 +33,4 @@ properties:
           type: number
           description: The user's xp on that course
   courses_maintainer:
-    type: array
-    description: Courses that this user is a maintainer of
-    items:
-      type: object
-      description: Course description
-      properties:
-        course_id:
-          type: number
-          description: The course's id
-        maintainer_permissions:
-          type: string
-          description: Permissions the user has over the course
-          enum:
-            - "full"
-            - "edit_course"
-            - "edit_lessons"
+    $ref: "courses_maintainer.yaml"

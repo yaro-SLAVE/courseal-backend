@@ -35,22 +35,23 @@ paths:
   /api/auth/logout:
     $ref: "./paths/logout.yaml"
 
-  /api/user-management/register:
-    $ref: "./paths/register.yaml"
-  /api/user-management/change-name:
-    $ref: "./paths/change_name.yaml"
-  /api/user-management/change-password:
-    $ref: "./paths/change_password.yaml"
+  /api/user-management:
+    $ref: "./paths/user-management.yaml"
+  /api/user-management/username:
+    $ref: "./paths/username.yaml"
+  /api/user-management/password:
+    $ref: "./paths/password.yaml"
 
+  /api/user:
+    $ref: "./paths/users.yaml"
   /api/user/{usertag}:
     $ref: "./paths/user_info.yaml"
   /api/user/{usertag}/activity:
     $ref: "./paths/user_activity.yaml"
 
-
-  /api/course-management/create-course:
-    $ref: "./paths/create_course.yaml"
-  /api/course-management/create-task:
-    $ref: "./paths/create_task.yaml"
-  /api/course-management/create-lesson:
-    $ref: "./paths/create_lesson.yaml"
+  /api/course-management:
+    $ref: "./paths/course-management.yaml"
+  /api/course-management/{course_id}/task:
+    $ref: "./paths/task.yaml"
+  /api/course-management/{course_id}/lesson:
+    $ref: "./paths/lesson.yaml"
