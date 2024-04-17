@@ -4,7 +4,7 @@ put:
   summary: Changes the username
   description: Checks if the new provided username is valid and applies it if so
   parameters:
-    - $ref: "../parameters/jwt.yaml"
+    - $ref: "../../parameters/jwt.yaml"
   requestBody:
     content:
       application/json:
@@ -23,10 +23,10 @@ put:
       content:
         application/json:
           schema:
-            $ref: "../schemas/error_message.yaml"
+            $ref: "../../schemas/error_message.yaml"
     '403':
       description: JWT is invalid
       content:
         application/json:
           schema:
-            $ref: "../schemas/error_message.yaml"
+            $ref: "../../schemas/error_message.yaml"

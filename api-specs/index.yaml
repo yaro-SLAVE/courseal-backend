@@ -29,29 +29,31 @@ paths:
     $ref: "./paths/courseal_info.yaml"
 
   /api/auth/login:
-    $ref: "./paths/login.yaml"
+    $ref: "./paths/auth/login.yaml"
   /api/auth/refresh:
-    $ref: "./paths/refresh.yaml"
+    $ref: "./paths/auth/refresh.yaml"
   /api/auth/logout:
-    $ref: "./paths/logout.yaml"
+    $ref: "./paths/auth/logout.yaml"
 
   /api/user-management:
-    $ref: "./paths/user-management.yaml"
+    $ref: "./paths/user-management/index.yaml"
   /api/user-management/username:
-    $ref: "./paths/username.yaml"
+    $ref: "./paths/user-management/username.yaml"
   /api/user-management/password:
-    $ref: "./paths/password.yaml"
+    $ref: "./paths/user-management/password.yaml"
 
   /api/user:
-    $ref: "./paths/users.yaml"
+    $ref: "./paths/user/index.yaml"
   /api/user/{usertag}:
-    $ref: "./paths/user_info.yaml"
+    $ref: "./paths/user/info.yaml"
   /api/user/{usertag}/activity:
-    $ref: "./paths/user_activity.yaml"
+    $ref: "./paths/user/activity.yaml"
 
   /api/course-management:
-    $ref: "./paths/course-management.yaml"
+    $ref: "./paths/course-management/index.yaml"
+  /api/course-management/{course_id}:
+    $ref: "./paths/course-management/course.yaml"
   /api/course-management/{course_id}/task:
-    $ref: "./paths/task.yaml"
+    $ref: "./paths/course-management/task.yaml"
   /api/course-management/{course_id}/lesson:
-    $ref: "./paths/lesson.yaml"
+    $ref: "./paths/course-management/lesson.yaml"

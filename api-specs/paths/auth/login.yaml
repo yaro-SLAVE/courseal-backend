@@ -24,13 +24,13 @@ post:
       headers:
         Set-Cookie:
           schema:
-            $ref: "../schemas/refresh_token_cookie.yaml"
+            $ref: "../../schemas/refresh_token_cookie.yaml"
         "\0Set-Cookie":
           schema:
-            $ref: "../schemas/jwt_cookie.yaml"
+            $ref: "../../schemas/jwt_cookie.yaml"
     '403':
       description: Incorrect usertag or password
       content:
         application/json:
           schema:
-            $ref: "../schemas/error_message.yaml"
+            $ref: "../../schemas/error_message.yaml"

@@ -5,7 +5,7 @@ get:
   summary: Logs out of the session
   description: Invalidates refresh token without generating a new one
   parameters:
-    - $ref: "../parameters/refresh_token.yaml"
+    - $ref: "../../parameters/refresh_token.yaml"
   responses:
     '204':
       description: OK
@@ -27,4 +27,4 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../schemas/error_message.yaml"
+            $ref: "../../schemas/error_message.yaml"
