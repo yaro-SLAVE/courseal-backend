@@ -61,5 +61,4 @@ public class JwtUtils {
     public String getUserTagFromJwtToken(String jwt) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().getSubject();
     }
-
 }

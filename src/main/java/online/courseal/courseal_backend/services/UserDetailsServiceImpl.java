@@ -14,11 +14,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String userTag) throws UserNotFoundException {
+    public UserDetails loadUserByUserTag(String userTag) throws UserNotFoundException {
         User user = userRepository
                 .findByUserTag(userTag)
                 .orElseThrow(UserNotFoundException::new);
         return UserDetailsImpl.build(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }

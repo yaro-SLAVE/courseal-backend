@@ -1,7 +1,10 @@
 package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.models.Course;
+import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.requests.*;
+import online.courseal.courseal_backend.responses.CreateCourseResponse;
+import online.courseal.courseal_backend.services.CourseMaintainerService;
 import online.courseal.courseal_backend.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +18,16 @@ public class CourseManagementController {
     @Autowired
     CourseService courseService;
 
+    @Autowired
+    CourseMaintainerService courseMaintainerService;
+
     @PostMapping
-    public ResponseEntity<Integer> createCourse(@RequestBody CreateCourseRequest createCourseRequest){
+    public ResponseEntity<?> createCourse(@RequestBody CreateCourseRequest createCourseRequest) {
         Course course = courseService.createCourse(createCourseRequest.getCourseName(), createCourseRequest.getCourseDescription());
 
-        return new ResponseEntity<>(course.getCourseId(), HttpStatus.OK);
+        //courseMaintainerService.createCourseMaintainer(course);
+
+        return ResponseEntity.ok(new CreateCourseResponse(course.getCourseId()));
     }
 
     @GetMapping
