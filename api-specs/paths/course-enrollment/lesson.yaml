@@ -1,0 +1,141 @@
+get:
+  tags:
+    - course-enrollment
+  summary: Returns tasks for the chosen lesson
+  description: Returns tasks that the user needs to complete if it's a practice, exam or training lesson or a lecture content if it's a lecture lesson
+  parameters:
+    - $ref: "../../parameters/jwt.yaml"
+    - name: course_id
+      in: path
+      schema:
+        type: number
+    - name: lesson_id
+      in: path
+      schema:
+        type: number
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Tasks sent to the user
+            properties:
+              lesson_token:
+                type: string
+                description: Token for later use
+              tasks:
+                $ref: "../../schemas/enroll_tasks.yaml"
+
+    '403':
+      description: JWT is invalid or can't do that lesson yet
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"
+    '404':
+      description: Lesson not found
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"
+
+put:
+  tags:
+    - course-enrollment
+  summary: Sends information about completing a lesson
+  description: Server saves information about the correct and wrong answers. If the lesson is an exam, it checks the answers itself
+  parameters:
+    - $ref: "../../parameters/jwt.yaml"
+    - name: course_id
+      in: path
+      schema:
+        type: number
+    - name: lesson_id
+      in: path
+      schema:
+        type: number
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            lesson_token:
+              type: string
+              description: Token used for retrieving information about the tasks the server has sent previously
+            results:
+              type: object
+              oneOf:
+                - type: object
+                  properties:
+                    tasks_type:
+                      type: string
+                      enum:
+                        - "lecture"
+
+                - type: object
+                  description: A practice or a training
+                  properties:
+                    tasks_type:
+                      type: string
+                      enum:
+                        - "practice_training"
+                    tasks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          task_id:
+                            type: number
+                          correct:
+                            type: boolean
+
+                - type: object
+                  properties:
+                    tasks_type:
+                      type: string
+                      enum:
+                        - "exam"
+                    tasks:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          task_id:
+                            type: number
+                          answer:
+                            type: object
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Information the server sends
+            properties:
+              xp:
+                type: number
+                description: The amount of xp the user has earned
+              completed:
+                type: boolean
+                description: Does the server accept the lesson's completion
+              mistakes:
+                type: array
+                nullable: true
+                description: Mistakes the user has done (if it's an exam)
+                items:
+                  type: object
+                  properties:
+                    task_id:
+                      type: number
+                    correct:
+                      type: boolean
+    '403':
+      description: JWT is invalid or lesson token invalid
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"

@@ -37,6 +37,8 @@ paths:
 
   /api/user-management:
     $ref: "./paths/user-management/index.yaml"
+  /api/user-management/register:
+    $ref: "./paths/user-management/register.yaml"
   /api/user-management/username:
     $ref: "./paths/user-management/username.yaml"
   /api/user-management/password:
@@ -75,5 +77,5 @@ paths:
     $ref: "./paths/course-enrollment/course.yaml"
   /api/course-enrollment/{course_id}/rating:
     $ref: "./paths/course-enrollment/rating.yaml"
-#  /api/course-enrollment/{course_id}/lesson:
-#    TODO
+  /api/course-enrollment/{course_id}/lesson/{lesson_id}:
+    $ref: "./paths/course-enrollment/lesson.yaml"
