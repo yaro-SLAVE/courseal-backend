@@ -19,6 +19,9 @@ post:
             lesson_name:
               type: string
               description: The lesson's name
+            lesson_progress_needed:
+              type: number
+              description: How many times does a user need to complete this lesson. Can't be anything other than 1 for lectures
             lesson:
               $ref: "../../schemas/course_lesson.yaml"
     required: true
@@ -73,6 +76,9 @@ get:
                 lesson_name:
                   type: string
                   description: The lesson's name
+                lesson_progress_needed:
+                  type: number
+                  description: How many times does a user need to complete this lesson
                 lesson:
                   $ref: "../../schemas/course_lesson.yaml"
     '400':
