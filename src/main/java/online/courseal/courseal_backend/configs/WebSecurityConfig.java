@@ -80,7 +80,7 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfiguration = new CorsConfiguration();
                     corsConfiguration.setAllowedOriginPatterns(List.of("*"));
-                    corsConfiguration.setAllowedMethods(List.of("GET", "POST"));
+                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
                     corsConfiguration.setAllowCredentials(true);
                     return corsConfiguration;
@@ -88,9 +88,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/user-management/register").permitAll()
-                        .requestMatchers("/api/auth/refresh").permitAll()
                         .requestMatchers("/api/courseal-info").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
+                        .requestMatchers("/api/course/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

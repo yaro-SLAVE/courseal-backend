@@ -61,13 +61,20 @@ public class UserManagementController {
         return ResponseEntity.ok(new MessageResponse());
     }
 
-    @PostMapping("/change-name")
-    public ResponseEntity<?> changeName(@RequestBody ChangeNameRequest changeNameRequest, @CookieValue(name = "courseal_jwt", required = false) String jwt){
+    @GetMapping
+    public ResponseEntity<?> getInfo(){
+
+
         return null;
     }
 
-    @PostMapping("/change-password")
-    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, @CookieValue(name = "courseal_jwt", required = false) String jwt){
+    @PutMapping("/username")
+    public ResponseEntity<?> changeName(@RequestBody ChangeNameRequest changeNameRequest){
+        return null;
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest){
         return null;
     }
 }

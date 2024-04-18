@@ -2,12 +2,16 @@ package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "Course",
         uniqueConstraints = {
         @UniqueConstraint(columnNames = "course_id"),
@@ -27,8 +31,11 @@ public class Course {
     @Column(name="last_updated", nullable = false)
     @Setter
     private LocalDateTime lastUpdated;
-
-    public Course(){}
+    /*
+    @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY)
+    @Setter
+    private Set<CourseLesson> courseLessonSet;
+     */
 
     public Course(String courseName, String courseDescription){
         this.courseName = courseName;

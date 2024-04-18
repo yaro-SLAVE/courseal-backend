@@ -48,12 +48,14 @@ public class JwtUtils {
     }
 
     public boolean validateJwtToken(String authToken) {
+        boolean result = false;
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-            return true;
+            result = true;
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtException();
         }
+        return result;
     }
 
     public String getUserTagFromJwtToken(String jwt) {
