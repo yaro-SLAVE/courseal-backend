@@ -21,7 +21,13 @@ get:
                 type: string
               course_description:
                 type: string
-              last_updated:
+              votes:
+                type: number
+              last_updated_structure:
+                type: string
+              last_updated_lessons:
+                type: string
+              last_updated_tasks:
                 type: string
     '400':
       description: Bad request
