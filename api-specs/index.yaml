@@ -21,7 +21,7 @@ tags:
     description: Everything about course management
   - name: course-enrollment
     description: Everything about course enrollment
-  - name: course-info
+  - name: course
     description: Public course information
 
 paths:
@@ -45,7 +45,7 @@ paths:
   /api/user:
     $ref: "./paths/user/index.yaml"
   /api/user/{usertag}:
-    $ref: "./paths/user/info.yaml"
+    $ref: "./paths/user/user.yaml"
   /api/user/{usertag}/activity:
     $ref: "./paths/user/activity.yaml"
 
@@ -63,3 +63,8 @@ paths:
     $ref: "./paths/course-management/lesson_specific.yaml"
   /api/course-management/{course_id}/structure:
     $ref: "./paths/course-management/structure.yaml"
+
+  /api/course:
+    $ref: "./paths/course/index.yaml"
+  /api/course/{course_id}:
+    $ref: "./paths/course/course.yaml"

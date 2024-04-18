@@ -1,0 +1,48 @@
+get:
+  tags:
+    - public
+    - course
+  summary: Returns information about the course
+  description: This includes public information about the course
+  parameters:
+    - name: course_id
+      in: path
+      schema:
+        type: number
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              course_id:
+                type: number
+              course_name:
+                type: string
+              course_description:
+                type: string
+              votes:
+                type: number
+              course_maintainers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    usertag:
+                      type: string
+                    maintainer_permissions:
+                      type: string
+                      description: Permissions the user has over the course
+                      enum:
+                        - "full"
+                        - "edit_course"
+                        - "edit_lessons"
+
+    '404':
+      description: Course not found
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"
