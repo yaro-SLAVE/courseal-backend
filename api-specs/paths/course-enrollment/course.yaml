@@ -1,0 +1,61 @@
+get:
+  tags:
+    - course-enrollment
+  summary: Returns the course enrollment information
+  description: Returns the full information about the course enrollment
+  parameters:
+    - $ref: "../../parameters/jwt.yaml"
+    - name: course_id
+      in: path
+      schema:
+        type: number
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Courses enrollment info
+            properties:
+              course_id:
+                type: number
+              course_name:
+                type: string
+              course_description:
+                type: string
+              rating:
+                type: number
+                nullable: true
+              xp:
+                type: number
+                description: The user's xp on that course
+              lessons:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      lesson_id:
+                        type: number
+                      lesson_name:
+                        type: number
+                      lesson_progress:
+                        type: number
+                      lesson_progress_needed:
+                        type: number
+                      can_be_done:
+                        type: boolean
+    '403':
+      description: JWT is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"
+    '404':
+      description: Course not found
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"

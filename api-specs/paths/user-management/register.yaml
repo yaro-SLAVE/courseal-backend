@@ -1,6 +1,6 @@
 post:
   tags:
-    - user
+    - user-management
     - public
   summary: Creates a new account
   description: First checks if the account can be created. On creation returns a successful response.
@@ -29,16 +29,16 @@ post:
       content:
         application/json:
           schema:
-            $ref: "../schemas/error_message.yaml"
+            $ref: "../../schemas/error_message.yaml"
     '403':
       description: Forbidden. This response is sent if registration of new accounts is disabled
       content:
         application/json:
           schema:
-            $ref: "../schemas/error_message.yaml"
+            $ref: "../../schemas/error_message.yaml"
     '409':
       description: Account already exists
       content:
         application/json:
           schema:
-            $ref: "../schemas/error_message.yaml"
+            $ref: "../../schemas/error_message.yaml"

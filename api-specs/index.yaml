@@ -13,13 +13,15 @@ tags:
     description: Requests that don't require the user to be authenticated
   - name: refresh
     description: Requests that require a refresh token (but not JWT)
+  - name: user-management
+    description: Everything user-management related
   - name: user
     description: Everything user related
   - name: course-management
     description: Everything about course management
   - name: course-enrollment
     description: Everything about course enrollment
-  - name: course-info
+  - name: course
     description: Public course information
 
 paths:
@@ -27,22 +29,53 @@ paths:
     $ref: "./paths/courseal_info.yaml"
 
   /api/auth/login:
-    $ref: "./paths/login.yaml"
+    $ref: "./paths/auth/login.yaml"
   /api/auth/refresh:
-    $ref: "./paths/refresh.yaml"
+    $ref: "./paths/auth/refresh.yaml"
   /api/auth/logout:
-    $ref: "./paths/logout.yaml"
+    $ref: "./paths/auth/logout.yaml"
 
-  /api/user/register:
-    $ref: "./paths/register.yaml"
-  /api/user/change-name:
-    $ref: "./paths/change_name.yaml"
-  /api/user/change-password:
-    $ref: "./paths/change_password.yaml"
+  /api/user-management:
+    $ref: "./paths/user-management/index.yaml"
+  /api/user-management/register:
+    $ref: "./paths/user-management/register.yaml"
+  /api/user-management/username:
+    $ref: "./paths/user-management/username.yaml"
+  /api/user-management/password:
+    $ref: "./paths/user-management/password.yaml"
 
-  /api/course-management/create-course:
-    $ref: "./paths/create_course.yaml"
-  /api/course-management/create-task:
-    $ref: "./paths/create_task.yaml"
-  /api/course-management/create-lesson:
-    $ref: "./paths/create_lesson.yaml"
+  /api/user:
+    $ref: "./paths/user/index.yaml"
+  /api/user/{usertag}:
+    $ref: "./paths/user/user.yaml"
+  /api/user/{usertag}/activity:
+    $ref: "./paths/user/activity.yaml"
+
+  /api/course-management:
+    $ref: "./paths/course-management/index.yaml"
+  /api/course-management/{course_id}:
+    $ref: "./paths/course-management/course.yaml"
+  /api/course-management/{course_id}/task:
+    $ref: "./paths/course-management/task.yaml"
+  /api/course-management/{course_id}/task/{task_id}:
+    $ref: "./paths/course-management/task_specific.yaml"
+  /api/course-management/{course_id}/lesson:
+    $ref: "./paths/course-management/lesson.yaml"
+  /api/course-management/{course_id}/lesson/{lesson_id}:
+    $ref: "./paths/course-management/lesson_specific.yaml"
+  /api/course-management/{course_id}/structure:
+    $ref: "./paths/course-management/structure.yaml"
+
+  /api/course:
+    $ref: "./paths/course/index.yaml"
+  /api/course/{course_id}:
+    $ref: "./paths/course/course.yaml"
+
+  /api/course-enrollment:
+    $ref: "./paths/course-enrollment/index.yaml"
+  /api/course-enrollment/{course_id}:
+    $ref: "./paths/course-enrollment/course.yaml"
+  /api/course-enrollment/{course_id}/rating:
+    $ref: "./paths/course-enrollment/rating.yaml"
+  /api/course-enrollment/{course_id}/lesson/{lesson_id}:
+    $ref: "./paths/course-enrollment/lesson.yaml"

@@ -1,0 +1,20 @@
+get:
+  tags:
+    - user-management
+  summary: Gets full information about the current user
+  description: Unlike /api/user this can include private information
+  parameters:
+    - $ref: "../../parameters/jwt.yaml"
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/user_info.yaml"
+    '403':
+      description: Token is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"

@@ -1,5 +1,6 @@
 in: cookie
-name: Refresh token cookie
+name: courseal_refresh
+description: Refresh token cookie
 schema:
   type: string
-  example: courseal_refresh=qwerty
+  example: qwerty
