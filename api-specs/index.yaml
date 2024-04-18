@@ -68,3 +68,12 @@ paths:
     $ref: "./paths/course/index.yaml"
   /api/course/{course_id}:
     $ref: "./paths/course/course.yaml"
+
+  /api/course-enrollment:
+    $ref: "./paths/course-enrollment/index.yaml"
+  /api/course-enrollment/{course_id}:
+    $ref: "./paths/course-enrollment/course.yaml"
+  /api/course-enrollment/{course_id}/rating:
+    $ref: "./paths/course-enrollment/rating.yaml"
+#  /api/course-enrollment/{course_id}/lesson:
+#    TODO
