@@ -1,0 +1,19 @@
+title: User's activity info
+type: object
+properties:
+  usertag:
+    type: string
+    description: The user's usertag
+  activity:
+    type: array
+    description: The user's activity by days
+    items:
+      type: object
+      description: Day info
+      properties:
+        day:
+          type: string
+          description: The day's date
+        xp:
+          type: number
+          description: Xp the user earned on that day

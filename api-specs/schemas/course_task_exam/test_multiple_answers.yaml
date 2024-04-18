@@ -1,0 +1,17 @@
+title: The multiple answers type of task
+type: object
+properties:
+  type:
+    type: string
+    enum:
+      - "test_multiple_answers"
+  body:
+    $ref: "../editorjs.yaml"
+  options:
+    title: An array of answer options
+    type: array
+    items:
+      type: object
+      properties:
+        text:
+          type: string

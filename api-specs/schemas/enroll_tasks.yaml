@@ -1,0 +1,43 @@
+type: object
+description: Tasks the server sends to the user
+oneOf:
+  - type: object
+    description: A lecture
+    properties:
+      tasks_type:
+        type: string
+        enum:
+          - "lecture"
+      lecture_content:
+        $ref: "./editorjs.yaml"
+
+  - type: object
+    description: A practice or a training
+    properties:
+      tasks_type:
+        type: string
+        enum:
+          - "practice_training"
+      tasks:
+        type: array
+        items:
+          type: object
+          properties:
+            task_id:
+              type: number
+            task:
+              $ref: "./course_task.yaml"
+
+  - type: object
+    description: An exam
+    properties:
+      tasks_type:
+        type: string
+        enum:
+          - "exam"
+      tasks:
+        type: array
+        task_id:
+          type: number
+        task:
+          $ref: "./course_task_exam.yaml"

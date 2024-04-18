@@ -1,0 +1,73 @@
+get:
+  tags:
+    - course-enrollment
+  summary: Returns the list of enrolled courses
+  description: Returns the list of courses that the user is a enrolled into
+  parameters:
+    - $ref: "../../parameters/jwt.yaml"
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Courses the user is enrolled in
+            items:
+              type: object
+              description: Course description
+              properties:
+                course_id:
+                  type: number
+                course_name:
+                  type: string
+                course_description:
+                  type: string
+                xp:
+                  type: number
+                  description: The user's xp on that course
+    '403':
+      description: JWT is invalid
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"
+
+post:
+  tags:
+    - course-enrollment
+  summary: Enrolls into a course
+  description: Check the authentication and if the course exists and then enrolls
+  parameters:
+    - $ref: "../../parameters/jwt.yaml"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          title: Course to enroll into
+          type: object
+          properties:
+            course_id:
+              type: number
+    required: true
+  responses:
+    '201':
+      description: OK
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"
+    '403':
+      description: JWT is invalid or can't create courses
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"
+    '404':
+      description: Course not found
+      content:
+        application/json:
+          schema:
+            $ref: "../../schemas/error_message.yaml"

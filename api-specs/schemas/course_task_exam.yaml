@@ -1,0 +1,5 @@
+title: A course's task for an exam
+type: object
+oneOf:
+  - $ref: "./course_task_exam/test_single_answer.yaml"
+  - $ref: "./course_task_exam/test_multiple_answers.yaml"

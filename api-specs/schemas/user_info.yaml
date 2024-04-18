@@ -1,0 +1,36 @@
+title: User info
+type: object
+properties:
+  usertag:
+    type: string
+    description: The user's usertag
+  username:
+    type: string
+    description: The user's username
+  date_created:
+    type: string
+    description: The user's creation date
+  can_create_courses:
+    type: boolean
+    description: Whether the user can create new courses
+  xp:
+    type: number
+    description: The user's total xp
+  profile_image_url:
+    type: string
+    description: Link to the user's profile image
+  courses:
+    type: array
+    description: Courses the user is enrolled in
+    items:
+      type: object
+      description: Course description
+      properties:
+        course_id:
+          type: number
+          description: The course's id
+        xp:
+          type: number
+          description: The user's xp on that course
+  courses_maintainer:
+    $ref: "courses_maintainer.yaml"
