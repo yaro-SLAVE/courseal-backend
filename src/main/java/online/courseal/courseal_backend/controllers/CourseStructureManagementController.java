@@ -1,6 +1,6 @@
 package online.courseal.courseal_backend.controllers;
 
-import online.courseal.courseal_backend.requests.UpdateCourseStructureRequest;
+import online.courseal.courseal_backend.requests.CourseStructureUpdatingRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +14,7 @@ public class CourseStructureManagementController {
     }
 
     @PutMapping("/{course_id}/structure")
-    public ResponseEntity<?> updateCourseStructure(@RequestBody UpdateCourseStructureRequest updateCourseStructureRequest){
+    public ResponseEntity<?> updateCourseStructure(@RequestBody CourseStructureUpdatingRequest courseStructureUpdatingRequest){
         return null;
     }
 }

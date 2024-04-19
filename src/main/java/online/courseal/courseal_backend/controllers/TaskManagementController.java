@@ -1,7 +1,7 @@
 package online.courseal.courseal_backend.controllers;
 
-import online.courseal.courseal_backend.requests.CreateTaskRequest;
-import online.courseal.courseal_backend.requests.UpdateCourseRequest;
+import online.courseal.courseal_backend.requests.TaskCreatingRequest;
+import online.courseal.courseal_backend.requests.CourseUpdatingRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class TaskManagementController {
     @PostMapping("/{course_id}/task")
-    public ResponseEntity<?> createTask(@RequestBody CreateTaskRequest createTaskRequest){
+    public ResponseEntity<?> createTask(@RequestBody TaskCreatingRequest taskCreatingRequest){
         return null;
     }
 
@@ -20,7 +20,7 @@ public class TaskManagementController {
     }
 
     @PutMapping("/{course_id}/task/{task_id}")
-    public ResponseEntity<?> updateTask(@RequestBody UpdateCourseRequest updateCourseRequest){
+    public ResponseEntity<?> updateTask(@RequestBody CourseUpdatingRequest courseUpdatingRequest){
         return null;
     }
 

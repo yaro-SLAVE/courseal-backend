@@ -30,7 +30,7 @@ public class CourseEnrollment {
     @Column(nullable = false)
     private Integer xp;
     @Setter
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Integer rating;
 
     public CourseEnrollment(Course course, User user, Integer xp, Integer rating){

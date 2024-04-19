@@ -7,5 +7,4 @@ public class MessageResponse {
     @Getter
     @Setter
     private String message;
-
 }

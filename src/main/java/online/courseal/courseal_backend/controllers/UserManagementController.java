@@ -4,8 +4,8 @@ import online.courseal.courseal_backend.configs.ServerConfig;
 import online.courseal.courseal_backend.errors.exceptions.IncorrectUsertagException;
 import online.courseal.courseal_backend.errors.exceptions.RegistrationEnabledException;
 import online.courseal.courseal_backend.models.User;
-import online.courseal.courseal_backend.requests.ChangeNameRequest;
-import online.courseal.courseal_backend.requests.ChangePasswordRequest;
+import online.courseal.courseal_backend.requests.ChangingNameRequest;
+import online.courseal.courseal_backend.requests.ChangingPasswordRequest;
 import online.courseal.courseal_backend.responses.MessageResponse;
 import online.courseal.courseal_backend.requests.RegisterRequest;
 import online.courseal.courseal_backend.repositories.UserRepository;
@@ -69,12 +69,12 @@ public class UserManagementController {
     }
 
     @PutMapping("/username")
-    public ResponseEntity<?> changeName(@RequestBody ChangeNameRequest changeNameRequest){
+    public ResponseEntity<?> changeName(@RequestBody ChangingNameRequest changingNameRequest){
         return null;
     }
 
     @PutMapping("/password")
-    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest){
+    public ResponseEntity<?> changePassword(@RequestBody ChangingPasswordRequest changingPasswordRequest){
         return null;
     }
 }

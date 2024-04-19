@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChangeNameRequest {
+public class ChangingNameRequest {
     private String username;
 }

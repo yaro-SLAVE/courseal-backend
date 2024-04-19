@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChangePasswordRequest {
+public class ChangingPasswordRequest {
     @JsonProperty("old_password")
     private String oldPassword;
     @JsonProperty("new_password")
