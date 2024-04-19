@@ -2,14 +2,23 @@ package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.models.Course;
 import online.courseal.courseal_backend.models.User;
+import online.courseal.courseal_backend.repositories.UserRepository;
 import online.courseal.courseal_backend.requests.*;
 import online.courseal.courseal_backend.responses.CreateCourseResponse;
 import online.courseal.courseal_backend.services.CourseMaintainerService;
 import online.courseal.courseal_backend.services.CourseService;
+import online.courseal.courseal_backend.services.UserDetailsImpl;
+import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/course-management")
@@ -21,11 +30,17 @@ public class CourseManagementController {
     @Autowired
     CourseMaintainerService courseMaintainerService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody CreateCourseRequest createCourseRequest) {
         Course course = courseService.createCourse(createCourseRequest.getCourseName(), createCourseRequest.getCourseDescription());
 
-        //courseMaintainerService.createCourseMaintainer(course);
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> user = userRepository.findByUserTag(userDetails.getUserTag());
+
+        courseMaintainerService.createCourseMaintainer(course, user.get());
 
         return ResponseEntity.ok(new CreateCourseResponse(course.getCourseId()));
     }
