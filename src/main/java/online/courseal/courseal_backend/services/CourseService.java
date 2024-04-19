@@ -21,7 +21,9 @@ public class CourseService {
 
     public Course createCourse(String courseName, String courseDescription){
         Course course = new Course(courseName, courseDescription);
-        course.setLastUpdated(LocalDateTime.now());
+        course.setLastUpdatedStructure(LocalDateTime.now());
+        course.setLastUpdatedLessons(LocalDateTime.now());
+        course.setLastUpdatedTasks(LocalDateTime.now());
 
         course = courseRepository.save(course);
         return course;

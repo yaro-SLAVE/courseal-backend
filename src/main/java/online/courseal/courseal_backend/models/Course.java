@@ -28,9 +28,15 @@ public class Course {
     @Column(name = "course_description", nullable = false)
     @Setter
     private String courseDescription;
-    @Column(name="last_updated", nullable = false)
+    @Column(name="last_updated_lessons", nullable = false)
     @Setter
-    private LocalDateTime lastUpdated;
+    private LocalDateTime lastUpdatedLessons;
+    @Column(name="last_updated_tasks", nullable = false)
+    @Setter
+    private LocalDateTime lastUpdatedTasks;
+    @Column(name="last_updated_structure", nullable = false)
+    @Setter
+    private LocalDateTime lastUpdatedStructure;
     /*
     @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY)
     @Setter

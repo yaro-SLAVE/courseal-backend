@@ -1,23 +1,21 @@
 package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.models.Course;
+import online.courseal.courseal_backend.models.CourseMaintainer;
 import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.repositories.UserRepository;
 import online.courseal.courseal_backend.requests.*;
+import online.courseal.courseal_backend.responses.CoursesListResponse;
 import online.courseal.courseal_backend.responses.CreateCourseResponse;
 import online.courseal.courseal_backend.services.CourseMaintainerService;
 import online.courseal.courseal_backend.services.CourseService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
-import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -47,7 +45,18 @@ public class CourseManagementController {
 
     @GetMapping
     public ResponseEntity<?> getCoursesList(){
-        return null;
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> user = userRepository.findByUserTag(userDetails.getUserTag());
+
+        Optional<CourseMaintainer> courseMaintainer = courseMaintainerService.findByUser(user.get());
+
+        ArrayList<CoursesListResponse> coursesListResponse = new ArrayList<>();
+
+        for (CourseMaintainer courseMaintainer1: courseMaintainer.stream().toList()){
+            coursesListResponse.add(new CoursesListResponse(courseMaintainer1.getCourse().getCourseId(), courseMaintainer1.getPermissions()));
+        }
+
+        return ResponseEntity.ok(coursesListResponse);
     }
 
     @GetMapping("/{course_id}")

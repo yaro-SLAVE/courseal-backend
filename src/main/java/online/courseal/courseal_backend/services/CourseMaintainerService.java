@@ -8,10 +8,20 @@ import online.courseal.courseal_backend.repositories.CourseMaintainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CourseMaintainerService {
     @Autowired
     CourseMaintainerRepository courseMaintainerRepository;
+
+    public Optional<CourseMaintainer> findByCourseMaintainerId(Integer courseMaintainerId) {
+        return courseMaintainerRepository.findByCourseMaintainerId(courseMaintainerId);
+    }
+
+    public Optional<CourseMaintainer> findByUser(User user){
+        return courseMaintainerRepository.findByUser(user);
+    }
 
     public void createCourseMaintainer(Course course, User user){
         CourseMaintainer courseMaintainer = new CourseMaintainer(course, user);

@@ -1,7 +1,10 @@
 package online.courseal.courseal_backend.models.enums;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum CoursePermissions {
-    FULL,
-    EDIT_COURSE,
-    EDIT_LESSONS
+    @JsonProperty("none") NONE,
+    @JsonProperty("full") FULL,
+    @JsonProperty("edit_course") EDIT_COURSE,
+    @JsonProperty("edit_lessons") EDIT_LESSONS
 }
