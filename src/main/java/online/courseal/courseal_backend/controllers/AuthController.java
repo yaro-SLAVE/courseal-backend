@@ -23,16 +23,19 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
+
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     PasswordEncoder passwordEncoder;
+
     @Autowired
     JwtUtils jwtUtils;
+
     @Autowired
     RefreshTokenService refreshTokenService;
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
+
     @Value("${JWT_EXPIRATION_MS}")
     private Long jwtExpirationMs;
     @Value("${REFRESH_EXPIRATION_MS}")
@@ -88,7 +91,7 @@ public class AuthController {
                     response.addCookie(refreshCookie);
                     RefreshToken refreshToken = refreshTokenService.findByToken(tokenRefreshCookie).get();
                     refreshToken.setValid(false);
-                    refreshTokenRepository.save(refreshToken);
+                    refreshTokenService.save(refreshToken);
                     return null;
                 });
         return null;
@@ -114,7 +117,7 @@ public class AuthController {
                     response.addCookie(refreshCookie);
 
                     refreshToken.setValid(false);
-                    refreshTokenRepository.save(refreshToken);
+                    refreshTokenService.save(refreshToken);
                     return null;
                 });
         return null;

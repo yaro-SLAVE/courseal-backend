@@ -50,6 +50,10 @@ public class RefreshTokenService{
         return refreshToken;
     }
 
+    public void save(RefreshToken refreshToken){
+        refreshTokenRepository.save(refreshToken);
+    }
+
     @Transactional
     public int deleteByUserId(Integer userId) {
         return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());

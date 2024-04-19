@@ -6,11 +6,10 @@ import online.courseal.courseal_backend.models.Course;
 import online.courseal.courseal_backend.models.CourseEnrollment;
 import online.courseal.courseal_backend.models.CourseMaintainer;
 import online.courseal.courseal_backend.models.User;
-import online.courseal.courseal_backend.repositories.CourseRepository;
 import online.courseal.courseal_backend.repositories.UserRepository;
 import online.courseal.courseal_backend.requests.*;
 import online.courseal.courseal_backend.responses.CourseInfoResponse;
-import online.courseal.courseal_backend.responses.CoursesListResponse;
+import online.courseal.courseal_backend.responses.MaintainerCoursesListResponse;
 import online.courseal.courseal_backend.responses.CreateCourseResponse;
 import online.courseal.courseal_backend.services.CourseEnrollmentService;
 import online.courseal.courseal_backend.services.CourseMaintainerService;
@@ -41,9 +40,6 @@ public class CourseManagementController {
     @Autowired
     CourseEnrollmentService courseEnrollmentService;
 
-    @Autowired
-    CourseRepository courseRepository;
-
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody CourseCreatingRequest courseCreatingRequest) {
         Course course = courseService.createCourse(courseCreatingRequest.getCourseName(), courseCreatingRequest.getCourseDescription());
@@ -63,15 +59,15 @@ public class CourseManagementController {
 
         Optional<CourseMaintainer> courseMaintainers = courseMaintainerService.findByUser(users.get());
 
-        ArrayList<CoursesListResponse> coursesListResponses = new ArrayList<>();
+        ArrayList<MaintainerCoursesListResponse> maintainerCoursesListRespons = new ArrayList<>();
 
         for (CourseMaintainer courseMaintainer: courseMaintainers.stream().toList()){
-            coursesListResponses.add(new CoursesListResponse(
+            maintainerCoursesListRespons.add(new MaintainerCoursesListResponse(
                     courseMaintainer.getCourse().getCourseId(),
                     courseMaintainer.getPermissions()));
         }
 
-        return ResponseEntity.ok(coursesListResponses);
+        return ResponseEntity.ok(maintainerCoursesListRespons);
     }
 
     @GetMapping("/{course_id}")
@@ -129,7 +125,7 @@ public class CourseManagementController {
         if (userIsMaintainer) {
             courses.get().setCourseName(courseUpdatingRequest.getCourseName());
             courses.get().setCourseDescription(courseUpdatingRequest.getCourseDescription());
-            courseRepository.save(courses.get());
+            courseService.save(courses.get());
             return HttpStatus.OK;
         } else {
             throw new InvalidJwtException();
@@ -137,7 +133,24 @@ public class CourseManagementController {
     }
 
     @DeleteMapping("/{course_id}")
-    public ResponseEntity<?> deleteCourse(@PathVariable("course_id") Integer courseId){
-        return null;
+    public HttpStatus deleteCourse(@PathVariable("course_id") Integer courseId){
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
+
+        Optional<Course> courses = courseService.findByCourseId(courseId);
+
+        if (courses.isEmpty()){
+            throw new BadRequestException();
+        }
+
+        Optional<CourseMaintainer> courseMaintainers = courseMaintainerService.findByCourse(courses.get());
+
+        boolean userIsMaintainer = courseMaintainerService.verifyMaintainer(courseMaintainers, users.get(), courses.get());
+
+        if (userIsMaintainer) {
+            return HttpStatus.OK;
+        } else {
+            throw new InvalidJwtException();
+        }
     }
 }

@@ -47,4 +47,8 @@ public class CourseMaintainerService {
 
         return flag;
     }
+
+    public void save(CourseMaintainer courseMaintainer){
+        courseMaintainerRepository.save(courseMaintainer);
+    }
 }
