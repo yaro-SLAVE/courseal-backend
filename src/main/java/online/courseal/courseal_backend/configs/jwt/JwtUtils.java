@@ -43,22 +43,25 @@ public class JwtUtils {
                 .setSubject(userTag)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date())
-                .getTime() + jwtExpirationMs))
+                        .getTime() + jwtExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS512).compact();
     }
 
     public boolean validateJwtToken(String authToken) {
         boolean result = false;
+
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             result = true;
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtException();
         }
+
         return result;
     }
 
     public String getUserTagFromJwtToken(String jwt) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().getSubject();
     }
+
 }
