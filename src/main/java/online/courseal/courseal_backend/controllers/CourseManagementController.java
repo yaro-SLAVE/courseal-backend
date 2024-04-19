@@ -113,25 +113,27 @@ public class CourseManagementController {
 
     @PutMapping("/{course_id}")
     public HttpStatus updateCourseInfo(@RequestBody CourseUpdatingRequest courseUpdatingRequest, @PathVariable("course_id") Integer courseId){
-        courseService.findByCourseId(courseId)
-                .map(course -> {
-                    UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                    Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
 
-                    Optional<CourseMaintainer> courseMaintainers = courseMaintainerService.findByCourse(course);
+        Optional<Course> courses = courseService.findByCourseId(courseId);
 
-                    boolean userIsMaintainer = courseMaintainerService.verifyMaintainer(courseMaintainers, users.get(), course);
+        if (courses.isEmpty()){
+            throw new BadRequestException();
+        }
 
-                    if (userIsMaintainer) {
-                        course.setCourseName(courseUpdatingRequest.getCourseName());
-                        course.setCourseDescription(courseUpdatingRequest.getCourseDescription());
-                        courseRepository.save(course);
-                        return null;
-                    } else {
-                        throw new InvalidJwtException();
-                    }
-                });
-        return HttpStatus.OK;
+        Optional<CourseMaintainer> courseMaintainers = courseMaintainerService.findByCourse(courses.get());
+
+        boolean userIsMaintainer = courseMaintainerService.verifyMaintainer(courseMaintainers, users.get(), courses.get());
+
+        if (userIsMaintainer) {
+            courses.get().setCourseName(courseUpdatingRequest.getCourseName());
+            courses.get().setCourseDescription(courseUpdatingRequest.getCourseDescription());
+            courseRepository.save(courses.get());
+            return HttpStatus.OK;
+        } else {
+            throw new InvalidJwtException();
+        }
     }
 
     @DeleteMapping("/{course_id}")
