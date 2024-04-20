@@ -29,6 +29,9 @@ properties:
         course_id:
           type: number
           description: The course's id
+        course_name:
+          type: string
+          description: The course's name
         xp:
           type: number
           description: The user's xp on that course
