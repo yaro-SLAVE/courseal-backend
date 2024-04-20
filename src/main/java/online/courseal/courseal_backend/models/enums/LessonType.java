@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.models;
+package online.courseal.courseal_backend.models.enums;
 
 public enum LessonType {
     LECTURE,

@@ -2,12 +2,15 @@ package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Getter
 @Entity
-@Table(name = "UsersActivity",
+@NoArgsConstructor
+@Table(name = "users_activity",
         uniqueConstraints = {
         @UniqueConstraint(columnNames = "user_activity_id")
         })
@@ -15,23 +18,17 @@ public class UserActivity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_activity_id", nullable = false)
-    @Getter
     private int userActivityId;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name="user_id", nullable=false)
-    @Getter
     private User user;
-    @Getter
     @Setter
     @Column(nullable = false)
     private LocalDate day;
-    @Getter
     @Setter
     @Column(nullable = false)
     private int xp;
-
-    public UserActivity(){}
 
     public UserActivity(User user, LocalDate day, int xp){
         this.user = user;

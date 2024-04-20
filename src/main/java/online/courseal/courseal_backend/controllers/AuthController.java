@@ -66,7 +66,7 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public String refreshToken(@CookieValue(value = "courseal_refresh", required = false) String tokenRefreshCookie, HttpServletResponse response){
+    public String refreshToken(@CookieValue(value = "courseal_refresh", required = true) String tokenRefreshCookie, HttpServletResponse response){
         refreshTokenService.findByToken(tokenRefreshCookie)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
@@ -95,7 +95,7 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public String logout(@CookieValue(value = "courseal_refresh", required = false) String tokenRefreshCookie, HttpServletResponse response) {
+    public String logout(@CookieValue(value = "courseal_refresh", required = true) String tokenRefreshCookie, HttpServletResponse response) {
         refreshTokenService.findByToken(tokenRefreshCookie)
                 .map(refreshTokenService :: verifyExpiration)
                 .map(refreshToken -> {

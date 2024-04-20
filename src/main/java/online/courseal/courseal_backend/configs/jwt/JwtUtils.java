@@ -43,7 +43,7 @@ public class JwtUtils {
                 .setSubject(userTag)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date())
-                .getTime() + jwtExpirationMs))
+                        .getTime() + jwtExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS512).compact();
     }
 

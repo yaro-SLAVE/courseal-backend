@@ -2,13 +2,15 @@ package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "RefreshToken",
+@NoArgsConstructor
+@Table(name = "refresh_token",
     uniqueConstraints = {
         @UniqueConstraint(columnNames = "refresh_token_id"),
         @UniqueConstraint(columnNames = "refreshToken")
@@ -22,7 +24,7 @@ public class RefreshToken {
     @Setter
     @Column(nullable = false)
     private String refreshToken;
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name="user_id", nullable=false)
     @Setter
     private User user;
@@ -32,8 +34,6 @@ public class RefreshToken {
     @Column(name = "date_created", nullable = false)
     @Setter
     private LocalDateTime dateCreated;
-
-    public RefreshToken(){}
 
     public RefreshToken(String refreshToken, User user, boolean isValid, LocalDateTime dateCreated){
         this.refreshToken = refreshToken;

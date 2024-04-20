@@ -4,8 +4,8 @@ import online.courseal.courseal_backend.configs.ServerConfig;
 import online.courseal.courseal_backend.errors.exceptions.IncorrectUsertagException;
 import online.courseal.courseal_backend.errors.exceptions.RegistrationEnabledException;
 import online.courseal.courseal_backend.models.User;
-import online.courseal.courseal_backend.requests.ChangeNameRequest;
-import online.courseal.courseal_backend.requests.ChangePasswordRequest;
+import online.courseal.courseal_backend.requests.ChangingNameRequest;
+import online.courseal.courseal_backend.requests.ChangingPasswordRequest;
 import online.courseal.courseal_backend.responses.MessageResponse;
 import online.courseal.courseal_backend.requests.RegisterRequest;
 import online.courseal.courseal_backend.repositories.UserRepository;
@@ -61,13 +61,20 @@ public class UserManagementController {
         return ResponseEntity.ok(new MessageResponse());
     }
 
-    @PostMapping("/change-name")
-    public ResponseEntity<?> changeName(@RequestBody ChangeNameRequest changeNameRequest, @CookieValue(name = "courseal_jwt", required = false) String jwt){
+    @GetMapping
+    public ResponseEntity<?> getInfo(){
+
+
         return null;
     }
 
-    @PostMapping("/change-password")
-    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, @CookieValue(name = "courseal_jwt", required = false) String jwt){
+    @PutMapping("/username")
+    public ResponseEntity<?> changeName(@RequestBody ChangingNameRequest changingNameRequest){
+        return null;
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangingPasswordRequest changingPasswordRequest){
         return null;
     }
 }

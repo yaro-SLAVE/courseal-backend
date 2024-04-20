@@ -3,7 +3,6 @@ package online.courseal.courseal_backend.errors;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import online.courseal.courseal_backend.errors.exceptions.ApplicationException;
-import online.courseal.courseal_backend.responses.records.ExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,12 +17,17 @@ public class CoursealErrorResolver extends AbstractHandlerExceptionResolver {
 
         if (ex instanceof ApplicationException){
             modelAndView.setStatus(((ApplicationException) ex).getStatus());
-            modelAndView.addObject(new ExceptionResponse(((ApplicationException) ex).getError(), ((ApplicationException) ex).getErrorMessage(), ((ApplicationException) ex).getDescription()));
+
+            modelAndView.addObject("error", ((ApplicationException) ex).getError());
+            modelAndView.addObject("message", ((ApplicationException) ex).getErrorMessage());
+            modelAndView.addObject("description", ((ApplicationException) ex).getDescription());
             return modelAndView;
         }
 
         modelAndView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        modelAndView.addObject(new ExceptionResponse("unknown", "unknown", "unknown"));
+        modelAndView.addObject("error", "");
+        modelAndView.addObject("message", "");
+        modelAndView.addObject("description", "");
         return modelAndView;
     }
 }

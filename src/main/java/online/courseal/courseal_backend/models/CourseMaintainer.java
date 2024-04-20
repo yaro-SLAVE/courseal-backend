@@ -2,11 +2,14 @@ package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.courseal.courseal_backend.models.enums.CoursePermissions;
 
 @Entity
 @Getter
-@Table(name = "CourseMaintainer",
+@NoArgsConstructor
+@Table(name = "course_maintainer",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "course_maintainer_id"),
         })
@@ -16,11 +19,11 @@ public class CourseMaintainer {
         @Column(name = "course_maintainer_id", nullable = false)
         private Integer courseMaintainerId;
         @Setter
-        @ManyToOne(fetch=FetchType.LAZY)
+        @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
         @JoinColumn(name="course_id", nullable=false)
         private Course course;
         @Setter
-        @ManyToOne(fetch=FetchType.LAZY)
+        @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
         @JoinColumn(name="user_id", nullable=false)
         private User user;
         @Enumerated(EnumType.ORDINAL)
@@ -28,11 +31,8 @@ public class CourseMaintainer {
         @Setter
         private CoursePermissions permissions;
 
-        public CourseMaintainer(){}
-
-        public CourseMaintainer(Course course, User user, CoursePermissions permissions){
+        public CourseMaintainer(Course course, User user){
                 this.course = course;
                 this.user = user;
-                this.permissions = permissions;
         }
 }
