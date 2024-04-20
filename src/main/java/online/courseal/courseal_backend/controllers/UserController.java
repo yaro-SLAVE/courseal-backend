@@ -50,15 +50,7 @@ public class UserController {
             ));
         }
 
-        for (int i = 0; i < usersListResponse.size() - 1; ++i){
-            for (int j = i + 1; j < usersListResponse.size(); ++j) {
-                if (usersListResponse.get(j).getXp() > usersListResponse.get(i).getXp()) {
-                    UsersListResponse temp_var = usersListResponse.get(i);
-                    usersListResponse.add(i, usersListResponse.get(j));
-                    usersListResponse.add(j, temp_var);
-                }
-            }
-        }
+        usersListResponse.sort((UsersListResponse o1, UsersListResponse o2)->o1.getXp()- o2.getXp());
 
         return ResponseEntity.ok(usersListResponse);
     }
