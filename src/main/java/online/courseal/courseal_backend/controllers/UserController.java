@@ -51,7 +51,7 @@ public class UserController {
         }
 
         for (int i = 0; i < usersListResponse.size() - 1; ++i){
-            for (int j = 1; j < usersListResponse.size(); ++j) {
+            for (int j = i + 1; j < usersListResponse.size(); ++j) {
                 if (usersListResponse.get(j).getXp() > usersListResponse.get(i).getXp()) {
                     UsersListResponse temp_var = usersListResponse.get(i);
                     usersListResponse.add(i, usersListResponse.get(j));
