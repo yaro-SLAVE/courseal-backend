@@ -35,7 +35,8 @@ public class Course {
     @Setter
     private LocalDateTime lastUpdatedTasks;
     @Column(name="last_updated_structure", nullable = false)
-    private LocalDateTime lastUpdatedStructures;
+    @Setter
+    private LocalDateTime lastUpdatedStructure;
     @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseLesson> courseLessons;
