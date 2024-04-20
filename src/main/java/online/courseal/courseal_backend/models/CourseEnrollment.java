@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "CourseEnrollment",
+@Table(name = "course_enrollment",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "course_enrollment_id")
 })
@@ -20,11 +20,11 @@ public class CourseEnrollment {
     @Column(name = "course_enrollment_id", nullable = false)
     private Integer courseEnrollmentId;
     @Setter
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name="course_id", nullable=false)
     private Course course;
     @Setter
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name="user_id", nullable=false)
     private User user;
     @Setter
@@ -33,10 +33,10 @@ public class CourseEnrollment {
     @Setter
     @Column(nullable = false)
     private Integer rating;
-    @OneToMany(mappedBy = "CourseEnrollment", fetch=FetchType.LAZY,
+    @OneToMany(mappedBy = "courseEnrollment", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseEnrollmentTaskStatus> courseEnrollmentTaskStatuses;
-    @OneToMany(mappedBy = "CourseEnrollment", fetch=FetchType.LAZY,
+    @OneToMany(mappedBy = "courseEnrollment", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseEnrollmentLessonStatus> courseEnrollmentLessonStatuses;
 

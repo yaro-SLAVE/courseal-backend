@@ -3,13 +3,15 @@ package online.courseal.courseal_backend.models;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "CourseEnrollmentStatus",
+@NoArgsConstructor
+@Table(name = "course_enrollment_task_status",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "course_enrollment_task_status_id")
 })
@@ -19,11 +21,11 @@ public class CourseEnrollmentTaskStatus {
     @Column(name = "course_enrollment_task_status_id", nullable = false)
     private Integer courseEnrollmentTaskStatus_id;
     @Setter
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name="course_enrollment_id", nullable=false)
     private CourseEnrollment courseEnrollment;
     @Setter
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name="course_task_id", nullable=false)
     private CourseTask courseTask;
     @Setter
@@ -32,8 +34,6 @@ public class CourseEnrollmentTaskStatus {
     @Setter
     @Column(name = "times_failed", nullable = false)
     private Integer timesFailed;
-
-    public CourseEnrollmentTaskStatus(){}
 
     public CourseEnrollmentTaskStatus(CourseEnrollment courseEnrollment, CourseTask courseTask, Integer timesDone, Integer timesFailed){
         this.courseEnrollment = courseEnrollment;

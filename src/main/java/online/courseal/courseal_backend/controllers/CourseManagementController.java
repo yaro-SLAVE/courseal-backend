@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -37,12 +38,6 @@ public class CourseManagementController {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    CourseEnrollmentService courseEnrollmentService;
-
-    @Autowired
-    CourseRepository courseRepository;
 
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody CourseCreatingRequest courseCreatingRequest) {
@@ -61,7 +56,7 @@ public class CourseManagementController {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
 
-        Optional<CourseMaintainer> courseMaintainers = courseMaintainerService.findByUser(users.get());
+        List<CourseMaintainer> courseMaintainers = users.get().getCourseMaintainers();
 
         ArrayList<CoursesListResponse> coursesListResponses = new ArrayList<>();
 
@@ -85,12 +80,10 @@ public class CourseManagementController {
             throw new BadRequestException();
         }
 
-        Optional<CourseMaintainer> courseMaintainers = courseMaintainerService.findByCourse(courses.get());
-
-        boolean userIsMaintainer = courseMaintainerService.verifyMaintainer(courseMaintainers, users.get(), courses.get());
+        boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
 
         if (userIsMaintainer) {
-            Optional<CourseEnrollment> courseEnrollments = courseEnrollmentService.findByCourse(courses.get());
+            List<CourseEnrollment> courseEnrollments = courses.get().getCourseEnrollments();
 
             Integer votes = 0;
             if (!courseEnrollments.isEmpty()) {
@@ -122,14 +115,12 @@ public class CourseManagementController {
             throw new BadRequestException();
         }
 
-        Optional<CourseMaintainer> courseMaintainers = courseMaintainerService.findByCourse(courses.get());
-
-        boolean userIsMaintainer = courseMaintainerService.verifyMaintainer(courseMaintainers, users.get(), courses.get());
+        boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
 
         if (userIsMaintainer) {
             courses.get().setCourseName(courseUpdatingRequest.getCourseName());
             courses.get().setCourseDescription(courseUpdatingRequest.getCourseDescription());
-            courseRepository.save(courses.get());
+            courseService.save(courses.get());
             return HttpStatus.OK;
         } else {
             throw new InvalidJwtException();
@@ -137,7 +128,23 @@ public class CourseManagementController {
     }
 
     @DeleteMapping("/{course_id}")
-    public ResponseEntity<?> deleteCourse(@PathVariable("course_id") Integer courseId){
-        return null;
+    public HttpStatus deleteCourse(@PathVariable("course_id") Integer courseId){
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
+
+        Optional<Course> courses = courseService.findByCourseId(courseId);
+
+        if (courses.isEmpty()){
+            throw new BadRequestException();
+        }
+
+        boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
+
+        if (userIsMaintainer) {
+            courseService.delete(courses.get());
+            return HttpStatus.OK;
+        } else {
+            throw new InvalidJwtException();
+        }
     }
 }

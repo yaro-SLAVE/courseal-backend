@@ -34,17 +34,4 @@ public class CourseMaintainerService {
         courseMaintainer.setPermissions(CoursePermissions.FULL);
         courseMaintainerRepository.save(courseMaintainer);
     }
-
-    public boolean verifyMaintainer(Optional<CourseMaintainer> courseMaintainers, User user, Course course){
-        boolean flag = false;
-
-        for (CourseMaintainer courseMaintainer: courseMaintainers.stream().toList()){
-            if (Objects.equals(courseMaintainer.getUser(), user)){
-                flag = true;
-                break;
-            }
-        }
-
-        return flag;
-    }
 }

@@ -2,13 +2,15 @@ package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "CourseEnrollmentLessonStatus",
+@NoArgsConstructor
+@Table(name = "course_enrollment_lesson_status",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "course_enrollment_lesson_status_id")
 })
@@ -18,11 +20,11 @@ public class CourseEnrollmentLessonStatus {
     @Column(name = "course_enrollment_lesson_status_id", nullable = false)
     private Integer courseEnrollmentLessonStatusId;
     @Setter
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name="course_enrollment_id", nullable=false)
     private CourseEnrollment courseEnrollment;
     @Setter
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name="course_lesson_id", nullable=false)
     private CourseLesson courseLesson;
     @Setter
@@ -31,8 +33,6 @@ public class CourseEnrollmentLessonStatus {
     @Setter
     @Column(name = "last_done", nullable = false)
     private LocalDateTime lastDone;
-
-    public CourseEnrollmentLessonStatus(){}
 
     public CourseEnrollmentLessonStatus(CourseEnrollment courseEnrollment, CourseLesson courseLesson, Integer progress, LocalDateTime lastDone){
         this.courseEnrollment = courseEnrollment;

@@ -2,6 +2,7 @@ package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,8 @@ import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "User_",
+@NoArgsConstructor
+@Table(name = "user_",
     uniqueConstraints = {
         @UniqueConstraint(columnNames = "user_id"),
         @UniqueConstraint(columnNames = "usertag"),
@@ -40,20 +42,18 @@ public class User {
     @Column(name = "can_create_courses", nullable = false)
     @Setter
     private boolean canCreate;
-    @OneToMany(mappedBy = "User", fetch=FetchType.LAZY,
+    @OneToMany(mappedBy = "user", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<RefreshToken> refreshToken;
-    @OneToMany(mappedBy = "User", fetch=FetchType.LAZY,
+    @OneToMany(mappedBy = "user", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<UserActivity> userActivities;
-    @OneToMany(mappedBy = "User", fetch=FetchType.LAZY,
+    @OneToMany(mappedBy = "user", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseEnrollment> courseEnrollments;
-    @OneToMany(mappedBy = "User", fetch=FetchType.LAZY,
+    @OneToMany(mappedBy = "user", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseMaintainer> courseMaintainers;
-
-    public User(){}
 
     public User(String userTag, String userName, String password, LocalDateTime dateCreated, Boolean canCreate){
         this.userTag = userTag;

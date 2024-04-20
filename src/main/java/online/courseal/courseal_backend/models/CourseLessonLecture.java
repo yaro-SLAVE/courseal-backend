@@ -2,11 +2,13 @@ package online.courseal.courseal_backend.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
-@Table(name = "CourseLessonLecture",
+@NoArgsConstructor
+@Table(name = "course_lesson_lecture",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "course_lesson_lecture_id")
 })
@@ -22,8 +24,6 @@ public class CourseLessonLecture {
     @Setter
     @Column(nullable = false)
     private String lecture;
-
-    public CourseLessonLecture(){}
 
     public CourseLessonLecture(CourseLesson courseLesson, String lecture){
         this.courseLesson = courseLesson;

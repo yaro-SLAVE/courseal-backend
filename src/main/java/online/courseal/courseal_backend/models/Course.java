@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "Course",
+@Table(name = "course",
         uniqueConstraints = {
         @UniqueConstraint(columnNames = "course_id"),
         @UniqueConstraint(columnNames = "course_name")
@@ -37,16 +37,16 @@ public class Course {
     @Column(name="last_updated_structure", nullable = false)
     @Setter
     private LocalDateTime lastUpdatedStructure;
-    @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY,
+    @OneToMany(mappedBy = "course", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseLesson> courseLessons;
-    @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY,
+    @OneToMany(mappedBy = "course", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseEnrollment> courseEnrollments;
-    @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY,
+    @OneToMany(mappedBy = "course", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseTask> courseTasks;
-    @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY,
+    @OneToMany(mappedBy = "course", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     List<CourseMaintainer> courseMaintainers;
 

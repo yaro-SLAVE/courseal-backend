@@ -9,7 +9,7 @@ import online.courseal.courseal_backend.models.enums.CoursePermissions;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "CourseMaintainer",
+@Table(name = "course_maintainer",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "course_maintainer_id"),
         })
@@ -19,11 +19,11 @@ public class CourseMaintainer {
         @Column(name = "course_maintainer_id", nullable = false)
         private Integer courseMaintainerId;
         @Setter
-        @ManyToOne(fetch=FetchType.LAZY)
+        @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
         @JoinColumn(name="course_id", nullable=false)
         private Course course;
         @Setter
-        @ManyToOne(fetch=FetchType.LAZY)
+        @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
         @JoinColumn(name="user_id", nullable=false)
         private User user;
         @Enumerated(EnumType.ORDINAL)

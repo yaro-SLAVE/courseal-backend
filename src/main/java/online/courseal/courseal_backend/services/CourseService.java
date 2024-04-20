@@ -1,6 +1,8 @@
 package online.courseal.courseal_backend.services;
 
 import online.courseal.courseal_backend.models.Course;
+import online.courseal.courseal_backend.models.CourseMaintainer;
+import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +27,26 @@ public class CourseService {
 
         course = courseRepository.save(course);
         return course;
+    }
+
+    public boolean verifyMaintainer(Course course, User user) {
+        boolean flag = false;
+
+        for (CourseMaintainer courseMaintainer: course.getCourseMaintainers()) {
+            if (courseMaintainer.getUser().equals(user)){
+                flag = true;
+                break;
+            }
+        }
+
+        return flag;
+    }
+
+    public void save(Course course) {
+        courseRepository.save(course);
+    }
+
+    public void delete(Course course) {
+        courseRepository.delete(course);
     }
 }
