@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Getter
@@ -39,6 +40,18 @@ public class User {
     @Column(name = "can_create_courses", nullable = false)
     @Setter
     private boolean canCreate;
+    @OneToMany(mappedBy = "User", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<RefreshToken> refreshToken;
+    @OneToMany(mappedBy = "User", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<UserActivity> userActivities;
+    @OneToMany(mappedBy = "User", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CourseEnrollment> courseEnrollments;
+    @OneToMany(mappedBy = "User", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CourseMaintainer> courseMaintainers;
 
     public User(){}
 

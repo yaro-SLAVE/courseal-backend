@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Table(name="CourseTask",
@@ -25,6 +27,10 @@ public class CourseTask {
     @Setter
     @Column(nullable = false)
     private String task;
+    @OneToMany(mappedBy = "CourseTask", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CourseLessonTask> courseLessonTasks;
+
 
     public CourseTask(){}
 

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Entity
@@ -35,13 +35,19 @@ public class Course {
     @Setter
     private LocalDateTime lastUpdatedTasks;
     @Column(name="last_updated_structure", nullable = false)
-    @Setter
-    private LocalDateTime lastUpdatedStructure;
-    /*
-    @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY)
-    @Setter
-    private Set<CourseLesson> courseLessonSet;
-     */
+    private LocalDateTime lastUpdatedStructures;
+    @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CourseLesson> courseLessons;
+    @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CourseEnrollment> courseEnrollments;
+    @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CourseTask> courseTasks;
+    @OneToMany(mappedBy = "Course", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    List<CourseMaintainer> courseMaintainers;
 
     public Course(String courseName, String courseDescription){
         this.courseName = courseName;

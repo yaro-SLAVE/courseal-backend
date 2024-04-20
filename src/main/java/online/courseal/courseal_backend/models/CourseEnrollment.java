@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import online.courseal.courseal_backend.repositories.UserRepository;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,6 +33,12 @@ public class CourseEnrollment {
     @Setter
     @Column(nullable = false)
     private Integer rating;
+    @OneToMany(mappedBy = "CourseEnrollment", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CourseEnrollmentTaskStatus> courseEnrollmentTaskStatuses;
+    @OneToMany(mappedBy = "CourseEnrollment", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CourseEnrollmentLessonStatus> courseEnrollmentLessonStatuses;
 
     public CourseEnrollment(Course course, User user, Integer xp, Integer rating){
         this.course = course;

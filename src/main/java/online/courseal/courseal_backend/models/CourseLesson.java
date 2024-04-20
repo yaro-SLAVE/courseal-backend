@@ -6,6 +6,7 @@ import lombok.Setter;
 import online.courseal.courseal_backend.models.enums.LessonType;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,6 +39,14 @@ public class CourseLesson {
     @Setter
     @Column(name = "last_updated", nullable = false)
     private LocalDateTime lastUpdated;
+    @OneToMany(mappedBy = "CourseLesson", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CourseEnrollmentLessonStatus> courseEnrollmentLessonStatuses;
+    @OneToMany(mappedBy = "CourseLesson", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CourseLessonTask> courseLessonTasks;
+    @OneToOne(optional=false, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private CourseLessonLecture courseLessonLectures;
 
     public CourseLesson(){}
 
