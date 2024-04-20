@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import online.courseal.courseal_backend.models.enums.CoursePermissions;
 
 @AllArgsConstructor
-public class CoursesListResponse {
+public class MaintainerCoursesListResponse {
     @JsonProperty("course_id")
     private Integer courseId;
     @JsonProperty("maintainer_permissions")

@@ -6,13 +6,11 @@ import online.courseal.courseal_backend.models.Course;
 import online.courseal.courseal_backend.models.CourseEnrollment;
 import online.courseal.courseal_backend.models.CourseMaintainer;
 import online.courseal.courseal_backend.models.User;
-import online.courseal.courseal_backend.repositories.CourseRepository;
 import online.courseal.courseal_backend.repositories.UserRepository;
 import online.courseal.courseal_backend.requests.*;
 import online.courseal.courseal_backend.responses.CourseInfoResponse;
-import online.courseal.courseal_backend.responses.CoursesListResponse;
+import online.courseal.courseal_backend.responses.MaintainerCoursesListResponse;
 import online.courseal.courseal_backend.responses.CreateCourseResponse;
-import online.courseal.courseal_backend.services.CourseEnrollmentService;
 import online.courseal.courseal_backend.services.CourseMaintainerService;
 import online.courseal.courseal_backend.services.CourseService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
@@ -58,15 +56,15 @@ public class CourseManagementController {
 
         List<CourseMaintainer> courseMaintainers = users.get().getCourseMaintainers();
 
-        ArrayList<CoursesListResponse> coursesListResponses = new ArrayList<>();
+        ArrayList<MaintainerCoursesListResponse> maintainerCoursesListRespons = new ArrayList<>();
 
         for (CourseMaintainer courseMaintainer: courseMaintainers.stream().toList()){
-            coursesListResponses.add(new CoursesListResponse(
+            maintainerCoursesListRespons.add(new MaintainerCoursesListResponse(
                     courseMaintainer.getCourse().getCourseId(),
                     courseMaintainer.getPermissions()));
         }
 
-        return ResponseEntity.ok(coursesListResponses);
+        return ResponseEntity.ok(maintainerCoursesListRespons);
     }
 
     @GetMapping("/{course_id}")
