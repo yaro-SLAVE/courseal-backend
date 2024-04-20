@@ -39,8 +39,8 @@ public class UserController {
 
         for (User user: users) {
             int xp = 0;
-            for (UserActivity userActivity: user.getUserActivities()) {
-                xp += userActivity.getXp();
+            for (CourseEnrollment courseEnrollment: user.getCourseEnrollments()) {
+                xp += courseEnrollment.getXp();
             }
 
             usersListResponse.add(new UsersListResponse(
@@ -64,8 +64,8 @@ public class UserController {
         }
 
         int xp = 0;
-        for (UserActivity userActivity: users.get().getUserActivities()) {
-            xp += userActivity.getXp();
+        for (CourseEnrollment courseEnrollment: users.get().getCourseEnrollments()) {
+            xp += courseEnrollment.getXp();
         }
 
         ArrayList<CoursesEnrollmentsData> coursesEnrollmentsDataList = new ArrayList<>();
