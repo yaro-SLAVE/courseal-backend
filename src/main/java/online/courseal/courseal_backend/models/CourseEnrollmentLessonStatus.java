@@ -20,11 +20,11 @@ public class CourseEnrollmentLessonStatus {
     @Column(name = "course_enrollment_lesson_status_id", nullable = false)
     private Integer courseEnrollmentLessonStatusId;
     @Setter
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="course_enrollment_id", nullable=false)
     private CourseEnrollment courseEnrollment;
     @Setter
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="course_lesson_id", nullable=false)
     private CourseLesson courseLesson;
     @Setter

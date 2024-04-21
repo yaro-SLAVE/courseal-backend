@@ -1,6 +1,7 @@
 package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.configs.ServerConfig;
+import online.courseal.courseal_backend.errors.exceptions.AccountAlreadyExistsException;
 import online.courseal.courseal_backend.errors.exceptions.IncorrectUsertagException;
 import online.courseal.courseal_backend.errors.exceptions.RegistrationEnabledException;
 import online.courseal.courseal_backend.errors.exceptions.UserNotFoundException;
@@ -17,6 +18,7 @@ import online.courseal.courseal_backend.responses.data.CoursesEnrollmentsData;
 import online.courseal.courseal_backend.responses.data.CoursesMaintainersData;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,7 +42,7 @@ public class UserManagementController {
     ServerConfig serverConfig;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
+    public HttpStatus registerUser(@RequestBody RegisterRequest registerRequest) {
         if (!serverConfig.getServerInfo().getServerRegistrationEnabled()){
             throw new RegistrationEnabledException();
         }
@@ -55,9 +57,7 @@ public class UserManagementController {
         Boolean canCreateCourses = serverConfig.getServerInfo().getDefaultCanCreateCourses();
 
         if (userRepository.existsByUserTag(registerRequest.getUsertag())){
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse());
+            throw new AccountAlreadyExistsException();
         }
 
         User user = new User(registerRequest.getUsertag(),
@@ -68,7 +68,7 @@ public class UserManagementController {
 
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse());
+        return HttpStatus.CREATED;
     }
 
     @GetMapping

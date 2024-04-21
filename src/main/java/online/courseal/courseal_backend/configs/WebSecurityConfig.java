@@ -1,8 +1,10 @@
 package online.courseal.courseal_backend.configs;
 
 import jakarta.servlet.Filter;
+import online.courseal.courseal_backend.configs.jwt.AccessDeniedHandler;
 import online.courseal.courseal_backend.configs.jwt.AuthEntryPointJwt;
 import online.courseal.courseal_backend.configs.jwt.AuthTokenFilter;
+import online.courseal.courseal_backend.configs.jwt.HttpRequestEndpointChecker;
 import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import java.util.List;
 
@@ -37,6 +40,12 @@ public class WebSecurityConfig {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private DispatcherServlet dispatcherServlet;
+
+    @Autowired
+    private HttpRequestEndpointChecker endpointChecker;
 
     @Bean
     public UserDetailsServiceImpl userDetailsService() {
@@ -83,19 +92,23 @@ public class WebSecurityConfig {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/user-management/register").permitAll()
                         .requestMatchers("/api/courseal-info").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers("/api/course/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(c -> c.authenticationEntryPoint(unauthorizedHandler))
+                .exceptionHandling(c -> c.authenticationEntryPoint(new AuthEntryPointJwt(endpointChecker))
+                        .accessDeniedHandler(new AccessDeniedHandler(endpointChecker)))
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-
+    @Bean
+    public HttpRequestEndpointChecker endpointChecker() {
+        return new HttpRequestEndpointChecker(dispatcherServlet);
+    }
 }

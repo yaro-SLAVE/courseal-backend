@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public class IncorrectUsertagException extends ApplicationException {
     public IncorrectUsertagException() {
         status = HttpStatus.BAD_REQUEST;
-        error = "incorrect-usertag";
+        error = "usertag-incorrect";
         errorMessage = "";
         description = "";
     }
