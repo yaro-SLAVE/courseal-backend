@@ -1,10 +1,11 @@
 package online.courseal.courseal_backend.configs.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.context.annotation.Configuration;
+import online.courseal.courseal_backend.errors.exceptions.ApplicationException;
+import online.courseal.courseal_backend.errors.exceptions.InvalidJwtException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -18,16 +19,16 @@ import java.util.Map;
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException {
-        System.err.println(authException.getMessage());
+                         AuthenticationException authException) throws IOException {
+        InvalidJwtException exception = new InvalidJwtException();
+
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(exception.getStatus().value());
 
         final Map<String, Object> body = new HashMap<>();
-        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
-        body.put("error", "Unauthorized");
-        body.put("message", authException.getMessage());
-        body.put("path", request.getServletPath());
+        body.put("error", exception.getError());
+        body.put("message", exception.getErrorMessage());
+        body.put("description", exception.getDescription());
 
         final ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), body);
