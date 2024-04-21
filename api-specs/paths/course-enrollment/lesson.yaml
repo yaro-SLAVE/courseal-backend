@@ -65,6 +65,10 @@ put:
             lesson_token:
               type: string
               description: Token used for retrieving information about the tasks the server has sent previously
+            timezone:
+              type: string
+              description: The user's timezone
+              example: UTC+08:00
             results:
               type: object
               oneOf:

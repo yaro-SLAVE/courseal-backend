@@ -1,6 +1,13 @@
 title: Text formatted with EditorJS
-type: array
-items:
-  oneOf:
-    - $ref: "./editorjs/paragraph.yaml"
-    - $ref: "./editorjs/header.yaml"
+type: object
+parameters:
+  time:
+    type: number
+  data:
+    type: array
+    items:
+      oneOf:
+        - $ref: "./editorjs/paragraph.yaml"
+        - $ref: "./editorjs/header.yaml"
+  version:
+    type: string
