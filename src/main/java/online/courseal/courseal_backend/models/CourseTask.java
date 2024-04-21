@@ -19,7 +19,7 @@ public class CourseTask {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="course_task_id", nullable = false)
     private Integer courseTaskId;
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="course_id", nullable=false)
     @Setter
     private Course course;

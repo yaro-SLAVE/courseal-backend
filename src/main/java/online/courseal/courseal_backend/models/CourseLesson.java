@@ -22,7 +22,7 @@ public class CourseLesson {
     @Column(name = "course_lesson_id", nullable = false)
     private Integer courseLessonId;
     @Setter
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="course_id", nullable=false)
     private Course course;
     @Setter

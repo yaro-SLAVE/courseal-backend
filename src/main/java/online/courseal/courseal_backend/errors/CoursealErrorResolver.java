@@ -25,9 +25,9 @@ public class CoursealErrorResolver extends AbstractHandlerExceptionResolver {
         }
 
         modelAndView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        modelAndView.addObject("error", "");
-        modelAndView.addObject("message", "");
-        modelAndView.addObject("description", "");
+        modelAndView.addObject("error", "unknown");
+        modelAndView.addObject("message", "unknown");
+        modelAndView.addObject("description", "unknown");
         return modelAndView;
     }
 }

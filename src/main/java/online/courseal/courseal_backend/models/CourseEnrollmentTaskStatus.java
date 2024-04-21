@@ -21,11 +21,11 @@ public class CourseEnrollmentTaskStatus {
     @Column(name = "course_enrollment_task_status_id", nullable = false)
     private Integer courseEnrollmentTaskStatus_id;
     @Setter
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="course_enrollment_id", nullable=false)
     private CourseEnrollment courseEnrollment;
     @Setter
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="course_task_id", nullable=false)
     private CourseTask courseTask;
     @Setter

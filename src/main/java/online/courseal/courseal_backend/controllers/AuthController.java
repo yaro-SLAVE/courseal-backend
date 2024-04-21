@@ -3,6 +3,8 @@ package online.courseal.courseal_backend.controllers;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import online.courseal.courseal_backend.configs.jwt.JwtUtils;
+import online.courseal.courseal_backend.errors.exceptions.InvalidRefreshTokenException;
+import online.courseal.courseal_backend.errors.exceptions.RefreshNotFoundException;
 import online.courseal.courseal_backend.models.RefreshToken;
 import online.courseal.courseal_backend.repositories.RefreshTokenRepository;
 import online.courseal.courseal_backend.requests.LoginRequest;
@@ -11,11 +13,14 @@ import online.courseal.courseal_backend.services.RefreshTokenService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.http.HttpRequest;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -66,7 +71,13 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public String refreshToken(@CookieValue(value = "courseal_refresh", required = true) String tokenRefreshCookie, HttpServletResponse response){
+    public String refreshToken(@CookieValue(value = "courseal_refresh", required = false) String tokenRefreshCookie, HttpServletResponse response){
+        if (tokenRefreshCookie == null){
+            throw new InvalidRefreshTokenException();
+        }
+
+        refreshTokenService.findByToken(tokenRefreshCookie).orElseThrow(InvalidRefreshTokenException::new);
+
         refreshTokenService.findByToken(tokenRefreshCookie)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
@@ -95,7 +106,13 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public String logout(@CookieValue(value = "courseal_refresh", required = true) String tokenRefreshCookie, HttpServletResponse response) {
+    public String logout(@CookieValue(value = "courseal_refresh", required = false) String tokenRefreshCookie, HttpServletResponse response) {
+        if (tokenRefreshCookie == null){
+            throw new InvalidRefreshTokenException();
+        }
+
+        refreshTokenService.findByToken(tokenRefreshCookie).orElseThrow(InvalidRefreshTokenException::new);
+
         refreshTokenService.findByToken(tokenRefreshCookie)
                 .map(refreshTokenService :: verifyExpiration)
                 .map(refreshToken -> {

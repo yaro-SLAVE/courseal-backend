@@ -19,11 +19,11 @@ public class CourseMaintainer {
         @Column(name = "course_maintainer_id", nullable = false)
         private Integer courseMaintainerId;
         @Setter
-        @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+        @ManyToOne(fetch=FetchType.LAZY)
         @JoinColumn(name="course_id", nullable=false)
         private Course course;
         @Setter
-        @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+        @ManyToOne(fetch=FetchType.LAZY)
         @JoinColumn(name="user_id", nullable=false)
         private User user;
         @Enumerated(EnumType.ORDINAL)

@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +51,7 @@ public class UserController {
             ));
         }
 
-        usersListResponse.sort((UsersListResponse o1, UsersListResponse o2)->o1.getXp()- o2.getXp());
+        usersListResponse.sort(Comparator.comparingInt(UsersListResponse::getXp));
 
         return ResponseEntity.ok(usersListResponse);
     }

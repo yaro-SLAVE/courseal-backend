@@ -43,15 +43,9 @@ public class RefreshTokenService{
     public RefreshToken verifyExpiration(RefreshToken refreshToken) {
         LocalDateTime dateExpired = refreshToken.getDateCreated().plusSeconds(refreshTokenDurationMs / 1000);
         if (!refreshToken.isValid() || LocalDateTime.now().isAfter(dateExpired)) {
-            refreshTokenRepository.delete(refreshToken);
             throw new InvalidRefreshTokenException();
         }
 
         return refreshToken;
-    }
-
-    @Transactional
-    public int deleteByUserId(Integer userId) {
-        return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
     }
 }

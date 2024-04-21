@@ -20,7 +20,7 @@ public class UserActivity {
     @Column(name = "user_activity_id", nullable = false)
     private int userActivityId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="user_id", nullable=false)
     private User user;
     @Setter
