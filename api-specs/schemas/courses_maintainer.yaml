@@ -7,6 +7,9 @@ items:
     course_id:
       type: number
       description: The course's id
+    course_name:
+      type: string
+      description: The course's name
     maintainer_permissions:
       type: string
       description: Permissions the user has over the course
