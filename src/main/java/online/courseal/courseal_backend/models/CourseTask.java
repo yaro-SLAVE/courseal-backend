@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.courseal.courseal_backend.editorjs.EditorJSContent;
 
 import java.util.List;
 
@@ -28,12 +29,12 @@ public class CourseTask {
     private String taskName;
     @Setter
     @Column(nullable = false)
-    private String task;
+    private EditorJSContent task;
     @OneToMany(mappedBy = "courseTask", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseLessonTask> courseLessonTasks;
 
-    public CourseTask(Course course, String taskName, String task){
+    public CourseTask(Course course, String taskName, EditorJSContent task){
         this.course = course;
         this.taskName = taskName;
         this.task = task;

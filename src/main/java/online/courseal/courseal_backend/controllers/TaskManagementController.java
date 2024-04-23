@@ -3,14 +3,16 @@ package online.courseal.courseal_backend.controllers;
 import online.courseal.courseal_backend.errors.exceptions.BadRequestException;
 import online.courseal.courseal_backend.errors.exceptions.InvalidJwtException;
 import online.courseal.courseal_backend.models.Course;
+import online.courseal.courseal_backend.models.CourseTask;
 import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.repositories.UserRepository;
 import online.courseal.courseal_backend.requests.TaskCreatingRequest;
 import online.courseal.courseal_backend.requests.CourseUpdatingRequest;
+import online.courseal.courseal_backend.responses.TaskCreatingResponse;
 import online.courseal.courseal_backend.services.CourseService;
+import online.courseal.courseal_backend.services.CourseTaskService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,9 @@ public class TaskManagementController {
     @Autowired
     CourseService courseService;
 
+    @Autowired
+    CourseTaskService courseTaskService;
+
 
     @PostMapping("/{course_id}/task")
     public ResponseEntity<?> createTask(@RequestBody TaskCreatingRequest taskCreatingRequest, @PathVariable("course_id") Integer courseId){
@@ -41,11 +46,13 @@ public class TaskManagementController {
 
         boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
 
-        if (userIsMaintainer) {
-            return null;
-        } else {
+        if (!userIsMaintainer) {
             throw new InvalidJwtException();
         }
+
+        CourseTask courseTask = courseTaskService.createCourseTask(courses.get(), taskCreatingRequest.getTaskName(), taskCreatingRequest.getTask().getBody());
+
+        return ResponseEntity.ok(new TaskCreatingResponse(courseTask.getCourseTaskId()));
     }
 
     @GetMapping("/{course_id}/task")

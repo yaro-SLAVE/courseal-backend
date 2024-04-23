@@ -11,5 +11,5 @@ public class TaskCreatingRequest {
     @JsonProperty("task_name")
     private String taskName;
     @JsonProperty("task")
-    private List<TaskRequestData> dataList;
+    private TaskRequestData task;
 }
