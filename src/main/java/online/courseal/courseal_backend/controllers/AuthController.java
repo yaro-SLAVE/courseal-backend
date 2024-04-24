@@ -4,23 +4,19 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import online.courseal.courseal_backend.configs.jwt.JwtUtils;
 import online.courseal.courseal_backend.errors.exceptions.InvalidRefreshTokenException;
-import online.courseal.courseal_backend.errors.exceptions.RefreshNotFoundException;
 import online.courseal.courseal_backend.models.RefreshToken;
 import online.courseal.courseal_backend.repositories.RefreshTokenRepository;
 import online.courseal.courseal_backend.requests.LoginRequest;
-import online.courseal.courseal_backend.repositories.UserRepository;
 import online.courseal.courseal_backend.services.RefreshTokenService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
+import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.http.HttpRequest;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,7 +25,7 @@ public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
-    UserRepository userRepository;
+    UserDetailsServiceImpl userService;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired

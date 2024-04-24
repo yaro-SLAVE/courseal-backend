@@ -5,19 +5,15 @@ import online.courseal.courseal_backend.models.CourseEnrollment;
 import online.courseal.courseal_backend.models.CourseMaintainer;
 import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.models.UserActivity;
-import online.courseal.courseal_backend.repositories.UserRepository;
 import online.courseal.courseal_backend.responses.UserActivityResponse;
 import online.courseal.courseal_backend.responses.UserInfoResponse;
 import online.courseal.courseal_backend.responses.UsersListResponse;
 import online.courseal.courseal_backend.responses.data.CoursesEnrollmentsData;
 import online.courseal.courseal_backend.responses.data.CoursesMaintainersData;
 import online.courseal.courseal_backend.responses.data.UserActivityData;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -30,11 +26,17 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
     @Autowired
-    UserRepository userRepository;
+    UserDetailsServiceImpl userService;
 
     @GetMapping
-    public ResponseEntity<?> getUsersList() {
-        List<User> users = userRepository.findAll();
+    public ResponseEntity<?> getUsersList(@RequestParam("search") String search) {
+        List<User> users = new ArrayList<>();
+
+        if (search == null){
+            users = userService.findAll();
+        } else {
+            users = userService.findByUserTagLike(search);
+        }
 
         ArrayList<UsersListResponse> usersListResponse = new ArrayList<>();
 
@@ -58,7 +60,7 @@ public class UserController {
 
     @GetMapping("/{usertag}")
     public ResponseEntity<?> getUserInfo(@PathVariable("usertag") String userTag){
-        Optional<User> users = userRepository.findByUserTag(userTag);
+        Optional<User> users = userService.findByUserTag(userTag);
 
         if (users.isEmpty()){
             throw new UserNotFoundException();
@@ -101,7 +103,7 @@ public class UserController {
 
     @GetMapping("/{usertag}/activity")
     public ResponseEntity<?> getUserActivity(@PathVariable("usertag") String userTag){
-        Optional<User> users = userRepository.findByUserTag(userTag);
+        Optional<User> users = userService.findByUserTag(userTag);
 
         if (users.isEmpty()){
             throw new UserNotFoundException();

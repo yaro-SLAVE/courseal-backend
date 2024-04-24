@@ -4,19 +4,17 @@ import online.courseal.courseal_backend.configs.ServerConfig;
 import online.courseal.courseal_backend.errors.exceptions.AccountAlreadyExistsException;
 import online.courseal.courseal_backend.errors.exceptions.IncorrectUsertagException;
 import online.courseal.courseal_backend.errors.exceptions.RegistrationEnabledException;
-import online.courseal.courseal_backend.errors.exceptions.UserNotFoundException;
 import online.courseal.courseal_backend.models.CourseEnrollment;
 import online.courseal.courseal_backend.models.CourseMaintainer;
 import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.requests.ChangingNameRequest;
 import online.courseal.courseal_backend.requests.ChangingPasswordRequest;
-import online.courseal.courseal_backend.responses.MessageResponse;
 import online.courseal.courseal_backend.requests.RegisterRequest;
-import online.courseal.courseal_backend.repositories.UserRepository;
 import online.courseal.courseal_backend.responses.UserInfoResponse;
 import online.courseal.courseal_backend.responses.data.CoursesEnrollmentsData;
 import online.courseal.courseal_backend.responses.data.CoursesMaintainersData;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
+import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +33,7 @@ import java.util.regex.Pattern;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class UserManagementController {
     @Autowired
-    UserRepository userRepository;
+    UserDetailsServiceImpl userService;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
@@ -56,7 +54,7 @@ public class UserManagementController {
 
         Boolean canCreateCourses = serverConfig.getServerInfo().getDefaultCanCreateCourses();
 
-        if (userRepository.existsByUserTag(registerRequest.getUsertag())){
+        if (userService.existsByUserTag(registerRequest.getUsertag())){
             throw new AccountAlreadyExistsException();
         }
 
@@ -66,7 +64,7 @@ public class UserManagementController {
                 LocalDateTime.now(),
                 canCreateCourses);
 
-        userRepository.save(user);
+        userService.save(user);
 
         return HttpStatus.CREATED;
     }
@@ -74,7 +72,7 @@ public class UserManagementController {
     @GetMapping
     public ResponseEntity<?> getInfo(){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
         int xp = 0;
         for (CourseEnrollment courseEnrollment: users.get().getCourseEnrollments()) {
