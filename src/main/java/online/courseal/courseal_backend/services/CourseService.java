@@ -24,6 +24,11 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
+    public List<Course> findByCourseNameLike(String courseName) {
+        String search = "%" + courseName + "%";
+        return courseRepository.findByCourseNameLike(search);
+    }
+
     public Course createCourse(String courseName, String courseDescription){
         Course course = new Course(courseName, courseDescription);
         course.setLastUpdatedStructure(LocalDateTime.now());
