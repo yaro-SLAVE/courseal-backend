@@ -7,7 +7,6 @@ import online.courseal.courseal_backend.coursedata.editorjs.data.*;
 import online.courseal.courseal_backend.coursedata.editorjs.enums.EditorJSHeaderLevel;
 import online.courseal.courseal_backend.coursedata.editorjs.enums.EditorJSListStyle;
 import online.courseal.courseal_backend.coursedata.editorjs.enums.EditorJSQuoteAlignment;
-import online.courseal.courseal_backend.editorjs.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
