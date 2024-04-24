@@ -1,9 +1,9 @@
 package online.courseal.courseal_backend.services;
 
-import online.courseal.courseal_backend.editorjs.EditorJSContent;
 import online.courseal.courseal_backend.models.Course;
 import online.courseal.courseal_backend.models.CourseTask;
 import online.courseal.courseal_backend.repositories.CourseTaskRepository;
+import online.courseal.courseal_backend.coursedata.tasks.CoursealTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +22,18 @@ public class CourseTaskService {
         return courseTaskRepository.findByCourse(course);
     }
 
-    public CourseTask createCourseTask(Course course, String taskName, EditorJSContent task) {
+    public CourseTask createCourseTask(Course course, String taskName, CoursealTask task) {
         CourseTask courseTask = new CourseTask(course, taskName, task);
 
         courseTask = courseTaskRepository.save(courseTask);
         return courseTask;
+    }
+
+    public void save(CourseTask courseTask) {
+        courseTaskRepository.save(courseTask);
+    }
+
+    public void delete(CourseTask courseTask) {
+        courseTaskRepository.save(courseTask);
     }
 }
