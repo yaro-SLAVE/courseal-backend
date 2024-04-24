@@ -2,9 +2,12 @@ package online.courseal.courseal_backend;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import online.courseal.courseal_backend.coursedata.editorjs.*;
+import online.courseal.courseal_backend.coursedata.editorjs.data.*;
+import online.courseal.courseal_backend.coursedata.editorjs.enums.EditorJSHeaderLevel;
+import online.courseal.courseal_backend.coursedata.editorjs.enums.EditorJSListStyle;
+import online.courseal.courseal_backend.coursedata.editorjs.enums.EditorJSQuoteAlignment;
 import online.courseal.courseal_backend.editorjs.*;
-import online.courseal.courseal_backend.editorjs.data.*;
-import online.courseal.courseal_backend.editorjs.enums.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
