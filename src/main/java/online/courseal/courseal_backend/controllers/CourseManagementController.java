@@ -1,7 +1,6 @@
 package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.errors.exceptions.BadRequestException;
-import online.courseal.courseal_backend.errors.exceptions.InvalidJwtException;
 import online.courseal.courseal_backend.models.Course;
 import online.courseal.courseal_backend.models.CourseEnrollment;
 import online.courseal.courseal_backend.models.CourseMaintainer;
@@ -15,7 +14,6 @@ import online.courseal.courseal_backend.services.CourseMaintainerService;
 import online.courseal.courseal_backend.services.CourseService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -80,26 +78,26 @@ public class CourseManagementController {
 
         boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
 
-        if (userIsMaintainer) {
-            List<CourseEnrollment> courseEnrollments = courses.get().getCourseEnrollments();
-
-            Integer votes = 0;
-            if (!courseEnrollments.isEmpty()) {
-                for (CourseEnrollment courseEnrollment : courseEnrollments.stream().toList()) {
-                    votes += courseEnrollment.getRating();
-                }
-            }
-
-            return ResponseEntity.ok(new CourseInfoResponse(
-                    courses.get().getCourseName(),
-                    courses.get().getCourseDescription(),
-                    votes,
-                    courses.get().getLastUpdatedStructure(),
-                    courses.get().getLastUpdatedLessons(),
-                    courses.get().getLastUpdatedTasks()));
-        } else {
-            throw new InvalidJwtException();
+        if (!userIsMaintainer) {
+            throw new BadRequestException();
         }
+
+        List<CourseEnrollment> courseEnrollments = courses.get().getCourseEnrollments();
+
+        Integer votes = 0;
+        if (!courseEnrollments.isEmpty()) {
+            for (CourseEnrollment courseEnrollment : courseEnrollments.stream().toList()) {
+                votes += courseEnrollment.getRating();
+            }
+        }
+
+        return ResponseEntity.ok(new CourseInfoResponse(
+                courses.get().getCourseName(),
+                courses.get().getCourseDescription(),
+                votes,
+                courses.get().getLastUpdatedStructure(),
+                courses.get().getLastUpdatedLessons(),
+                courses.get().getLastUpdatedTasks()));
     }
 
     @PutMapping("/{course_id}")
@@ -115,13 +113,13 @@ public class CourseManagementController {
 
         boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
 
-        if (userIsMaintainer) {
-            courses.get().setCourseName(courseUpdatingRequest.getCourseName());
-            courses.get().setCourseDescription(courseUpdatingRequest.getCourseDescription());
-            courseService.save(courses.get());
-        } else {
-            throw new InvalidJwtException();
+        if (!userIsMaintainer) {
+            throw new BadRequestException();
         }
+
+        courses.get().setCourseName(courseUpdatingRequest.getCourseName());
+        courses.get().setCourseDescription(courseUpdatingRequest.getCourseDescription());
+        courseService.save(courses.get());
     }
 
     @DeleteMapping("/{course_id}")
@@ -137,10 +135,10 @@ public class CourseManagementController {
 
         boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
 
-        if (userIsMaintainer) {
-            courseService.delete(courses.get());
-        } else {
-            throw new InvalidJwtException();
+        if (!userIsMaintainer) {
+            throw new BadRequestException();
         }
+
+        courseService.delete(courses.get());
     }
 }
