@@ -103,7 +103,7 @@ public class CourseManagementController {
     }
 
     @PutMapping("/{course_id}")
-    public HttpStatus updateCourseInfo(@RequestBody CourseUpdatingRequest courseUpdatingRequest, @PathVariable("course_id") Integer courseId){
+    public void updateCourseInfo(@RequestBody CourseUpdatingRequest courseUpdatingRequest, @PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
 
@@ -119,14 +119,13 @@ public class CourseManagementController {
             courses.get().setCourseName(courseUpdatingRequest.getCourseName());
             courses.get().setCourseDescription(courseUpdatingRequest.getCourseDescription());
             courseService.save(courses.get());
-            return HttpStatus.OK;
         } else {
             throw new InvalidJwtException();
         }
     }
 
     @DeleteMapping("/{course_id}")
-    public HttpStatus deleteCourse(@PathVariable("course_id") Integer courseId){
+    public void deleteCourse(@PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
 
@@ -140,7 +139,6 @@ public class CourseManagementController {
 
         if (userIsMaintainer) {
             courseService.delete(courses.get());
-            return HttpStatus.OK;
         } else {
             throw new InvalidJwtException();
         }
