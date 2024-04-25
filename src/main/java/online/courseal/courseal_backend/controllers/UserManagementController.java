@@ -1,9 +1,7 @@
 package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.configs.ServerConfig;
-import online.courseal.courseal_backend.errors.exceptions.AccountAlreadyExistsException;
-import online.courseal.courseal_backend.errors.exceptions.IncorrectUsertagException;
-import online.courseal.courseal_backend.errors.exceptions.RegistrationEnabledException;
+import online.courseal.courseal_backend.errors.exceptions.*;
 import online.courseal.courseal_backend.models.CourseEnrollment;
 import online.courseal.courseal_backend.models.CourseMaintainer;
 import online.courseal.courseal_backend.models.User;
@@ -18,6 +16,10 @@ import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,8 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/user-management")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class UserManagementController {
+    @Autowired
+    AuthenticationManager authenticationManager;
     @Autowired
     UserDetailsServiceImpl userService;
     @Autowired
@@ -110,12 +114,32 @@ public class UserManagementController {
     }
 
     @PutMapping("/username")
-    public ResponseEntity<?> changeName(@RequestBody ChangingNameRequest changingNameRequest){
-        return null;
+    public void changeName(@RequestBody ChangingNameRequest changingNameRequest){
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
+
+        if (changingNameRequest.getUsername().isEmpty()) {
+            throw new BadRequestException();
+        }
+
+        users.get().setUserName(changingNameRequest.getUsername());
+        userService.save(users.get());
     }
 
     @PutMapping("/password")
-    public ResponseEntity<?> changePassword(@RequestBody ChangingPasswordRequest changingPasswordRequest){
-        return null;
+    public void changePassword(@RequestBody ChangingPasswordRequest changingPasswordRequest){
+        try {
+            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
+
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    users.get().getUserTag(),
+                    changingPasswordRequest.getOldPassword()));
+
+            users.get().setPassword(passwordEncoder.encode(changingPasswordRequest.getNewPassword()));
+            userService.save(users.get());
+        } catch(AuthenticationException e) {
+            throw new BadRequestException();
+        }
     }
 }

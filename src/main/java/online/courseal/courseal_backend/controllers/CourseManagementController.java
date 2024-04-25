@@ -5,7 +5,6 @@ import online.courseal.courseal_backend.models.Course;
 import online.courseal.courseal_backend.models.CourseEnrollment;
 import online.courseal.courseal_backend.models.CourseMaintainer;
 import online.courseal.courseal_backend.models.User;
-import online.courseal.courseal_backend.repositories.UserRepository;
 import online.courseal.courseal_backend.requests.*;
 import online.courseal.courseal_backend.responses.CourseInfoResponse;
 import online.courseal.courseal_backend.responses.MaintainerCoursesListResponse;
@@ -13,6 +12,7 @@ import online.courseal.courseal_backend.responses.CreateCourseResponse;
 import online.courseal.courseal_backend.services.CourseMaintainerService;
 import online.courseal.courseal_backend.services.CourseService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
+import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,14 +33,14 @@ public class CourseManagementController {
     CourseMaintainerService courseMaintainerService;
 
     @Autowired
-    UserRepository userRepository;
+    UserDetailsServiceImpl userService;
 
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody CourseCreatingRequest courseCreatingRequest) {
         Course course = courseService.createCourse(courseCreatingRequest.getCourseName(), courseCreatingRequest.getCourseDescription());
 
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
         courseMaintainerService.createCourseMaintainer(course, users.get());
 
@@ -50,7 +50,7 @@ public class CourseManagementController {
     @GetMapping
     public ResponseEntity<?> getCoursesList(){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
         List<CourseMaintainer> courseMaintainers = users.get().getCourseMaintainers();
 
@@ -68,7 +68,7 @@ public class CourseManagementController {
     @GetMapping("/{course_id}")
     public ResponseEntity<?> getCourseInfo(@PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
         Optional<Course> courses = courseService.findByCourseId(courseId);
 
@@ -103,7 +103,7 @@ public class CourseManagementController {
     @PutMapping("/{course_id}")
     public void updateCourseInfo(@RequestBody CourseUpdatingRequest courseUpdatingRequest, @PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
         Optional<Course> courses = courseService.findByCourseId(courseId);
 
@@ -125,7 +125,7 @@ public class CourseManagementController {
     @DeleteMapping("/{course_id}")
     public void deleteCourse(@PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<User> users = userRepository.findByUserTag(userDetails.getUserTag());
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
         Optional<Course> courses = courseService.findByCourseId(courseId);
 

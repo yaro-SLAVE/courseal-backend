@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.courseal.courseal_backend.coursedata.editorjs.EditorJSContent;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Getter
@@ -23,9 +26,10 @@ public class CourseLessonLecture {
     private CourseLesson courseLesson;
     @Setter
     @Column(nullable = false)
-    private String lecture;
+    @JdbcTypeCode(SqlTypes.JSON)
+    private EditorJSContent lecture;
 
-    public CourseLessonLecture(CourseLesson courseLesson, String lecture){
+    public CourseLessonLecture(CourseLesson courseLesson, EditorJSContent lecture){
         this.courseLesson = courseLesson;
         this.lecture = lecture;
     }

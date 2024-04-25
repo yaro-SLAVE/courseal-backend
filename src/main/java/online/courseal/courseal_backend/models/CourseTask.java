@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.courseal.courseal_backend.coursedata.tasks.CoursealTask;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.List;
 
@@ -29,6 +32,7 @@ public class CourseTask {
     private String taskName;
     @Setter
     @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.JSON)
     private CoursealTask task;
     @OneToMany(mappedBy = "courseTask", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
