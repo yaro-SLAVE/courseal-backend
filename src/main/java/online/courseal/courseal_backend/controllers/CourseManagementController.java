@@ -59,6 +59,7 @@ public class CourseManagementController {
         for (CourseMaintainer courseMaintainer: courseMaintainers.stream().toList()){
             maintainerCoursesListRespons.add(new MaintainerCoursesListResponse(
                     courseMaintainer.getCourse().getCourseId(),
+                    courseMaintainer.getCourse().getCourseName(),
                     courseMaintainer.getPermissions()));
         }
 
