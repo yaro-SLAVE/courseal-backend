@@ -10,6 +10,8 @@ import online.courseal.courseal_backend.models.enums.CoursePermissions;
 public class MaintainerCoursesListResponse {
     @JsonProperty("course_id")
     private Integer courseId;
+    @JsonProperty("course_name")
+    private String courseName;
     @JsonProperty("maintainer_permissions")
     @Enumerated(EnumType.STRING)
     private CoursePermissions maintainerPermissions;
