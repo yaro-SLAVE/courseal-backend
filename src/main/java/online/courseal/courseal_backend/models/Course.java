@@ -14,8 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "course",
         uniqueConstraints = {
-        @UniqueConstraint(columnNames = "course_id"),
-        @UniqueConstraint(columnNames = "course_name")
+        @UniqueConstraint(columnNames = "course_id")
         })
 public class Course {
     @Id

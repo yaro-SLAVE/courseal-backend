@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.editorjs.data;
+package online.courseal.courseal_backend.coursedata.editorjs.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

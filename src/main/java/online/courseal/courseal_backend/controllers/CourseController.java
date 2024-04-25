@@ -25,7 +25,7 @@ public class CourseController {
     CourseService courseService;
 
     @GetMapping
-    public ResponseEntity<?> getCoursesLists(@RequestParam("search") String search){
+    public ResponseEntity<?> getCoursesLists(@RequestParam(value = "search", required = false) String search){
         List<Course> courses = new ArrayList<>();
 
         if (search == null) {

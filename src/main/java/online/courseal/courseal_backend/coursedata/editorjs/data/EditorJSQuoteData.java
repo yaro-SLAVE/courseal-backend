@@ -1,9 +1,9 @@
-package online.courseal.courseal_backend.editorjs.data;
+package online.courseal.courseal_backend.coursedata.editorjs.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import online.courseal.courseal_backend.editorjs.enums.EditorJSQuoteAlignment;
+import online.courseal.courseal_backend.coursedata.editorjs.enums.EditorJSQuoteAlignment;
 
 @Data
 @AllArgsConstructor

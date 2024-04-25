@@ -29,7 +29,7 @@ public class UserController {
     UserDetailsServiceImpl userService;
 
     @GetMapping
-    public ResponseEntity<?> getUsersList(@RequestParam("search") String search) {
+    public ResponseEntity<?> getUsersList(@RequestParam(value = "search", required = false) String search) {
         List<User> users = new ArrayList<>();
 
         if (search == null){

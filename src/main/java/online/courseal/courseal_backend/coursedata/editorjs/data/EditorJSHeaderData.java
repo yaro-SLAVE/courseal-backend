@@ -1,11 +1,9 @@
-package online.courseal.courseal_backend.editorjs.data;
+package online.courseal.courseal_backend.coursedata.editorjs.data;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import online.courseal.courseal_backend.editorjs.enums.EditorJSHeaderLevel;
+import online.courseal.courseal_backend.coursedata.editorjs.enums.EditorJSHeaderLevel;
 
 @Data
 @AllArgsConstructor

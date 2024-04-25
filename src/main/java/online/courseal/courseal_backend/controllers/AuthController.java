@@ -3,6 +3,7 @@ package online.courseal.courseal_backend.controllers;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import online.courseal.courseal_backend.configs.jwt.JwtUtils;
+import online.courseal.courseal_backend.errors.exceptions.IncorrectUsertagOrPasswordException;
 import online.courseal.courseal_backend.errors.exceptions.InvalidRefreshTokenException;
 import online.courseal.courseal_backend.models.RefreshToken;
 import online.courseal.courseal_backend.repositories.RefreshTokenRepository;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,29 +43,33 @@ public class AuthController {
 
     @PostMapping("/login")
     public void authUser(HttpServletResponse response, @RequestBody LoginRequest loginRequest){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsertag(),
-                loginRequest.getPassword()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginRequest.getUsertag(),
+                    loginRequest.getPassword()));
 
-        String jwt = jwtUtils.generateJwtToken(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
 
-        var jwtCookie = new Cookie("courseal_jwt", jwt);
+            var jwtCookie = new Cookie("courseal_jwt", jwt);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUserId());
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUserId());
 
-        var tokenRefreshCookie = new Cookie("courseal_refresh", refreshToken.getRefreshToken());
+            var tokenRefreshCookie = new Cookie("courseal_refresh", refreshToken.getRefreshToken());
 
-        jwtCookie.setPath("/api");
-        jwtCookie.setMaxAge((int)(jwtExpirationMs / 1000));
-        jwtCookie.setHttpOnly(true);
+            jwtCookie.setPath("/api");
+            jwtCookie.setMaxAge((int)(jwtExpirationMs / 1000));
+            jwtCookie.setHttpOnly(true);
 
-        tokenRefreshCookie.setPath("/api/auth");
-        tokenRefreshCookie.setMaxAge((int)(refreshTokenDurationMs / 1000));
-        tokenRefreshCookie.setHttpOnly(true);
+            tokenRefreshCookie.setPath("/api/auth");
+            tokenRefreshCookie.setMaxAge((int)(refreshTokenDurationMs / 1000));
+            tokenRefreshCookie.setHttpOnly(true);
 
-        response.addCookie(jwtCookie);
-        response.addCookie(tokenRefreshCookie);
+            response.addCookie(jwtCookie);
+            response.addCookie(tokenRefreshCookie);
+        } catch(AuthenticationException e) {
+            throw new IncorrectUsertagOrPasswordException();
+        }
     }
 
     @GetMapping("/refresh")

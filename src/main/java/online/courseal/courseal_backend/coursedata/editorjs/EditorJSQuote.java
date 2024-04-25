@@ -1,11 +1,11 @@
-package online.courseal.courseal_backend.editorjs;
+package online.courseal.courseal_backend.coursedata.editorjs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import online.courseal.courseal_backend.editorjs.data.EditorJSQuoteData;
+import online.courseal.courseal_backend.coursedata.editorjs.data.EditorJSQuoteData;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

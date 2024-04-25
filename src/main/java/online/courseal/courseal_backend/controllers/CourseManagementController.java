@@ -14,7 +14,6 @@ import online.courseal.courseal_backend.services.CourseService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
 import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -55,15 +54,15 @@ public class CourseManagementController {
 
         List<CourseMaintainer> courseMaintainers = users.get().getCourseMaintainers();
 
-        ArrayList<MaintainerCoursesListResponse> maintainerCoursesListResponse = new ArrayList<>();
+        ArrayList<MaintainerCoursesListResponse> maintainerCoursesListRespons = new ArrayList<>();
 
         for (CourseMaintainer courseMaintainer: courseMaintainers.stream().toList()){
-            maintainerCoursesListResponse.add(new MaintainerCoursesListResponse(
+            maintainerCoursesListRespons.add(new MaintainerCoursesListResponse(
                     courseMaintainer.getCourse().getCourseId(),
                     courseMaintainer.getPermissions()));
         }
 
-        return ResponseEntity.ok(maintainerCoursesListResponse);
+        return ResponseEntity.ok(maintainerCoursesListRespons);
     }
 
     @GetMapping("/{course_id}")
@@ -102,7 +101,7 @@ public class CourseManagementController {
     }
 
     @PutMapping("/{course_id}")
-    public HttpStatus updateCourseInfo(@RequestBody CourseUpdatingRequest courseUpdatingRequest, @PathVariable("course_id") Integer courseId){
+    public void updateCourseInfo(@RequestBody CourseUpdatingRequest courseUpdatingRequest, @PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -121,11 +120,10 @@ public class CourseManagementController {
         courses.get().setCourseName(courseUpdatingRequest.getCourseName());
         courses.get().setCourseDescription(courseUpdatingRequest.getCourseDescription());
         courseService.save(courses.get());
-        return HttpStatus.OK;
     }
 
     @DeleteMapping("/{course_id}")
-    public HttpStatus deleteCourse(@PathVariable("course_id") Integer courseId){
+    public void deleteCourse(@PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -142,6 +140,5 @@ public class CourseManagementController {
         }
 
         courseService.delete(courses.get());
-        return HttpStatus.OK;
     }
 }

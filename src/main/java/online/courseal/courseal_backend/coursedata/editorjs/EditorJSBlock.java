@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.editorjs;
+package online.courseal.courseal_backend.coursedata.editorjs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;

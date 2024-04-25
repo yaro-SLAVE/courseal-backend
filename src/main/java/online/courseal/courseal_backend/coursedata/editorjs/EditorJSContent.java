@@ -1,17 +1,18 @@
-package online.courseal.courseal_backend.editorjs;
+package online.courseal.courseal_backend.coursedata.editorjs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class EditorJSDelimiter extends EditorJSBlock {
-    private String id;
-    private Unit data;
+public class EditorJSContent {
+    private Long time;
+    private List<EditorJSBlock> blocks;
+    private String version;
 }

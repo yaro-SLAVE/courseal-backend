@@ -1,4 +1,4 @@
-package online.courseal.courseal_backend.editorjs.data;
+package online.courseal.courseal_backend.coursedata.editorjs.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
