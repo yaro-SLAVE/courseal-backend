@@ -1,6 +1,7 @@
 package online.courseal.courseal_backend.services;
 
 import online.courseal.courseal_backend.coursedata.editorjs.EditorJSContent;
+import online.courseal.courseal_backend.coursedata.lessons.CoursealLesson;
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonLecture;
 import online.courseal.courseal_backend.models.CourseLesson;
 import online.courseal.courseal_backend.models.CourseLessonLecture;
@@ -19,7 +20,7 @@ public class CourseLessonLectureService {
         return courseLessonLectureRepository.findByCourseLessonLectureId(courseLessonLectureId);
     }
 
-    public CourseLessonLecture createCourseLessonLecture(CourseLesson courseLesson, CoursealLessonLecture lecture) {
+    public CourseLessonLecture createCourseLessonLecture(CourseLesson courseLesson, CoursealLesson lecture) {
         CourseLessonLecture courseLessonLecture = new CourseLessonLecture(
                 courseLesson,
                 lecture

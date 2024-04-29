@@ -14,5 +14,5 @@ public class LessonCreatingData {
     @Enumerated(EnumType.STRING)
     private LessonType type;
     @JsonProperty("lesson_content")
-    private CoursealLessonLecture lessonContent;
+    private CoursealLesson lessonContent;
 }

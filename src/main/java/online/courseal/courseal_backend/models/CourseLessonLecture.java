@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.courseal.courseal_backend.coursedata.editorjs.EditorJSContent;
+import online.courseal.courseal_backend.coursedata.lessons.CoursealLesson;
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonLecture;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -28,9 +29,9 @@ public class CourseLessonLecture {
     @Setter
     @Column(nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
-    private CoursealLessonLecture lecture;
+    private CoursealLesson lecture;
 
-    public CourseLessonLecture(CourseLesson courseLesson, CoursealLessonLecture lecture){
+    public CourseLessonLecture(CourseLesson courseLesson, CoursealLesson lecture){
         this.courseLesson = courseLesson;
         this.lecture = lecture;
     }
