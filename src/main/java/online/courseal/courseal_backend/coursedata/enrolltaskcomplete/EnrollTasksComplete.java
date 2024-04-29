@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", include = JsonTypeInfo.As.EXTERNAL_PROPERTY)
 @JsonSubTypes(value = {
         @JsonSubTypes.Type(value = EnrollTasksCompleteExam.class, name = "exam"),
-        @JsonSubTypes.Type(value = EnrollTasksCompleteLecture.class, name = "exam"),
-        @JsonSubTypes.Type(value = EnrollTasksCompletePracticeTraining.class, name = "exam")
+        @JsonSubTypes.Type(value = EnrollTasksCompleteLecture.class, name = "lecture"),
+        @JsonSubTypes.Type(value = EnrollTasksCompletePracticeTraining.class, name = "practice_training")
 })
 public abstract sealed class EnrollTasksComplete
         permits EnrollTasksCompleteExam, EnrollTasksCompleteLecture, EnrollTasksCompletePracticeTraining {

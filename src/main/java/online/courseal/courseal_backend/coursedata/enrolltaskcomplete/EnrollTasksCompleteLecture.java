@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class EnrollTasksCompleteLecture extends EnrollTasksComplete {
