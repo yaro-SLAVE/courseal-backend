@@ -54,16 +54,16 @@ public class CourseManagementController {
 
         List<CourseMaintainer> courseMaintainers = users.get().getCourseMaintainers();
 
-        ArrayList<MaintainerCoursesListResponse> maintainerCoursesListRespons = new ArrayList<>();
+        ArrayList<MaintainerCoursesListResponse> maintainerCoursesListResponse = new ArrayList<>();
 
         for (CourseMaintainer courseMaintainer: courseMaintainers.stream().toList()){
-            maintainerCoursesListRespons.add(new MaintainerCoursesListResponse(
+            maintainerCoursesListResponse.add(new MaintainerCoursesListResponse(
                     courseMaintainer.getCourse().getCourseId(),
                     courseMaintainer.getCourse().getCourseName(),
                     courseMaintainer.getPermissions()));
         }
 
-        return ResponseEntity.ok(maintainerCoursesListRespons);
+        return ResponseEntity.ok(maintainerCoursesListResponse);
     }
 
     @GetMapping("/{course_id}")
