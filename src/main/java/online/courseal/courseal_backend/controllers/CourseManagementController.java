@@ -8,7 +8,7 @@ import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.requests.*;
 import online.courseal.courseal_backend.responses.CourseInfoResponse;
 import online.courseal.courseal_backend.responses.MaintainerCoursesListResponse;
-import online.courseal.courseal_backend.responses.CreateCourseResponse;
+import online.courseal.courseal_backend.responses.CourseCreatingResponse;
 import online.courseal.courseal_backend.services.CourseMaintainerService;
 import online.courseal.courseal_backend.services.CourseService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
@@ -44,7 +44,7 @@ public class CourseManagementController {
 
         courseMaintainerService.createCourseMaintainer(course, users.get());
 
-        return ResponseEntity.ok(new CreateCourseResponse(course.getCourseId()));
+        return ResponseEntity.ok(new CourseCreatingResponse(course.getCourseId()));
     }
 
     @GetMapping
