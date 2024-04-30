@@ -5,7 +5,7 @@ import lombok.Getter;
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLesson;
 
 @Getter
-public class LessonCreatingRequest {
+public class LessonCreatingOrUpdatingRequest {
     @JsonProperty("lesson_name")
     private String lessonName;
     @JsonProperty("lesson_progress_needed")
