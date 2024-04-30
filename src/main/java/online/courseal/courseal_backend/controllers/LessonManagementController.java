@@ -12,6 +12,8 @@ import online.courseal.courseal_backend.responses.LessonCreatingResponse;
 import online.courseal.courseal_backend.responses.LessonsListResponse;
 import online.courseal.courseal_backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -128,9 +130,10 @@ public class LessonManagementController {
         }
 
         List<LessonsListResponse> lessonsList = new ArrayList<>();
-        ArrayList<Integer> tasks = new ArrayList<>();
 
         for (CourseLesson courseLesson: courses.get().getCourseLessons()) {
+            ArrayList<Integer> tasks = new ArrayList<>();
+
             switch (courseLesson.getLessonType()) {
                 case LECTURE:
                     lessonsList.add(new LessonsListResponse(
@@ -152,8 +155,6 @@ public class LessonManagementController {
                             courseLesson.getProgressNeeded(),
                             new CoursealLessonExam(tasks)
                     ));
-
-                    tasks.clear();
                     break;
 
                 case PRACTICE:
@@ -165,10 +166,8 @@ public class LessonManagementController {
                             courseLesson.getCourseLessonId(),
                             courseLesson.getLessonName(),
                             courseLesson.getProgressNeeded(),
-                            new CoursealLessonPractice(tasks)
+                            new CoursealLessonPractice(tasks.stream().toList())
                     ));
-
-                    tasks.clear();
                     break;
 
                 case PRACTICE_TRAINING:
@@ -186,7 +185,7 @@ public class LessonManagementController {
     }
 
     @PutMapping("/{course_id}/lesson/{lesson_id}")
-    public void updateLesson(@RequestBody LessonCreatingOrUpdatingRequest lessonUpdatingRequest, @PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId){
+    public HttpStatus updateLesson(@RequestBody LessonCreatingOrUpdatingRequest lessonUpdatingRequest, @PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -268,10 +267,12 @@ public class LessonManagementController {
                 courseLessons.get().setLessonType(LessonType.PRACTICE_TRAINING);
                 break;
         }
+
+        return HttpStatus.NO_CONTENT;
     }
 
     @DeleteMapping("/{course_id}/lesson/{lesson_id}")
-    public void deleteLesson(@PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId){
+    public HttpStatus deleteLesson(@PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -294,5 +295,7 @@ public class LessonManagementController {
         }
 
         courseLessonService.delete(courseLessons.get());
+
+        return HttpStatus.NO_CONTENT;
     }
 }
