@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -114,6 +115,8 @@ public class LessonManagementController {
 
             case CoursealLessonTraining training -> courseLesson.setLessonType(LessonType.PRACTICE_TRAINING);
         }
+
+        courses.get().setLastUpdatedLessons(LocalDateTime.now());
 
         return ResponseEntity.ok(new LessonCreatingResponse(courseLesson.getCourseLessonId()));
     }
@@ -274,6 +277,9 @@ public class LessonManagementController {
             case CoursealLessonTraining training -> courseLessons.get().setLessonType(LessonType.PRACTICE_TRAINING);
         }
 
+        courseLessons.get().setLastUpdated(LocalDateTime.now());
+        courses.get().setLastUpdatedLessons(LocalDateTime.now());
+
         return HttpStatus.NO_CONTENT;
     }
 
@@ -301,6 +307,8 @@ public class LessonManagementController {
         }
 
         courseLessonService.delete(courseLessons.get());
+
+        courses.get().setLastUpdatedLessons(LocalDateTime.now());
 
         return HttpStatus.NO_CONTENT;
     }

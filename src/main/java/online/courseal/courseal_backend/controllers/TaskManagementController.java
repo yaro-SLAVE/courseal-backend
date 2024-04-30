@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -52,6 +53,8 @@ public class TaskManagementController {
         }
 
         CourseTask courseTask = courseTaskService.createCourseTask(courses.get(), taskCreatingRequest.getTaskName(), taskCreatingRequest.getTask());
+
+        courses.get().setLastUpdatedTasks(LocalDateTime.now());
 
         return ResponseEntity.ok(new TaskCreatingResponse(courseTask.getCourseTaskId()));
     }
@@ -112,6 +115,8 @@ public class TaskManagementController {
         courseTasks.get().setTaskName(taskUpdatingRequest.getTaskName());
         courseTasks.get().setTask(taskUpdatingRequest.getTask());
         courseTaskService.save(courseTasks.get());
+
+        courses.get().setLastUpdatedTasks(LocalDateTime.now());
     }
 
     @DeleteMapping("/{course_id}/task/{task_id}")
@@ -138,5 +143,7 @@ public class TaskManagementController {
         }
 
         courseTaskService.delete(courseTasks.get());
+
+        courses.get().setLastUpdatedTasks(LocalDateTime.now());
     }
 }
