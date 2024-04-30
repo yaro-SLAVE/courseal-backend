@@ -20,7 +20,7 @@ public class CourseLessonLectureService {
         return courseLessonLectureRepository.findByCourseLessonLectureId(courseLessonLectureId);
     }
 
-    public CourseLessonLecture createCourseLessonLecture(CourseLesson courseLesson, CoursealLesson lecture) {
+    public CourseLessonLecture createCourseLessonLecture(CourseLesson courseLesson, EditorJSContent lecture) {
         CourseLessonLecture courseLessonLecture = new CourseLessonLecture(
                 courseLesson,
                 lecture
