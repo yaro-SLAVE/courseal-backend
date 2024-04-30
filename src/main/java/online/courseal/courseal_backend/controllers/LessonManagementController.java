@@ -64,19 +64,19 @@ public class LessonManagementController {
         CourseLesson courseLesson = courseLessonService.createCourseLesson(
                 courses.get(),
                 lessonCreatingRequest.getLessonName(),
-                lessonCreatingRequest.getLessonProgressNeeded(),
-                lessonCreatingRequest.getLesson().getClass().getTypeName()
+                lessonCreatingRequest.getLessonProgressNeeded()
         );
 
-        switch (lessonCreatingRequest.getLesson().getClass().getTypeName()) {
-            case "lecture":
+        switch (lessonCreatingRequest.getLesson()) {
+            case CoursealLessonLecture lecture -> {
                 courseLessonLectureService.createCourseLessonLecture(
                         courseLesson,
-                        ((CoursealLessonLecture) lessonCreatingRequest.getLesson()).getLectureContent()
+                        lecture.getLectureContent()
                 );
-                break;
+                courseLesson.setLessonType(LessonType.LECTURE);
+            }
 
-            case "exam":
+            case CoursealLessonExam exam -> {
                 for (Integer courseTaskId: ((CoursealLessonExam) lessonCreatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -89,10 +89,12 @@ public class LessonManagementController {
                     }
 
                     CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLesson, courseTasks.get());
-                }
-                break;
 
-            case "practice":
+                    courseLesson.setLessonType(LessonType.EXAM);
+                }
+            }
+
+            case CoursealLessonPractice practice -> {
                 for (Integer courseTaskId: ((CoursealLessonPractice) lessonCreatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -105,8 +107,12 @@ public class LessonManagementController {
                     }
 
                     CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLesson, courseTasks.get());
+
+                    courseLesson.setLessonType(LessonType.PRACTICE);
                 }
-                break;
+            }
+
+            case CoursealLessonTraining training -> courseLesson.setLessonType(LessonType.PRACTICE_TRAINING);
         }
 
         return ResponseEntity.ok(new LessonCreatingResponse(courseLesson.getCourseLessonId()));
@@ -220,17 +226,16 @@ public class LessonManagementController {
         courseLessons.get().setLessonName(lessonUpdatingRequest.getLessonName());
         courseLessons.get().setProgressNeeded(lessonUpdatingRequest.getLessonProgressNeeded());
 
-        switch (lessonUpdatingRequest.getLesson().getClass().getTypeName()) {
-            case "lecture":
-                courseLessons.get().setLessonType(LessonType.LECTURE);
+        switch (lessonUpdatingRequest.getLesson()) {
+            case CoursealLessonLecture lecture -> {
                 courseLessonLectureService.createCourseLessonLecture(
                         courseLessons.get(),
-                        ((CoursealLessonLecture) lessonUpdatingRequest.getLesson()).getLectureContent()
+                        lecture.getLectureContent()
                 );
-                break;
+                courseLessons.get().setLessonType(LessonType.LECTURE);
+            }
 
-            case "exam":
-                courseLessons.get().setLessonType(LessonType.EXAM);
+            case CoursealLessonExam exam -> {
                 for (Integer courseTaskId: ((CoursealLessonExam) lessonUpdatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -243,11 +248,12 @@ public class LessonManagementController {
                     }
 
                     CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLessons.get(), courseTasks.get());
-                }
-                break;
 
-            case "practice":
-                courseLessons.get().setLessonType(LessonType.PRACTICE);
+                    courseLessons.get().setLessonType(LessonType.EXAM);
+                }
+            }
+
+            case CoursealLessonPractice practice -> {
                 for (Integer courseTaskId: ((CoursealLessonPractice) lessonUpdatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -260,12 +266,12 @@ public class LessonManagementController {
                     }
 
                     CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLessons.get(), courseTasks.get());
-                }
-                break;
 
-            case "training":
-                courseLessons.get().setLessonType(LessonType.PRACTICE_TRAINING);
-                break;
+                    courseLessons.get().setLessonType(LessonType.PRACTICE);
+                }
+            }
+
+            case CoursealLessonTraining training -> courseLessons.get().setLessonType(LessonType.PRACTICE_TRAINING);
         }
 
         return HttpStatus.NO_CONTENT;

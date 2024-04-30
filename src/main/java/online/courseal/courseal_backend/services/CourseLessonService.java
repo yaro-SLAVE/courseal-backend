@@ -19,31 +19,11 @@ public class CourseLessonService {
         return courseLessonRepository.findByCourseLessonId(courseLessonId);
     }
 
-    public CourseLesson createCourseLesson(Course course, String lessonName, Integer progressNeeded, String lessonType) {
-        LessonType type = null;
-        switch(lessonType) {
-            case "lecture":
-                type = LessonType.LECTURE;
-                break;
-
-            case "exam":
-                type = LessonType.EXAM;
-                break;
-
-            case "practice":
-                type = LessonType.PRACTICE;
-                break;
-
-            case "training":
-                type = LessonType.PRACTICE_TRAINING;
-                break;
-        }
-
+    public CourseLesson createCourseLesson(Course course, String lessonName, Integer progressNeeded) {
         CourseLesson courseLesson = new CourseLesson(
                 course,
                 lessonName,
                 null,
-                type,
                 progressNeeded,
                 LocalDateTime.now()
         );
