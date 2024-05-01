@@ -14,6 +14,7 @@ import online.courseal.courseal_backend.services.CourseService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
 import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -102,7 +103,7 @@ public class CourseManagementController {
     }
 
     @PutMapping("/{course_id}")
-    public void updateCourseInfo(@RequestBody CourseUpdatingRequest courseUpdatingRequest, @PathVariable("course_id") Integer courseId){
+    public HttpStatus updateCourseInfo(@RequestBody CourseUpdatingRequest courseUpdatingRequest, @PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -121,10 +122,12 @@ public class CourseManagementController {
         courses.get().setCourseName(courseUpdatingRequest.getCourseName());
         courses.get().setCourseDescription(courseUpdatingRequest.getCourseDescription());
         courseService.save(courses.get());
+
+        return HttpStatus.NO_CONTENT;
     }
 
     @DeleteMapping("/{course_id}")
-    public void deleteCourse(@PathVariable("course_id") Integer courseId){
+    public HttpStatus deleteCourse(@PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -141,5 +144,7 @@ public class CourseManagementController {
         }
 
         courseService.delete(courses.get());
+
+        return HttpStatus.NO_CONTENT;
     }
 }

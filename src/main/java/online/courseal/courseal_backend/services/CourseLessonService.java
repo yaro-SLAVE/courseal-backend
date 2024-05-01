@@ -19,6 +19,10 @@ public class CourseLessonService {
         return courseLessonRepository.findByCourseLessonId(courseLessonId);
     }
 
+    public Optional<CourseLesson> findByLessonLevelAndCourse(Integer lessonLevel, Course course) {
+        return courseLessonRepository.findByLessonLevelAndCourse(lessonLevel, course);
+    }
+
     public CourseLesson createCourseLesson(Course course, String lessonName, Integer progressNeeded) {
         CourseLesson courseLesson = new CourseLesson(
                 course,

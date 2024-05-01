@@ -13,6 +13,7 @@ import online.courseal.courseal_backend.services.CourseTaskService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
 import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -90,7 +91,7 @@ public class TaskManagementController {
     }
 
     @PutMapping("/{course_id}/task/{task_id}")
-    public void updateTask(@RequestBody TaskUpdatingRequest taskUpdatingRequest, @PathVariable("course_id") Integer courseId, @PathVariable("task_id") Integer taskId){
+    public HttpStatus updateTask(@RequestBody TaskUpdatingRequest taskUpdatingRequest, @PathVariable("course_id") Integer courseId, @PathVariable("task_id") Integer taskId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = this.userService.findByUserTag(userDetails.getUserTag());
 
@@ -117,10 +118,12 @@ public class TaskManagementController {
         courseTaskService.save(courseTasks.get());
 
         courses.get().setLastUpdatedTasks(LocalDateTime.now());
+
+        return HttpStatus.NO_CONTENT;
     }
 
     @DeleteMapping("/{course_id}/task/{task_id}")
-    public void deleteTask(@PathVariable("course_id") Integer courseId, @PathVariable("task_id") Integer taskId){
+    public HttpStatus deleteTask(@PathVariable("course_id") Integer courseId, @PathVariable("task_id") Integer taskId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = this.userService.findByUserTag(userDetails.getUserTag());
 
@@ -145,5 +148,7 @@ public class TaskManagementController {
         courseTaskService.delete(courseTasks.get());
 
         courses.get().setLastUpdatedTasks(LocalDateTime.now());
+
+        return HttpStatus.NO_CONTENT;
     }
 }
