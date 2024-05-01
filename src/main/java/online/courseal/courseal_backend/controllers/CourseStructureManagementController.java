@@ -5,6 +5,7 @@ import online.courseal.courseal_backend.models.Course;
 import online.courseal.courseal_backend.models.CourseLesson;
 import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.requests.CourseStructureUpdatingRequest;
+import online.courseal.courseal_backend.requests.data.CourseStructureUpdatingData;
 import online.courseal.courseal_backend.responses.CourseStructureListResponse;
 import online.courseal.courseal_backend.responses.data.CourseStructureData;
 import online.courseal.courseal_backend.services.CourseLessonService;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -54,19 +56,21 @@ public class CourseStructureManagementController {
 
         ArrayList<CourseStructureListResponse> structureList = new ArrayList<>();
 
-        Optional<CourseLesson> courseLessons = courses.get().getCourseLessons().stream().max(Comparator.comparing(CourseLesson::getLessonLevel));
-        Integer maxLevel = courseLessons.get().getLessonLevel();
+        if (!courses.get().getCourseLessons().isEmpty()) {
+            Optional<CourseLesson> courseLessons = courses.get().getCourseLessons().stream().max(Comparator.comparing(CourseLesson::getLessonLevel));
+            Integer maxLevel = courseLessons.get().getLessonLevel();
 
-        if (maxLevel != null) {
-            for (int i = 0; i <= maxLevel; ++i) {
-                courseLessons = courseLessonService.findByLessonLevelAndCourse(i, courses.get());
-                ArrayList<CourseStructureData> data = new ArrayList<>();
+            if (maxLevel != null) {
+                for (int i = 0; i <= maxLevel; ++i) {
+                    courseLessons = courseLessonService.findByLessonLevelAndCourse(i, courses.get());
+                    ArrayList<CourseStructureData> data = new ArrayList<>();
 
-                for (CourseLesson courseLesson : courseLessons.stream().toList()) {
-                    data.add(new CourseStructureData(courseLesson.getCourseLessonId()));
+                    for (CourseLesson courseLesson : courseLessons.stream().toList()) {
+                        data.add(new CourseStructureData(courseLesson.getCourseLessonId()));
+                    }
+
+                    structureList.add(new CourseStructureListResponse(data));
                 }
-
-                structureList.add(new CourseStructureListResponse(data));
             }
         }
 
@@ -89,6 +93,25 @@ public class CourseStructureManagementController {
         if (!userIsMaintainer) {
             throw new BadRequestException();
         }
+
+        for (List<CourseStructureUpdatingData> list: courseStructureUpdatingRequest.getData()) {
+            int index = courseStructureUpdatingRequest.getData().indexOf(list);
+            for (CourseStructureUpdatingData id: list) {
+                Optional<CourseLesson> courseLessons = courseLessonService.findByCourseLessonId(id.getLessonId());
+
+                if (courseLessons.isEmpty() || !courses.get().getCourseLessons().contains(courseLessons.get())) {
+                    throw new BadRequestException();
+                }
+
+                courseLessons.get().setLessonLevel(index);
+                courseLessons.get().setLastUpdated(LocalDateTime.now());
+                courseLessonService.save(courseLessons.get());
+            }
+        }
+
+        courses.get().setLastUpdatedLessons(LocalDateTime.now());
+        courses.get().setLastUpdatedStructure(LocalDateTime.now());
+        courseService.save(courses.get());
 
         return HttpStatus.NO_CONTENT;
     }

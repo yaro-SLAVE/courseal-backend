@@ -57,6 +57,8 @@ public class TaskManagementController {
 
         courses.get().setLastUpdatedTasks(LocalDateTime.now());
 
+        courseService.save(courses.get());
+
         return ResponseEntity.ok(new TaskCreatingResponse(courseTask.getCourseTaskId()));
     }
 
@@ -119,6 +121,8 @@ public class TaskManagementController {
 
         courses.get().setLastUpdatedTasks(LocalDateTime.now());
 
+        courseService.save(courses.get());
+
         return HttpStatus.NO_CONTENT;
     }
 
@@ -148,6 +152,8 @@ public class TaskManagementController {
         courseTaskService.delete(courseTasks.get());
 
         courses.get().setLastUpdatedTasks(LocalDateTime.now());
+
+        courseService.save(courses.get());
 
         return HttpStatus.NO_CONTENT;
     }
