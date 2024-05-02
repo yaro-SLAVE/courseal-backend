@@ -23,13 +23,14 @@ public class CourseLessonService {
         return courseLessonRepository.findByLessonLevelAndCourse(lessonLevel, course);
     }
 
-    public CourseLesson createCourseLesson(Course course, String lessonName, Integer progressNeeded) {
+    public CourseLesson createCourseLesson(Course course, String lessonName, Integer progressNeeded, LessonType lessonType) {
         CourseLesson courseLesson = new CourseLesson(
                 course,
                 lessonName,
                 null,
                 progressNeeded,
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                lessonType
         );
 
         courseLesson = courseLessonRepository.save(courseLesson);

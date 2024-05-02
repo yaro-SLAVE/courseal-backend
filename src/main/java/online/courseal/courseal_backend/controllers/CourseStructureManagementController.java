@@ -63,13 +63,13 @@ public class CourseStructureManagementController {
             if (maxLevel != null) {
                 for (int i = 0; i <= maxLevel; ++i) {
                     courseLessons = courseLessonService.findByLessonLevelAndCourse(i, courses.get());
-                    ArrayList<CourseStructureData> data = new ArrayList<>();
+                    CourseStructureListResponse data = new CourseStructureListResponse();
 
                     for (CourseLesson courseLesson : courseLessons.stream().toList()) {
                         data.add(new CourseStructureData(courseLesson.getCourseLessonId()));
                     }
 
-                    structureList.add(new CourseStructureListResponse(data));
+                    structureList.add(data);
                 }
             }
         }
@@ -94,8 +94,8 @@ public class CourseStructureManagementController {
             throw new BadRequestException();
         }
 
-        for (List<CourseStructureUpdatingData> list: courseStructureUpdatingRequest.getData()) {
-            int index = courseStructureUpdatingRequest.getData().indexOf(list);
+        for (ArrayList<CourseStructureUpdatingData> list: courseStructureUpdatingRequest) {
+            int index = courseStructureUpdatingRequest.indexOf(list);
             for (CourseStructureUpdatingData id: list) {
                 Optional<CourseLesson> courseLessons = courseLessonService.findByCourseLessonId(id.getLessonId());
 

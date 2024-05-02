@@ -47,10 +47,10 @@ public class CourseLesson {
     @OneToMany(mappedBy = "courseLesson", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseLessonTask> courseLessonTasks;
-    @OneToOne(optional=false, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private CourseLessonLecture courseLessonLectures;
+    @OneToOne(optional=true, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "courseLesson")
+    private CourseLessonLecture courseLessonLecture;
 
-    public CourseLesson(Course course, String lessonName, Integer lessonLevel, Integer progressNeeded, LocalDateTime lastUpdated){
+    public CourseLesson(Course course, String lessonName, Integer lessonLevel, Integer progressNeeded, LocalDateTime lastUpdated, LessonType lessonType){
         this.course = course;
         this.lessonName = lessonName;
         this.lessonLevel = lessonLevel;
