@@ -8,12 +8,13 @@ import online.courseal.courseal_backend.models.User;
 import online.courseal.courseal_backend.requests.*;
 import online.courseal.courseal_backend.responses.CourseInfoResponse;
 import online.courseal.courseal_backend.responses.MaintainerCoursesListResponse;
-import online.courseal.courseal_backend.responses.CreateCourseResponse;
+import online.courseal.courseal_backend.responses.CourseCreatingResponse;
 import online.courseal.courseal_backend.services.CourseMaintainerService;
 import online.courseal.courseal_backend.services.CourseService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
 import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class CourseManagementController {
 
         courseMaintainerService.createCourseMaintainer(course, users.get());
 
-        return ResponseEntity.ok(new CreateCourseResponse(course.getCourseId()));
+        return ResponseEntity.ok(new CourseCreatingResponse(course.getCourseId()));
     }
 
     @GetMapping
@@ -54,16 +55,16 @@ public class CourseManagementController {
 
         List<CourseMaintainer> courseMaintainers = users.get().getCourseMaintainers();
 
-        ArrayList<MaintainerCoursesListResponse> maintainerCoursesListRespons = new ArrayList<>();
+        ArrayList<MaintainerCoursesListResponse> maintainerCoursesListResponse = new ArrayList<>();
 
         for (CourseMaintainer courseMaintainer: courseMaintainers.stream().toList()){
-            maintainerCoursesListRespons.add(new MaintainerCoursesListResponse(
+            maintainerCoursesListResponse.add(new MaintainerCoursesListResponse(
                     courseMaintainer.getCourse().getCourseId(),
                     courseMaintainer.getCourse().getCourseName(),
                     courseMaintainer.getPermissions()));
         }
 
-        return ResponseEntity.ok(maintainerCoursesListRespons);
+        return ResponseEntity.ok(maintainerCoursesListResponse);
     }
 
     @GetMapping("/{course_id}")
@@ -102,7 +103,7 @@ public class CourseManagementController {
     }
 
     @PutMapping("/{course_id}")
-    public void updateCourseInfo(@RequestBody CourseUpdatingRequest courseUpdatingRequest, @PathVariable("course_id") Integer courseId){
+    public HttpStatus updateCourseInfo(@RequestBody CourseUpdatingRequest courseUpdatingRequest, @PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -121,10 +122,12 @@ public class CourseManagementController {
         courses.get().setCourseName(courseUpdatingRequest.getCourseName());
         courses.get().setCourseDescription(courseUpdatingRequest.getCourseDescription());
         courseService.save(courses.get());
+
+        return HttpStatus.NO_CONTENT;
     }
 
     @DeleteMapping("/{course_id}")
-    public void deleteCourse(@PathVariable("course_id") Integer courseId){
+    public HttpStatus deleteCourse(@PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -141,5 +144,7 @@ public class CourseManagementController {
         }
 
         courseService.delete(courses.get());
+
+        return HttpStatus.NO_CONTENT;
     }
 }

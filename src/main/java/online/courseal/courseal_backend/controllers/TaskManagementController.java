@@ -13,10 +13,12 @@ import online.courseal.courseal_backend.services.CourseTaskService;
 import online.courseal.courseal_backend.services.UserDetailsImpl;
 import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -53,6 +55,10 @@ public class TaskManagementController {
 
         CourseTask courseTask = courseTaskService.createCourseTask(courses.get(), taskCreatingRequest.getTaskName(), taskCreatingRequest.getTask());
 
+        courses.get().setLastUpdatedTasks(LocalDateTime.now());
+
+        courseService.save(courses.get());
+
         return ResponseEntity.ok(new TaskCreatingResponse(courseTask.getCourseTaskId()));
     }
 
@@ -87,7 +93,7 @@ public class TaskManagementController {
     }
 
     @PutMapping("/{course_id}/task/{task_id}")
-    public void updateTask(@RequestBody TaskUpdatingRequest taskUpdatingRequest, @PathVariable("course_id") Integer courseId, @PathVariable("task_id") Integer taskId){
+    public HttpStatus updateTask(@RequestBody TaskUpdatingRequest taskUpdatingRequest, @PathVariable("course_id") Integer courseId, @PathVariable("task_id") Integer taskId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = this.userService.findByUserTag(userDetails.getUserTag());
 
@@ -112,10 +118,16 @@ public class TaskManagementController {
         courseTasks.get().setTaskName(taskUpdatingRequest.getTaskName());
         courseTasks.get().setTask(taskUpdatingRequest.getTask());
         courseTaskService.save(courseTasks.get());
+
+        courses.get().setLastUpdatedTasks(LocalDateTime.now());
+
+        courseService.save(courses.get());
+
+        return HttpStatus.NO_CONTENT;
     }
 
     @DeleteMapping("/{course_id}/task/{task_id}")
-    public void deleteTask(@PathVariable("course_id") Integer courseId, @PathVariable("task_id") Integer taskId){
+    public HttpStatus deleteTask(@PathVariable("course_id") Integer courseId, @PathVariable("task_id") Integer taskId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = this.userService.findByUserTag(userDetails.getUserTag());
 
@@ -138,5 +150,11 @@ public class TaskManagementController {
         }
 
         courseTaskService.delete(courseTasks.get());
+
+        courses.get().setLastUpdatedTasks(LocalDateTime.now());
+
+        courseService.save(courses.get());
+
+        return HttpStatus.NO_CONTENT;
     }
 }

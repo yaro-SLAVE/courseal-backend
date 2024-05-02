@@ -50,7 +50,7 @@ public class CourseLesson {
     @OneToOne(optional=false, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private CourseLessonLecture courseLessonLectures;
 
-    public CourseLesson(Course course, String lessonName, Integer lessonLevel, LessonType lessonType, Integer progressNeeded, LocalDateTime lastUpdated){
+    public CourseLesson(Course course, String lessonName, Integer lessonLevel, Integer progressNeeded, LocalDateTime lastUpdated){
         this.course = course;
         this.lessonName = lessonName;
         this.lessonLevel = lessonLevel;

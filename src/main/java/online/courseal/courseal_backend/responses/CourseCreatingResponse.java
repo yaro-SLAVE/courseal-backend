@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class CreateCourseResponse {
+public class CourseCreatingResponse {
     @JsonProperty("course_id")
     private Integer courseId;
 }
