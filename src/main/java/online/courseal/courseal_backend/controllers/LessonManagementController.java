@@ -64,7 +64,13 @@ public class LessonManagementController {
         CourseLesson courseLesson = courseLessonService.createCourseLesson(
                 courses.get(),
                 lessonCreatingRequest.getLessonName(),
-                lessonCreatingRequest.getLessonProgressNeeded()
+                lessonCreatingRequest.getLessonProgressNeeded(),
+                switch(lessonCreatingRequest.getLesson()) {
+                    case CoursealLessonLecture ignored -> LessonType.LECTURE;
+                    case CoursealLessonPractice ignored -> LessonType.PRACTICE;
+                    case CoursealLessonExam ignored -> LessonType.EXAM;
+                    case CoursealLessonTraining ignored -> LessonType.PRACTICE_TRAINING;
+                }
         );
 
         switch (lessonCreatingRequest.getLesson()) {
@@ -149,7 +155,7 @@ public class LessonManagementController {
                             courseLesson.getCourseLessonId(),
                             courseLesson.getLessonName(),
                             courseLesson.getProgressNeeded(),
-                            new CoursealLessonLecture(courseLesson.getCourseLessonLectures().getLecture())
+                            new CoursealLessonLecture(courseLesson.getCourseLessonLecture().getLecture())
                     ));
                     break;
 
@@ -222,8 +228,8 @@ public class LessonManagementController {
             }
         }
 
-        if (courseLessons.get().getCourseLessonLectures() != null) {
-            courseLessonLectureService.delete(courseLessons.get().getCourseLessonLectures());
+        if (courseLessons.get().getCourseLessonLecture() != null) {
+            courseLessonLectureService.delete(courseLessons.get().getCourseLessonLecture());
         }
 
         courseLessons.get().setLessonName(lessonUpdatingRequest.getLessonName());
