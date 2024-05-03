@@ -29,10 +29,10 @@ public class CourseEnrollment {
     private User user;
     @Setter
     @Column(nullable = false)
-    private Integer xp;
+    private Integer xp = 0;
     @Setter
     @Column(nullable = false)
-    private Integer rating;
+    private Integer rating = 0;
     @OneToMany(mappedBy = "courseEnrollment", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseEnrollmentTaskStatus> courseEnrollmentTaskStatuses;
@@ -40,10 +40,8 @@ public class CourseEnrollment {
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseEnrollmentLessonStatus> courseEnrollmentLessonStatuses;
 
-    public CourseEnrollment(Course course, User user, Integer xp, Integer rating){
+    public CourseEnrollment(Course course, User user){
         this.course = course;
         this.user = user;
-        this.xp = xp;
-        this.rating = rating;
     }
 }
