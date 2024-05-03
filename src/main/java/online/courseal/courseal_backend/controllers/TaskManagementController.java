@@ -1,5 +1,6 @@
 package online.courseal.courseal_backend.controllers;
 
+import jakarta.validation.Valid;
 import online.courseal.courseal_backend.errors.exceptions.BadRequestException;
 import online.courseal.courseal_backend.models.Course;
 import online.courseal.courseal_backend.models.CourseTask;
@@ -37,7 +38,7 @@ public class TaskManagementController {
 
 
     @PostMapping("/{course_id}/task")
-    public ResponseEntity<?> createTask(@RequestBody TaskCreatingRequest taskCreatingRequest, @PathVariable("course_id") Integer courseId){
+    public ResponseEntity<?> createTask(@Valid @RequestBody TaskCreatingRequest taskCreatingRequest, @PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = this.userService.findByUserTag(userDetails.getUserTag());
 

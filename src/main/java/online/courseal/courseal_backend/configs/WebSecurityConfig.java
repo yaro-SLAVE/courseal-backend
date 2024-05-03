@@ -92,6 +92,7 @@ public class WebSecurityConfig {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/api/static/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/user-management/register").permitAll()
                         .requestMatchers("/api/courseal-info").permitAll()

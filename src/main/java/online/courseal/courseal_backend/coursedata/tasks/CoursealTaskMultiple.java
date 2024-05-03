@@ -20,6 +20,6 @@ import java.util.List;
 public final class CoursealTaskMultiple extends CoursealTask{
     @JsonProperty("body")
     private EditorJSContent body;
-    @JsonProperty("option")
+    @JsonProperty("options")
     private List<TaskMultipleOption> options;
 }

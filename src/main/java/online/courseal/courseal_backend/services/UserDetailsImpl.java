@@ -6,21 +6,23 @@ import online.courseal.courseal_backend.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Getter
 public class UserDetailsImpl implements UserDetails {
-    private static final long serialVersionUID = 1l;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private Integer userId;
-    private String userTag;
-    private String userName;
+    private final Integer userId;
+    private final String userTag;
+    private final String userName;
     @JsonIgnore
     private String password;
-    private String email;
-    private LocalDateTime dateCreated;
-    private boolean canCreateCourses;
+    private final String email;
+    private final LocalDateTime dateCreated;
+    private final boolean canCreateCourses;
 
     public UserDetailsImpl(Integer userId, String userTag, String username, String password,
                            String email, LocalDateTime dateCreated,
@@ -95,10 +97,7 @@ public class UserDetailsImpl implements UserDetails {
             return false;
         UserDetailsImpl other = (UserDetailsImpl) obj;
         if (userId == null) {
-            if (other.userId != null)
-                return false;
-        } else if (!userId.equals(other.userId))
-            return false;
-        return true;
+            return other.userId == null;
+        } else return userId.equals(other.userId);
     }
 }

@@ -1,5 +1,6 @@
 package online.courseal.courseal_backend.controllers;
 
+import jakarta.validation.Valid;
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonExam;
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonLecture;
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonPractice;
@@ -45,7 +46,7 @@ public class LessonManagementController {
     CourseTaskService courseTaskService;
 
     @PostMapping("/{course_id}/lesson")
-    public ResponseEntity<?> createLesson(@RequestBody LessonCreatingOrUpdatingRequest lessonCreatingRequest, @PathVariable("course_id") Integer courseId){
+    public ResponseEntity<?> createLesson(@Valid @RequestBody LessonCreatingOrUpdatingRequest lessonCreatingRequest, @PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -82,7 +83,7 @@ public class LessonManagementController {
                 courseLesson.setLessonType(LessonType.LECTURE);
             }
 
-            case CoursealLessonExam exam -> {
+            case CoursealLessonExam ignored -> {
                 for (Integer courseTaskId: ((CoursealLessonExam) lessonCreatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -100,7 +101,7 @@ public class LessonManagementController {
                 }
             }
 
-            case CoursealLessonPractice practice -> {
+            case CoursealLessonPractice ignored -> {
                 for (Integer courseTaskId: ((CoursealLessonPractice) lessonCreatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -118,7 +119,7 @@ public class LessonManagementController {
                 }
             }
 
-            case CoursealLessonTraining training -> courseLesson.setLessonType(LessonType.PRACTICE_TRAINING);
+            case CoursealLessonTraining ignored -> courseLesson.setLessonType(LessonType.PRACTICE_TRAINING);
         }
 
         courses.get().setLastUpdatedLessons(LocalDateTime.now());
@@ -200,7 +201,7 @@ public class LessonManagementController {
     }
 
     @PutMapping("/{course_id}/lesson/{lesson_id}")
-    public HttpStatus updateLesson(@RequestBody LessonCreatingOrUpdatingRequest lessonUpdatingRequest, @PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId){
+    public HttpStatus updateLesson(@Valid @RequestBody LessonCreatingOrUpdatingRequest lessonUpdatingRequest, @PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -244,7 +245,7 @@ public class LessonManagementController {
                 courseLessons.get().setLessonType(LessonType.LECTURE);
             }
 
-            case CoursealLessonExam exam -> {
+            case CoursealLessonExam ignored -> {
                 for (Integer courseTaskId: ((CoursealLessonExam) lessonUpdatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -262,7 +263,7 @@ public class LessonManagementController {
                 }
             }
 
-            case CoursealLessonPractice practice -> {
+            case CoursealLessonPractice ignored -> {
                 for (Integer courseTaskId: ((CoursealLessonPractice) lessonUpdatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -280,7 +281,7 @@ public class LessonManagementController {
                 }
             }
 
-            case CoursealLessonTraining training -> courseLessons.get().setLessonType(LessonType.PRACTICE_TRAINING);
+            case CoursealLessonTraining ignored -> courseLessons.get().setLessonType(LessonType.PRACTICE_TRAINING);
         }
 
         courseLessons.get().setLastUpdated(LocalDateTime.now());

@@ -11,6 +11,6 @@ public class EditorJSImageData {
     private EditorJSImageFile file;
     private String caption;
     private Boolean withBorder;
-    private Boolean withBackGround;
+    private Boolean withBackground;
     private Boolean stretched;
 }

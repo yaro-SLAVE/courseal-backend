@@ -2,6 +2,7 @@ package online.courseal.courseal_backend.coursedata.lessons;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,5 +16,6 @@ import online.courseal.courseal_backend.coursedata.editorjs.EditorJSContent;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class CoursealLessonLecture extends CoursealLesson {
     @JsonProperty("lecture_content")
+    @NotNull
     private EditorJSContent lectureContent;
 }

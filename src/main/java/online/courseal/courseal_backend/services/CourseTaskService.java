@@ -34,6 +34,6 @@ public class CourseTaskService {
     }
 
     public void delete(CourseTask courseTask) {
-        courseTaskRepository.save(courseTask);
+        courseTaskRepository.delete(courseTask);
     }
 }
