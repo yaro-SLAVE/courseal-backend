@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
-    private HttpRequestEndpointChecker endpointChecker;
+    private final HttpRequestEndpointChecker endpointChecker;
 
     public AuthEntryPointJwt(HttpRequestEndpointChecker endpointChecker) {
         this.endpointChecker = endpointChecker;

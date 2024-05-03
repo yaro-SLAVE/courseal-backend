@@ -9,7 +9,7 @@ import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import java.io.IOException;
 
 public  class AccessDeniedHandler extends AccessDeniedHandlerImpl {
-    private HttpRequestEndpointChecker endpointChecker;
+    private final HttpRequestEndpointChecker endpointChecker;
 
     public AccessDeniedHandler(HttpRequestEndpointChecker endpointChecker) {
         this.endpointChecker = endpointChecker;

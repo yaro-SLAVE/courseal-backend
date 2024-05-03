@@ -1,5 +1,6 @@
 package online.courseal.courseal_backend.controllers;
 
+import jakarta.validation.Valid;
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonExam;
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonLecture;
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonPractice;
@@ -45,7 +46,7 @@ public class LessonManagementController {
     CourseTaskService courseTaskService;
 
     @PostMapping("/{course_id}/lesson")
-    public ResponseEntity<?> createLesson(@RequestBody LessonCreatingOrUpdatingRequest lessonCreatingRequest, @PathVariable("course_id") Integer courseId){
+    public ResponseEntity<?> createLesson(@Valid @RequestBody LessonCreatingOrUpdatingRequest lessonCreatingRequest, @PathVariable("course_id") Integer courseId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
@@ -200,7 +201,7 @@ public class LessonManagementController {
     }
 
     @PutMapping("/{course_id}/lesson/{lesson_id}")
-    public HttpStatus updateLesson(@RequestBody LessonCreatingOrUpdatingRequest lessonUpdatingRequest, @PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId){
+    public HttpStatus updateLesson(@Valid @RequestBody LessonCreatingOrUpdatingRequest lessonUpdatingRequest, @PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId){
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
