@@ -55,11 +55,11 @@ public class CourseStructureManagementController {
 
         ArrayList<CourseStructureListResponse> structureList = new ArrayList<>();
 
-        if (!courses.get().getCourseLessons().isEmpty()) {
-            Optional<CourseLesson> courseLessons = courses.get().getCourseLessons().stream().max(Comparator.comparing(CourseLesson::getLessonLevel));
-            Integer maxLevel = courseLessons.get().getLessonLevel();
+        try {
+            if (!courses.get().getCourseLessons().isEmpty()) {
+                Optional<CourseLesson> courseLessons = courses.get().getCourseLessons().stream().max(Comparator.comparing(CourseLesson::getLessonLevel));
+                Integer maxLevel = courseLessons.get().getLessonLevel();
 
-            if (maxLevel != null) {
                 for (int i = 0; i <= maxLevel; ++i) {
                     courseLessons = courseLessonService.findByLessonLevelAndCourse(i, courses.get());
                     CourseStructureListResponse data = new CourseStructureListResponse();
@@ -71,7 +71,7 @@ public class CourseStructureManagementController {
                     structureList.add(data);
                 }
             }
-        }
+        } catch (NullPointerException ignored){}
 
         return ResponseEntity.ok(structureList);
     }
@@ -93,6 +93,10 @@ public class CourseStructureManagementController {
             throw new BadRequestException();
         }
 
+        courses.get().setLastUpdatedLessons(LocalDateTime.now());
+        courses.get().setLastUpdatedStructure(LocalDateTime.now());
+        courseService.save(courses.get());
+
         for (ArrayList<CourseStructureUpdatingData> list: courseStructureUpdatingRequest) {
             int index = courseStructureUpdatingRequest.indexOf(list);
             for (CourseStructureUpdatingData id: list) {
@@ -107,10 +111,6 @@ public class CourseStructureManagementController {
                 courseLessonService.save(courseLessons.get());
             }
         }
-
-        courses.get().setLastUpdatedLessons(LocalDateTime.now());
-        courses.get().setLastUpdatedStructure(LocalDateTime.now());
-        courseService.save(courses.get());
 
         return HttpStatus.NO_CONTENT;
     }
