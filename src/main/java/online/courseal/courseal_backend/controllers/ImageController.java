@@ -1,5 +1,6 @@
 package online.courseal.courseal_backend.controllers;
 
+import online.courseal.courseal_backend.configs.ServerConfig;
 import online.courseal.courseal_backend.coursedata.editorjs.data.EditorJSImageFile;
 import online.courseal.courseal_backend.responses.records.EditorJSImageResponse;
 import online.courseal.courseal_backend.services.ImageService;
@@ -16,8 +17,13 @@ public class ImageController {
     @Autowired
     ImageService imageService;
 
+    @Autowired
+    ServerConfig serverConfig;
+
     @PostMapping("editorjsimage")
-    public EditorJSImageResponse uploadEditorJSImage(@RequestHeader("Host") String host, @RequestParam("image") MultipartFile file) {
+    public EditorJSImageResponse uploadEditorJSImage(@RequestParam("image") MultipartFile file) {
+        String host = serverConfig.getServerInfo().getServerDomain();
+
         return imageService.saveImage(file)
             .map(uuid -> new EditorJSImageResponse(
                 1,

@@ -57,7 +57,6 @@ public class TaskManagementController {
         CourseTask courseTask = courseTaskService.createCourseTask(courses.get(), taskCreatingRequest.getTaskName(), taskCreatingRequest.getTask());
 
         courses.get().setLastUpdatedTasks(LocalDateTime.now());
-
         courseService.save(courses.get());
 
         return ResponseEntity.ok(new TaskCreatingResponse(courseTask.getCourseTaskId()));
@@ -116,13 +115,12 @@ public class TaskManagementController {
             throw new BadRequestException();
         }
 
+        courses.get().setLastUpdatedTasks(LocalDateTime.now());
+        courseService.save(courses.get());
+
         courseTasks.get().setTaskName(taskUpdatingRequest.getTaskName());
         courseTasks.get().setTask(taskUpdatingRequest.getTask());
         courseTaskService.save(courseTasks.get());
-
-        courses.get().setLastUpdatedTasks(LocalDateTime.now());
-
-        courseService.save(courses.get());
 
         return HttpStatus.NO_CONTENT;
     }
@@ -150,11 +148,10 @@ public class TaskManagementController {
             throw new BadRequestException();
         }
 
-        courseTaskService.delete(courseTasks.get());
-
         courses.get().setLastUpdatedTasks(LocalDateTime.now());
-
         courseService.save(courses.get());
+
+        courseTaskService.delete(courseTasks.get());
 
         return HttpStatus.NO_CONTENT;
     }

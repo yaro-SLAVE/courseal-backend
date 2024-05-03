@@ -287,8 +287,8 @@ public class LessonManagementController {
         courseLessons.get().setLastUpdated(LocalDateTime.now());
         courses.get().setLastUpdatedLessons(LocalDateTime.now());
 
-        courseLessonService.save(courseLessons.get());
         courseService.save(courses.get());
+        courseLessonService.save(courseLessons.get());
 
         return HttpStatus.NO_CONTENT;
     }
@@ -316,10 +316,10 @@ public class LessonManagementController {
             throw new BadRequestException();
         }
 
-        courseLessonService.delete(courseLessons.get());
-
         courses.get().setLastUpdatedLessons(LocalDateTime.now());
         courseService.save(courses.get());
+
+        courseLessonService.delete(courseLessons.get());
 
         return HttpStatus.NO_CONTENT;
     }

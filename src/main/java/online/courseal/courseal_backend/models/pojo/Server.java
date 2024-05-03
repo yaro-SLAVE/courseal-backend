@@ -17,4 +17,6 @@ public class Server {
     private Boolean serverRegistrationEnabled;
     @JsonProperty("default_can_create_courses")
     private Boolean defaultCanCreateCourses;
+    @JsonProperty("server_domain")
+    private String serverDomain;
 }
