@@ -30,7 +30,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<?> getUsersList(@RequestParam(value = "search", required = false) String search) {
-        List<User> users = new ArrayList<>();
+        List<User> users;
 
         if (search == null){
             users = userService.findAll();

@@ -34,7 +34,6 @@ public class User {
     @Column(nullable = false)
     private String password;
     @Setter
-    @Column(nullable = true)
     private String email;
     @Column(name = "date_created", nullable = false)
     @Setter

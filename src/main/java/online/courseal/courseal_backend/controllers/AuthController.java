@@ -26,18 +26,25 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
+
     @Autowired
     UserDetailsServiceImpl userService;
+
     @Autowired
     PasswordEncoder passwordEncoder;
+
     @Autowired
     JwtUtils jwtUtils;
+
     @Autowired
     RefreshTokenService refreshTokenService;
+
     @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
+    RefreshTokenRepository refreshTokenRepository;
+
     @Value("${JWT_EXPIRATION_MS}")
     private Long jwtExpirationMs;
+
     @Value("${REFRESH_EXPIRATION_MS}")
     private Long refreshTokenDurationMs;
 

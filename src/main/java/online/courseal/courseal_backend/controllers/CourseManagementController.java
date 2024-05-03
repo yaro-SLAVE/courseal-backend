@@ -53,7 +53,10 @@ public class CourseManagementController {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
-        List<CourseMaintainer> courseMaintainers = users.get().getCourseMaintainers();
+        List<CourseMaintainer> courseMaintainers = new ArrayList<>();
+        if (users.isPresent()) {
+            courseMaintainers = users.get().getCourseMaintainers();
+        }
 
         ArrayList<MaintainerCoursesListResponse> maintainerCoursesListResponse = new ArrayList<>();
 

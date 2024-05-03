@@ -82,7 +82,7 @@ public class LessonManagementController {
                 courseLesson.setLessonType(LessonType.LECTURE);
             }
 
-            case CoursealLessonExam exam -> {
+            case CoursealLessonExam ignored -> {
                 for (Integer courseTaskId: ((CoursealLessonExam) lessonCreatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -100,7 +100,7 @@ public class LessonManagementController {
                 }
             }
 
-            case CoursealLessonPractice practice -> {
+            case CoursealLessonPractice ignored -> {
                 for (Integer courseTaskId: ((CoursealLessonPractice) lessonCreatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -118,7 +118,7 @@ public class LessonManagementController {
                 }
             }
 
-            case CoursealLessonTraining training -> courseLesson.setLessonType(LessonType.PRACTICE_TRAINING);
+            case CoursealLessonTraining ignored -> courseLesson.setLessonType(LessonType.PRACTICE_TRAINING);
         }
 
         courses.get().setLastUpdatedLessons(LocalDateTime.now());
@@ -244,7 +244,7 @@ public class LessonManagementController {
                 courseLessons.get().setLessonType(LessonType.LECTURE);
             }
 
-            case CoursealLessonExam exam -> {
+            case CoursealLessonExam ignored -> {
                 for (Integer courseTaskId: ((CoursealLessonExam) lessonUpdatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -262,7 +262,7 @@ public class LessonManagementController {
                 }
             }
 
-            case CoursealLessonPractice practice -> {
+            case CoursealLessonPractice ignored -> {
                 for (Integer courseTaskId: ((CoursealLessonPractice) lessonUpdatingRequest.getLesson()).getTasks()) {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
@@ -280,7 +280,7 @@ public class LessonManagementController {
                 }
             }
 
-            case CoursealLessonTraining training -> courseLessons.get().setLessonType(LessonType.PRACTICE_TRAINING);
+            case CoursealLessonTraining ignored -> courseLessons.get().setLessonType(LessonType.PRACTICE_TRAINING);
         }
 
         courseLessons.get().setLastUpdated(LocalDateTime.now());

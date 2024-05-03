@@ -26,7 +26,7 @@ public class CourseController {
 
     @GetMapping
     public ResponseEntity<?> getCoursesLists(@RequestParam(value = "search", required = false) String search){
-        List<Course> courses = new ArrayList<>();
+        List<Course> courses;
 
         if (search == null) {
             courses = courseService.findAll();

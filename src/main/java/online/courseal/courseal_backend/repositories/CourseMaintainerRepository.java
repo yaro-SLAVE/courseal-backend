@@ -11,6 +11,8 @@ import java.util.Optional;
 @Repository
 public interface CourseMaintainerRepository extends JpaRepository<CourseMaintainer, Integer> {
     Optional<CourseMaintainer> findByCourseMaintainerId(Integer courseMaintainerId);
+
     Optional<CourseMaintainer> findByUser(User user);
+
     Optional<CourseMaintainer> findByCourse(Course course);
 }
