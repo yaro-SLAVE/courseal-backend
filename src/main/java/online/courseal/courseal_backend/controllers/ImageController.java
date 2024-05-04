@@ -28,7 +28,7 @@ public class ImageController {
             .map(uuid -> new EditorJSImageResponse(
                 1,
                 new EditorJSImageFile(
-                    "http://" + host + "/api/static/image/" + uuid
+                    host + "/api/static/image/" + uuid
                 )
             ))
             .orElse(new EditorJSImageResponse(
