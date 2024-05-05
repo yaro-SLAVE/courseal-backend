@@ -19,9 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/course-management")
@@ -55,23 +53,27 @@ public class CourseStructureManagementController {
 
         ArrayList<CourseStructureListResponse> structureList = new ArrayList<>();
 
-        try {
-            if (!courses.get().getCourseLessons().isEmpty()) {
-                Optional<CourseLesson> courseLessons = courses.get().getCourseLessons().stream().max(Comparator.comparing(CourseLesson::getLessonLevel));
+        if (!courses.get().getCourseLessons().isEmpty()) {
+            Optional<CourseLesson> courseLessons = courses.get()
+                    .getCourseLessons().stream()
+                    .filter(c -> c.getLessonLevel() != null)
+                    .max(Comparator.comparing(CourseLesson::getLessonLevel));
+
+            if (!courseLessons.isEmpty()) {
                 Integer maxLevel = courseLessons.get().getLessonLevel();
 
                 for (int i = 0; i <= maxLevel; ++i) {
-                    courseLessons = courseLessonService.findByLessonLevelAndCourse(i, courses.get());
+                    List<CourseLesson> courseLessons1 = courseLessonService.findByLessonLevelAndCourse(i, courses.get());
                     CourseStructureListResponse data = new CourseStructureListResponse();
 
-                    for (CourseLesson courseLesson : courseLessons.stream().toList()) {
+                    for (CourseLesson courseLesson : courseLessons1.stream().toList()) {
                         data.add(new CourseStructureData(courseLesson.getCourseLessonId()));
                     }
 
                     structureList.add(data);
                 }
             }
-        } catch (NullPointerException ignored){}
+        }
 
         return ResponseEntity.ok(structureList);
     }
@@ -97,18 +99,21 @@ public class CourseStructureManagementController {
         courses.get().setLastUpdatedStructure(LocalDateTime.now());
         courseService.save(courses.get());
 
+        for (CourseLesson courseLesson: courses.get().getCourseLessons()) {
+            courseLesson.setLessonLevel(null);
+            courseLessonService.save(courseLesson);
+        }
+
         for (ArrayList<CourseStructureUpdatingData> list: courseStructureUpdatingRequest) {
             int index = courseStructureUpdatingRequest.indexOf(list);
             for (CourseStructureUpdatingData id: list) {
                 Optional<CourseLesson> courseLessons = courseLessonService.findByCourseLessonId(id.getLessonId());
 
-                if (courseLessons.isEmpty() || !courses.get().getCourseLessons().contains(courseLessons.get())) {
-                    throw new BadRequestException();
+                if (!courseLessons.isEmpty() && courses.get().getCourseLessons().contains(courseLessons.get())) {
+                    courseLessons.get().setLessonLevel(index);
+                    courseLessons.get().setLastUpdated(LocalDateTime.now());
+                    courseLessonService.save(courseLessons.get());
                 }
-
-                courseLessons.get().setLessonLevel(index);
-                courseLessons.get().setLastUpdated(LocalDateTime.now());
-                courseLessonService.save(courseLessons.get());
             }
         }
 

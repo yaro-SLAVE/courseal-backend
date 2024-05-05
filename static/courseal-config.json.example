@@ -3,5 +3,5 @@
     "server_description": "Default server description",
     "server_registration_enabled": true,
     "default_can_create_courses": true,
-    "server_domain": "http://courseal.online"
+    "server_domain": "https://courseal.online"
 }
