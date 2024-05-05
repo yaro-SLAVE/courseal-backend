@@ -7,6 +7,7 @@ import online.courseal.courseal_backend.repositories.CourseEnrollmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +21,10 @@ public class CourseEnrollmentService {
 
     public Optional<CourseEnrollment> findByCourse(Course course) {
         return courseEnrollmentRepository.findByCourse(course);
+    }
+
+    public List<CourseEnrollment> findByCourseAndUser(Course course, User user) {
+        return courseEnrollmentRepository.findByCourseAndUser(course, user);
     }
 
     public CourseEnrollment createCourseEnrollment(Course course, User user) {

@@ -2,15 +2,12 @@ package online.courseal.courseal_backend.controllers;
 
 import jakarta.websocket.server.PathParam;
 import online.courseal.courseal_backend.errors.exceptions.BadRequestException;
-import online.courseal.courseal_backend.models.Course;
-import online.courseal.courseal_backend.models.CourseEnrollment;
-import online.courseal.courseal_backend.models.User;
+import online.courseal.courseal_backend.errors.exceptions.CourseNotFoundException;
+import online.courseal.courseal_backend.models.*;
 import online.courseal.courseal_backend.requests.EnrollingIntoCourseRequest;
 import online.courseal.courseal_backend.responses.EnrolledCoursesListResponse;
-import online.courseal.courseal_backend.services.CourseEnrollmentService;
-import online.courseal.courseal_backend.services.CourseService;
-import online.courseal.courseal_backend.services.UserDetailsImpl;
-import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
+import online.courseal.courseal_backend.responses.data.EnrollmentCourseLessonData;
+import online.courseal.courseal_backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,6 +30,12 @@ public class CourseEnrollmentController {
 
     @Autowired
     CourseEnrollmentService courseEnrollmentService;
+
+    @Autowired
+    CourseEnrollmentLessonStatusService courseEnrollmentLessonStatusService;
+
+    @Autowired
+    CourseEnrollmentTaskStatusService courseEnrollmentTaskStatusService;
 
     @GetMapping
     public ResponseEntity<?> getEnrolledCoursesList() {
@@ -55,24 +59,42 @@ public class CourseEnrollmentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> enrollIntoCourse(@RequestBody EnrollingIntoCourseRequest enrollingIntoCourseRequest) {
-        return null;
-    }
-
-    @GetMapping("/{course_id}")
-    public HttpStatus getEnrollmentCourseInfo(@PathVariable("course_id") Integer courseId) {
+    public HttpStatus enrollIntoCourse(@RequestBody EnrollingIntoCourseRequest enrollingIntoCourseRequest) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
-        Optional<Course> courses = courseService.findByCourseId(courseId);
+        Optional<Course> courses = courseService.findByCourseId(enrollingIntoCourseRequest.getCourseId());
 
         if (courses.isEmpty()){
-            throw new BadRequestException();
+            throw new CourseNotFoundException();
         }
 
         CourseEnrollment courseEnrollment = courseEnrollmentService.createCourseEnrollment(courses.get(), users.get());
 
         return HttpStatus.CREATED;
+    }
+
+    @GetMapping("/{course_id}")
+    public ResponseEntity<?> getEnrollmentCourseInfo(@PathVariable("course_id") Integer courseId) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
+
+        Optional<Course> courses = courseService.findByCourseId(courseId);
+
+        if (courses.isEmpty()) {
+            throw new CourseNotFoundException();
+        }
+
+        List<CourseEnrollment> courseEnrollments = courseEnrollmentService.findByCourseAndUser(courses.get(), users.get());
+
+        if (courseEnrollments.isEmpty()) {
+            throw new CourseNotFoundException();
+        }
+
+        ArrayList<EnrollmentCourseLessonData> data = new ArrayList<>();
+
+
+        return null;
     }
 
     @GetMapping("/{course_id}/rating")

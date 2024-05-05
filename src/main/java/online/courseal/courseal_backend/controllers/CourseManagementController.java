@@ -9,10 +9,7 @@ import online.courseal.courseal_backend.requests.*;
 import online.courseal.courseal_backend.responses.CourseInfoResponse;
 import online.courseal.courseal_backend.responses.MaintainerCoursesListResponse;
 import online.courseal.courseal_backend.responses.CourseCreatingResponse;
-import online.courseal.courseal_backend.services.CourseMaintainerService;
-import online.courseal.courseal_backend.services.CourseService;
-import online.courseal.courseal_backend.services.UserDetailsImpl;
-import online.courseal.courseal_backend.services.UserDetailsServiceImpl;
+import online.courseal.courseal_backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +33,9 @@ public class CourseManagementController {
     @Autowired
     UserDetailsServiceImpl userService;
 
+    @Autowired
+    CourseEnrollmentService courseEnrollmentService;
+
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody CourseCreatingRequest courseCreatingRequest) {
         Course course = courseService.createCourse(courseCreatingRequest.getCourseName(), courseCreatingRequest.getCourseDescription());
@@ -44,6 +44,8 @@ public class CourseManagementController {
         Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
 
         courseMaintainerService.createCourseMaintainer(course, users.get());
+
+        courseEnrollmentService.createCourseEnrollment(course, users.get());
 
         return ResponseEntity.ok(new CourseCreatingResponse(course.getCourseId()));
     }
