@@ -109,13 +109,11 @@ public class CourseStructureManagementController {
             for (CourseStructureUpdatingData id: list) {
                 Optional<CourseLesson> courseLessons = courseLessonService.findByCourseLessonId(id.getLessonId());
 
-                if (courseLessons.isEmpty() || !courses.get().getCourseLessons().contains(courseLessons.get())) {
-                    throw new BadRequestException();
+                if (!courseLessons.isEmpty() && courses.get().getCourseLessons().contains(courseLessons.get())) {
+                    courseLessons.get().setLessonLevel(index);
+                    courseLessons.get().setLastUpdated(LocalDateTime.now());
+                    courseLessonService.save(courseLessons.get());
                 }
-
-                courseLessons.get().setLessonLevel(index);
-                courseLessons.get().setLastUpdated(LocalDateTime.now());
-                courseLessonService.save(courseLessons.get());
             }
         }
 
