@@ -19,7 +19,8 @@ import lombok.NoArgsConstructor;
         @JsonSubTypes.Type(value = EditorJSList.class, name = "list"),
         @JsonSubTypes.Type(value = EditorJSParagraph.class, name = "paragraph"),
         @JsonSubTypes.Type(value = EditorJSQuote.class, name = "quote"),
-        @JsonSubTypes.Type(value = EditorJSWarning.class, name = "warning")
+        @JsonSubTypes.Type(value = EditorJSWarning.class, name = "warning"),
+        @JsonSubTypes.Type(value = EditorJSEmbed.class, name = "embed")
 })
 public abstract sealed class EditorJSBlock
-        permits EditorJSCode, EditorJSDelimiter, EditorJSHeader, EditorJSImage, EditorJSLatex, EditorJSList, EditorJSParagraph, EditorJSQuote, EditorJSWarning { }
+        permits EditorJSCode, EditorJSDelimiter, EditorJSHeader, EditorJSImage, EditorJSLatex, EditorJSList, EditorJSParagraph, EditorJSQuote, EditorJSWarning, EditorJSEmbed { }

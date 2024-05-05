@@ -18,7 +18,8 @@ public class ImageService {
 
     public Optional<String> saveImage(MultipartFile file) {
         String contentType = file.getContentType();
-        if (contentType != null && (contentType.equals("image/png") || contentType.equals("image/jpeg"))) {
+        if (contentType != null && (contentType.equals("image/png") || contentType.equals("image/jpeg") ||
+                contentType.equals("image/webp") || contentType.equals("image/gif"))) {
             String uuid = UUID.randomUUID().toString();
 
             try {

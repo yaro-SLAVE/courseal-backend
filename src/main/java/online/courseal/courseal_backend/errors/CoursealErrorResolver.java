@@ -28,6 +28,7 @@ public class CoursealErrorResolver extends AbstractHandlerExceptionResolver {
         modelAndView.addObject("error", "unknown");
         modelAndView.addObject("message", "unknown");
         modelAndView.addObject("description", "unknown");
+        ex.printStackTrace();
         return modelAndView;
     }
 }
