@@ -19,5 +19,5 @@ public class EnrollmentCourseInfoResponse {
     @JsonProperty("xp")
     private Integer xp;
     @JsonProperty("lessons")
-    List<EnrollmentCourseLessonData> data;
+    List<List<EnrollmentCourseLessonData>> data;
 }

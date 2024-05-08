@@ -5,7 +5,10 @@ import online.courseal.courseal_backend.errors.exceptions.BadRequestException;
 import online.courseal.courseal_backend.errors.exceptions.CourseNotFoundException;
 import online.courseal.courseal_backend.models.*;
 import online.courseal.courseal_backend.requests.EnrollingIntoCourseRequest;
+import online.courseal.courseal_backend.requests.EnrollmentCourseUserRatingRequest;
 import online.courseal.courseal_backend.responses.EnrolledCoursesListResponse;
+import online.courseal.courseal_backend.responses.EnrollmentCourseInfoResponse;
+import online.courseal.courseal_backend.responses.EnrollmentCourseUserRatingResponse;
 import online.courseal.courseal_backend.responses.data.EnrollmentCourseLessonData;
 import online.courseal.courseal_backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +31,9 @@ public class CourseEnrollmentController {
 
     @Autowired
     CourseService courseService;
+
+    @Autowired
+    CourseLessonService courseLessonService;
 
     @Autowired
     CourseEnrollmentService courseEnrollmentService;
@@ -91,29 +98,106 @@ public class CourseEnrollmentController {
             throw new CourseNotFoundException();
         }
 
-        ArrayList<EnrollmentCourseLessonData> data = new ArrayList<>();
+        List<List<EnrollmentCourseLessonData>> dataList = new ArrayList<>();
 
+        if (!courses.get().getCourseLessons().isEmpty()) {
+            Optional<CourseLesson> courseLessons = courses.get()
+                    .getCourseLessons().stream()
+                    .filter(c -> c.getLessonLevel() != null)
+                    .max(Comparator.comparing(CourseLesson::getLessonLevel));
 
-        return null;
+            if (!courseLessons.isEmpty()) {
+                Integer maxLevel = courseLessons.get().getLessonLevel();
+
+                boolean previousLevelIsCompleted = true;
+
+                for (int i = 0; i <= maxLevel; ++i) {
+                    List<CourseLesson> courseLessons1 = courseLessonService.findByLessonLevelAndCourse(i, courses.get());
+                    ArrayList<EnrollmentCourseLessonData> data = new ArrayList<>();
+                    boolean currentLevelCanBeDone = previousLevelIsCompleted;
+
+                    for (CourseLesson courseLesson : courseLessons1.stream().toList()) {
+                        data.add(new EnrollmentCourseLessonData(
+                                courseLesson.getCourseLessonId(),
+                                courseLesson.getLessonName(),
+                                courseLesson.getCourseEnrollmentLessonStatuses().get(0).getProgress(),
+                                courseLesson.getProgressNeeded(),
+                                currentLevelCanBeDone
+                        ));
+
+                        if (courseLesson.getCourseEnrollmentLessonStatuses().get(0).getProgress() >=
+                                courseLesson.getProgressNeeded()) {
+                            previousLevelIsCompleted = true;
+                        } else {
+                            previousLevelIsCompleted = false;
+                        }
+                    }
+
+                    dataList.add(data);
+                }
+            }
+        }
+
+        return ResponseEntity.ok(new EnrollmentCourseInfoResponse(
+                courses.get().getCourseId(),
+                courses.get().getCourseName(),
+                courses.get().getCourseDescription(),
+                courses.get().getCourseEnrollments().get(0).getRating(),
+                courses.get().getCourseEnrollments().get(0).getXp(),
+                dataList
+        ));
     }
 
     @GetMapping("/{course_id}/rating")
     public ResponseEntity<?> getRating(@PathVariable("course_id") Integer courseId) {
-        return null;
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
+
+        Optional<Course> courses = courseService.findByCourseId(courseId);
+
+        if (courses.isEmpty()) {
+            throw new CourseNotFoundException();
+        }
+
+        List<CourseEnrollment> courseEnrollments = courseEnrollmentService.findByCourseAndUser(courses.get(), users.get());
+
+        if (courseEnrollments.isEmpty()) {
+            throw new CourseNotFoundException();
+        }
+
+        return ResponseEntity.ok(new EnrollmentCourseUserRatingResponse(courseEnrollments.get(0).getRating()));
     }
 
     @PutMapping("/{course_id}/rating")
-    public ResponseEntity<?> ratesCourse(@PathVariable("course_id") Integer courseId) {
-        return null;
+    public HttpStatus ratesCourse(@PathVariable("course_id") Integer courseId, @RequestBody EnrollmentCourseUserRatingRequest enrollmentCourseUserRatingRequest) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
+
+        Optional<Course> courses = courseService.findByCourseId(courseId);
+
+        if (courses.isEmpty()) {
+            throw new CourseNotFoundException();
+        }
+
+        List<CourseEnrollment> courseEnrollments = courseEnrollmentService.findByCourseAndUser(courses.get(), users.get());
+
+        if (courseEnrollments.isEmpty()) {
+            throw new CourseNotFoundException();
+        }
+
+        courseEnrollments.get(0).setRating(enrollmentCourseUserRatingRequest.getRating());
+        courseEnrollmentService.save(courseEnrollments.get(0));
+
+        return HttpStatus.NO_CONTENT;
     }
 
     @GetMapping("/{course_id}/lesson/{lesson_id}")
-    public ResponseEntity<?> getTasks(@PathVariable("course_id") Integer courseId) {
+    public ResponseEntity<?> getTasks(@PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId) {
         return null;
     }
 
     @PutMapping("/{course_id}/lesson/{lesson_id}")
-    public ResponseEntity<?> sendCompletingInfo(@PathVariable("course_id") Integer courseId) {
+    public ResponseEntity<?> sendCompletingInfo(@PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId) {
         return null;
     }
 
