@@ -1,7 +1,5 @@
 package online.courseal.courseal_backend.controllers;
 
-import jakarta.websocket.server.PathParam;
-import online.courseal.courseal_backend.errors.exceptions.BadRequestException;
 import online.courseal.courseal_backend.errors.exceptions.CourseNotFoundException;
 import online.courseal.courseal_backend.models.*;
 import online.courseal.courseal_backend.requests.EnrollingIntoCourseRequest;
@@ -120,16 +118,20 @@ public class CourseEnrollmentController {
                         data.add(new EnrollmentCourseLessonData(
                                 courseLesson.getCourseLessonId(),
                                 courseLesson.getLessonName(),
-                                courseLesson.getCourseEnrollmentLessonStatuses().get(0).getProgress(),
+                                !courseLesson.getCourseEnrollmentLessonStatuses().isEmpty()
+                                        ? courseLesson.getCourseEnrollmentLessonStatuses().getFirst().getProgress()
+                                        : 0,
                                 courseLesson.getProgressNeeded(),
                                 currentLevelCanBeDone
                         ));
 
-                        if (courseLesson.getCourseEnrollmentLessonStatuses().get(0).getProgress() >=
+                        if (courseLesson.getCourseEnrollmentLessonStatuses().isEmpty() ||
+                                courseLesson.getCourseEnrollmentLessonStatuses().getFirst().getProgress() <
+                                courseLesson.getProgressNeeded()) {
+                            previousLevelIsCompleted = false;
+                        } else if (courseLesson.getCourseEnrollmentLessonStatuses().getFirst().getProgress() >=
                                 courseLesson.getProgressNeeded()) {
                             previousLevelIsCompleted = true;
-                        } else {
-                            previousLevelIsCompleted = false;
                         }
                     }
 
@@ -138,12 +140,18 @@ public class CourseEnrollmentController {
             }
         }
 
+        int votes = 0;
+
+        for (CourseEnrollment courseEnrollment: courses.get().getCourseEnrollments()){
+            votes += courseEnrollment.getRating();
+        }
+
         return ResponseEntity.ok(new EnrollmentCourseInfoResponse(
                 courses.get().getCourseId(),
                 courses.get().getCourseName(),
                 courses.get().getCourseDescription(),
-                courses.get().getCourseEnrollments().get(0).getRating(),
-                courses.get().getCourseEnrollments().get(0).getXp(),
+                votes,
+                0,
                 dataList
         ));
     }

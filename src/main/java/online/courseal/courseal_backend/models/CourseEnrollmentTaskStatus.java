@@ -16,7 +16,7 @@ public class CourseEnrollmentTaskStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_enrollment_task_status_id", nullable = false)
-    private Integer courseEnrollmentTaskStatus_id;
+    private Integer courseEnrollmentTaskStatusId;
     @Setter
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="course_enrollment_id", nullable=false)
