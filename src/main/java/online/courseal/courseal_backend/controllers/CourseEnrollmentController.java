@@ -1,9 +1,11 @@
 package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.errors.exceptions.CourseNotFoundException;
+import online.courseal.courseal_backend.errors.exceptions.LessonNotFoundException;
 import online.courseal.courseal_backend.models.*;
 import online.courseal.courseal_backend.requests.EnrollingIntoCourseRequest;
 import online.courseal.courseal_backend.requests.EnrollmentCourseUserRatingRequest;
+import online.courseal.courseal_backend.requests.LessonCompletingRequest;
 import online.courseal.courseal_backend.responses.EnrolledCoursesListResponse;
 import online.courseal.courseal_backend.responses.EnrollmentCourseInfoResponse;
 import online.courseal.courseal_backend.responses.EnrollmentCourseUserRatingResponse;
@@ -41,6 +43,9 @@ public class CourseEnrollmentController {
 
     @Autowired
     CourseEnrollmentTaskStatusService courseEnrollmentTaskStatusService;
+
+    @Autowired
+    LessonTokenService lessonTokenService;
 
     @GetMapping
     public ResponseEntity<?> getEnrolledCoursesList() {
@@ -127,14 +132,13 @@ public class CourseEnrollmentController {
 
                         if (courseLesson.getCourseEnrollmentLessonStatuses().isEmpty() ||
                                 courseLesson.getCourseEnrollmentLessonStatuses().getFirst().getProgress() <
-                                courseLesson.getProgressNeeded()) {
+                                        courseLesson.getProgressNeeded()) {
                             previousLevelIsCompleted = false;
                         } else if (courseLesson.getCourseEnrollmentLessonStatuses().getFirst().getProgress() >=
                                 courseLesson.getProgressNeeded()) {
                             previousLevelIsCompleted = true;
                         }
                     }
-
                     dataList.add(data);
                 }
             }
@@ -193,19 +197,57 @@ public class CourseEnrollmentController {
             throw new CourseNotFoundException();
         }
 
-        courseEnrollments.get(0).setRating(enrollmentCourseUserRatingRequest.getRating());
-        courseEnrollmentService.save(courseEnrollments.get(0));
+        courseEnrollments.getFirst().setRating(enrollmentCourseUserRatingRequest.getRating());
+        courseEnrollmentService.save(courseEnrollments.getFirst());
 
         return HttpStatus.NO_CONTENT;
     }
 
     @GetMapping("/{course_id}/lesson/{lesson_id}")
     public ResponseEntity<?> getTasks(@PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
+
+        Optional<Course> courses = courseService.findByCourseId(courseId);
+
+        if (courses.isEmpty()) {
+            throw new CourseNotFoundException();
+        }
+
+        List<CourseEnrollment> courseEnrollments = courseEnrollmentService.findByCourseAndUser(courses.get(), users.get());
+
+        if (courseEnrollments.isEmpty()) {
+            throw new CourseNotFoundException();
+        }
+
+        Optional<CourseLesson> courseLessons = courseLessonService.findByCourseLessonId(lessonId);
+
+        if (courseLessons.isEmpty()) {
+            throw new LessonNotFoundException();
+        }
+
+        //LessonToken lessonToken = lessonTokenService.createLessonToken(courseLessons.get());
+
         return null;
     }
 
     @PutMapping("/{course_id}/lesson/{lesson_id}")
-    public ResponseEntity<?> sendCompletingInfo(@PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId) {
+    public ResponseEntity<?> sendCompletingInfo(@PathVariable("course_id") Integer courseId, @PathVariable("lesson_id") Integer lessonId, @RequestBody LessonCompletingRequest lessonCompletingRequest) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> users = userService.findByUserTag(userDetails.getUserTag());
+
+        Optional<Course> courses = courseService.findByCourseId(courseId);
+
+        if (courses.isEmpty()) {
+            throw new CourseNotFoundException();
+        }
+
+        List<CourseEnrollment> courseEnrollments = courseEnrollmentService.findByCourseAndUser(courses.get(), users.get());
+
+        if (courseEnrollments.isEmpty()) {
+            throw new CourseNotFoundException();
+        }
+
         return null;
     }
 

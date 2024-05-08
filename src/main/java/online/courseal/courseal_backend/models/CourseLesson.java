@@ -47,6 +47,9 @@ public class CourseLesson {
     @OneToMany(mappedBy = "courseLesson", fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CourseLessonTask> courseLessonTasks;
+    @OneToMany(mappedBy = "courseLesson", fetch=FetchType.LAZY,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<LessonToken> lessonTokens;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "courseLesson")
     private CourseLessonLecture courseLessonLecture;
 
