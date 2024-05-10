@@ -23,6 +23,10 @@ public class CourseEnrollmentTaskStatusService {
         return courseEnrollmentTaskStatusRepository.findByCourseEnrollmentAndCourseTask(courseEnrollment, courseTask);
     }
 
+    public Boolean existsByCourseEnrollmentAndCourseTask(CourseEnrollment courseEnrollment, CourseTask courseTask) {
+        return courseEnrollmentTaskStatusRepository.existsByCourseEnrollmentAndCourseTask(courseEnrollment, courseTask);
+    }
+
     public void createCourseEnrollmentTaskStatus(CourseEnrollment courseEnrollment, CourseTask courseTask, Integer timesDone, Integer timesFailed) {
         CourseEnrollmentTaskStatus courseEnrollmentTaskStatus = new CourseEnrollmentTaskStatus(
                 courseEnrollment,

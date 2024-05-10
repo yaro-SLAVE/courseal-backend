@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Service
 public class CourseEnrollmentLessonStatusService {
@@ -24,12 +25,16 @@ public class CourseEnrollmentLessonStatusService {
         return courseEnrollmentLessonStatusRepository.findByCourseEnrollmentAndCourseLesson(courseEnrollment, courseLesson);
     }
 
-    public void createCourseEnrollmentLessonStatus(CourseEnrollment courseEnrollment, CourseLesson courseLesson, Integer lessonProgress) {
+    public Boolean existsByCourseEnrollmentAndCourseLesson(CourseEnrollment courseEnrollment, CourseLesson courseLesson) {
+        return courseEnrollmentLessonStatusRepository.existsByCourseEnrollmentAndCourseLesson(courseEnrollment, courseLesson);
+    }
+
+    public void createCourseEnrollmentLessonStatus(CourseEnrollment courseEnrollment, CourseLesson courseLesson, Integer lessonProgress, TimeZone timezone) {
         CourseEnrollmentLessonStatus courseEnrollmentLessonStatus = new CourseEnrollmentLessonStatus(
                 courseEnrollment,
                 courseLesson,
                 lessonProgress,
-                LocalDateTime.now()
+                LocalDateTime.now().atZone(timezone.toZoneId()).toLocalDateTime()
         );
 
         courseEnrollmentLessonStatusRepository.save(courseEnrollmentLessonStatus);

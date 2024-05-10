@@ -15,4 +15,6 @@ public interface CourseEnrollmentLessonStatusRepository extends JpaRepository<Co
     Optional<CourseEnrollmentLessonStatus> findByCourseEnrollmentLessonStatusId(Integer courseEnrollmentLessonStatusId);
 
     List<CourseEnrollmentLessonStatus> findByCourseEnrollmentAndCourseLesson(CourseEnrollment courseEnrollment, CourseLesson courseLesson);
+
+    Boolean existsByCourseEnrollmentAndCourseLesson(CourseEnrollment courseEnrollment, CourseLesson courseLesson);
 }

@@ -1,5 +1,12 @@
 package online.courseal.courseal_backend.controllers;
 
+import online.courseal.courseal_backend.coursedata.enrolltaskcomplete.EnrollTasksCompleteExam;
+import online.courseal.courseal_backend.coursedata.enrolltaskcomplete.EnrollTasksCompleteLecture;
+import online.courseal.courseal_backend.coursedata.enrolltaskcomplete.EnrollTasksCompletePracticeTraining;
+import online.courseal.courseal_backend.coursedata.enrolltaskcomplete.data.TaskExamAnswer;
+import online.courseal.courseal_backend.coursedata.enrolltaskcomplete.data.TaskMultipleExamAnswer;
+import online.courseal.courseal_backend.coursedata.enrolltaskcomplete.data.TaskPracticeTrainingAnswer;
+import online.courseal.courseal_backend.coursedata.enrolltaskcomplete.data.TaskSingleExamAnswer;
 import online.courseal.courseal_backend.coursedata.enrolltasks.EnrollTask;
 import online.courseal.courseal_backend.coursedata.enrolltasks.EnrollTaskExam;
 import online.courseal.courseal_backend.coursedata.enrolltasks.EnrollTaskLecture;
@@ -16,16 +23,14 @@ import online.courseal.courseal_backend.coursedata.tasks.CoursealTaskSingle;
 import online.courseal.courseal_backend.coursedata.tasks.TaskMultipleOption;
 import online.courseal.courseal_backend.errors.exceptions.CourseNotFoundException;
 import online.courseal.courseal_backend.errors.exceptions.LessonNotFoundException;
+import online.courseal.courseal_backend.errors.exceptions.LessonTokenNotFoundException;
 import online.courseal.courseal_backend.models.*;
-import online.courseal.courseal_backend.models.enums.LessonType;
 import online.courseal.courseal_backend.requests.EnrollingIntoCourseRequest;
 import online.courseal.courseal_backend.requests.EnrollmentCourseUserRatingRequest;
 import online.courseal.courseal_backend.requests.LessonCompletingRequest;
-import online.courseal.courseal_backend.responses.EnrolledCoursesListResponse;
-import online.courseal.courseal_backend.responses.EnrollmentCourseGettingTasksResponse;
-import online.courseal.courseal_backend.responses.EnrollmentCourseInfoResponse;
-import online.courseal.courseal_backend.responses.EnrollmentCourseUserRatingResponse;
+import online.courseal.courseal_backend.responses.*;
 import online.courseal.courseal_backend.responses.data.EnrollmentCourseLessonData;
+import online.courseal.courseal_backend.responses.data.LessonMistakesData;
 import online.courseal.courseal_backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -62,6 +68,9 @@ public class CourseEnrollmentController {
 
     @Autowired
     LessonTokenService lessonTokenService;
+
+    @Autowired
+    CourseTaskService courseTaskService;
 
     @GetMapping
     public ResponseEntity<?> getEnrolledCoursesList() {
@@ -331,7 +340,254 @@ public class CourseEnrollmentController {
             throw new CourseNotFoundException();
         }
 
-        return null;
-    }
+        Optional<CourseLesson> courseLessons = courseLessonService.findByCourseLessonId(lessonId);
 
+        if (courseLessons.isEmpty()) {
+            throw new LessonNotFoundException();
+        }
+
+        Optional<LessonToken> lessonTokens = lessonTokenService.findByLessonToken(lessonCompletingRequest.getLessonToken());
+
+        if (lessonTokens.isEmpty()) {
+            throw new LessonTokenNotFoundException();
+        }
+
+        int xp = 0;
+        List<LessonMistakesData> mistakes = new ArrayList<>();
+        boolean completed = false;
+
+        switch (lessonCompletingRequest.getTask()) {
+            case EnrollTasksCompleteLecture lecture -> {
+                if (!courseEnrollmentLessonStatusService.existsByCourseEnrollmentAndCourseLesson(courseEnrollments.getFirst(), courseLessons.get())) {
+                    courseEnrollmentLessonStatusService.createCourseEnrollmentLessonStatus(
+                            courseEnrollments.getFirst(),
+                            courseLessons.get(),
+                            1,
+                            lessonCompletingRequest.getTimeZone()
+                    );
+
+                    xp += 15;
+                    completed = true;
+                }
+            }
+
+            case EnrollTasksCompleteExam exam -> {
+                for (TaskExamAnswer taskExamAnswer: exam.getTasks()) {
+                    Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(taskExamAnswer.getTaskId());
+
+                    int failed = 0;
+
+                    switch (taskExamAnswer.getAnswer()) {
+                        case TaskSingleExamAnswer singleAnswer -> {
+                            switch(courseTasks.get().getTask()) {
+                                case CoursealTaskSingle singleTask -> {
+                                    if (singleTask.getCorrectOption().equals(singleAnswer.getOption())) {
+                                        mistakes.add(new LessonMistakesData(
+                                                courseTasks.get().getCourseTaskId(),
+                                                true
+                                        ));
+                                    } else {
+                                        mistakes.add(new LessonMistakesData(
+                                                courseTasks.get().getCourseTaskId(),
+                                                false
+                                        ));
+
+                                        failed = 1;
+                                    }
+                                }
+
+                                case CoursealTaskMultiple ignored -> {}
+                            }
+                        }
+
+                        case TaskMultipleExamAnswer multipleAnswer -> {
+                            switch (courseTasks.get().getTask()) {
+                                case CoursealTaskSingle ignored -> {}
+
+                                case CoursealTaskMultiple multipleTask -> {
+                                    boolean isCorrect = true;
+
+                                    for (Integer option: multipleAnswer.getOptions()) {
+                                        if (!multipleTask.getOptions().get(option).getIsCorrect()) {
+                                            isCorrect = false;
+                                            break;
+                                        }
+                                    }
+
+                                    if (isCorrect) {
+                                        for (int i = 0; i < multipleTask.getOptions().size(); ++i) {
+                                            if (multipleTask.getOptions().get(i).getIsCorrect()) {
+                                                if (!multipleAnswer.getOptions().contains(i)) {
+                                                    isCorrect = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (isCorrect) {
+                                        mistakes.add(new LessonMistakesData(
+                                                courseTasks.get().getCourseTaskId(),
+                                                true
+                                        ));
+                                    } else {
+                                        mistakes.add(new LessonMistakesData(
+                                                courseTasks.get().getCourseTaskId(),
+                                                false
+                                        ));
+
+                                        failed = 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (courseEnrollmentTaskStatusService.existsByCourseEnrollmentAndCourseTask
+                            (courseEnrollments.getFirst(), courseTasks.get())) {
+                        courseEnrollmentTaskStatusService.createCourseEnrollmentTaskStatus(
+                                courseEnrollments.getFirst(),
+                                courseTasks.get(),
+                                1,
+                                failed
+                        );
+                    } else {
+                        List<CourseEnrollmentTaskStatus> courseEnrollmentTaskStatuses = courseEnrollmentTaskStatusService
+                                .findByCourseEnrollmentAndCourseTask(
+                                        courseEnrollments.getFirst(),
+                                        courseTasks.get()
+                                );
+
+                        courseEnrollmentTaskStatuses.getFirst().setTimesDone(courseEnrollmentTaskStatuses.getFirst().getTimesDone() + 1);
+                        courseEnrollmentTaskStatuses.getFirst().setTimesFailed(courseEnrollmentTaskStatuses.getFirst().getTimesFailed() + failed);
+
+                        courseEnrollmentTaskStatusService.save(courseEnrollmentTaskStatuses.getFirst());
+                    }
+                }
+
+                if (!courseEnrollmentLessonStatusService.existsByCourseEnrollmentAndCourseLesson(courseEnrollments.getFirst(), courseLessons.get())) {
+                    courseEnrollmentLessonStatusService.createCourseEnrollmentLessonStatus(
+                            courseEnrollments.getFirst(),
+                            courseLessons.get(),
+                            1,
+                            lessonCompletingRequest.getTimeZone()
+                    );
+                } else {
+                    List<CourseEnrollmentLessonStatus> courseEnrollmentLessonStatuses= courseEnrollmentLessonStatusService
+                            .findByCourseEnrollmentAndCourseLesson(
+                                    courseEnrollments.getFirst(),
+                                    courseLessons.get()
+                            );
+
+                    courseEnrollmentLessonStatuses.getFirst().setProgress(courseEnrollmentLessonStatuses.getFirst().getProgress() + 1);
+
+                    LocalDateTime timeFinished = LocalDateTime.now().atZone(lessonCompletingRequest.getTimeZone().toZoneId()).toLocalDateTime();
+
+                    if (courseEnrollmentLessonStatuses.getFirst().getProgress().equals(courseLessons.get().getProgressNeeded())) {
+                        xp += 15;
+                        completed = true;
+                    } else if (courseEnrollmentLessonStatuses.getFirst().getProgress().equals(courseLessons.get().getProgressNeeded())) {
+                        xp += 10;
+
+                        if (courseEnrollmentLessonStatuses.getFirst().getLastDone().plusMinutes(10).isAfter(timeFinished)) {
+                            xp += 5;
+                        }
+
+                        completed = true;
+                    }
+
+                    courseEnrollmentLessonStatuses.getFirst().setLastDone(timeFinished);
+
+                    courseEnrollmentLessonStatusService.save(courseEnrollmentLessonStatuses.getFirst());
+                }
+            }
+
+            case EnrollTasksCompletePracticeTraining practice -> {
+                for (TaskPracticeTrainingAnswer practiceAnswer: practice.getTasks()) {
+                    int failed = 0;
+
+                    if (practiceAnswer.getCorrect()) {
+                        mistakes.add(new LessonMistakesData(
+                                practiceAnswer.getTaskId(),
+                                true
+                        ));
+                    } else {
+                        mistakes.add(new LessonMistakesData(
+                                practiceAnswer.getTaskId(),
+                                false
+                        ));
+
+                        failed = 1;
+                    }
+
+                    if (!courseEnrollmentTaskStatusService.existsByCourseEnrollmentAndCourseTask(
+                            courseEnrollments.getFirst(),
+                            courseTaskService.findByCourseTaskId(practiceAnswer.getTaskId()).get())) {
+                        courseEnrollmentTaskStatusService.createCourseEnrollmentTaskStatus(
+                                courseEnrollments.getFirst(),
+                                courseTaskService.findByCourseTaskId(practiceAnswer.getTaskId()).get(),
+                                1,
+                                failed
+                        );
+                    } else {
+                        List<CourseEnrollmentTaskStatus> courseEnrollmentTaskStatus = courseEnrollmentTaskStatusService
+                                .findByCourseEnrollmentAndCourseTask(
+                                        courseEnrollments.getFirst(),
+                                        courseTaskService.findByCourseTaskId(practiceAnswer.getTaskId()).get()
+                                );
+
+                        courseEnrollmentTaskStatus.getFirst().setTimesDone(courseEnrollmentTaskStatus.getFirst().getTimesDone() + 1);
+                        courseEnrollmentTaskStatus.getFirst().setTimesFailed(courseEnrollmentTaskStatus.getFirst().getTimesFailed() + failed);
+
+                        courseEnrollmentTaskStatusService.save(courseEnrollmentTaskStatus.getFirst());
+                    }
+                }
+
+                if (!courseEnrollmentLessonStatusService.existsByCourseEnrollmentAndCourseLesson(courseEnrollments.getFirst(), courseLessons.get())) {
+                    courseEnrollmentLessonStatusService.createCourseEnrollmentLessonStatus(
+                            courseEnrollments.getFirst(),
+                            courseLessons.get(),
+                            1,
+                            lessonCompletingRequest.getTimeZone()
+                    );
+                } else {
+                    List<CourseEnrollmentLessonStatus> courseEnrollmentLessonStatuses= courseEnrollmentLessonStatusService
+                            .findByCourseEnrollmentAndCourseLesson(
+                                    courseEnrollments.getFirst(),
+                                    courseLessons.get()
+                            );
+
+                    courseEnrollmentLessonStatuses.getFirst().setProgress(courseEnrollmentLessonStatuses.getFirst().getProgress() + 1);
+
+                    LocalDateTime timeFinished = LocalDateTime.now().atZone(lessonCompletingRequest.getTimeZone().toZoneId()).toLocalDateTime();
+
+                    if (courseEnrollmentLessonStatuses.getFirst().getProgress().equals(courseLessons.get().getProgressNeeded())) {
+                        xp += 15;
+                        completed = true;
+                    } else if (courseEnrollmentLessonStatuses.getFirst().getProgress().equals(courseLessons.get().getProgressNeeded())) {
+                        xp += 10;
+
+                        if (courseEnrollmentLessonStatuses.getFirst().getLastDone().plusMinutes(10).isAfter(timeFinished)) {
+                            xp += 5;
+                        }
+
+                        completed = true;
+                    }
+
+                    courseEnrollmentLessonStatuses.getFirst().setLastDone(timeFinished);
+
+                    courseEnrollmentLessonStatusService.save(courseEnrollmentLessonStatuses.getFirst());
+                }
+            }
+        }
+
+        courseEnrollments.getFirst().setXp(xp);
+        courseEnrollmentService.save(courseEnrollments.getFirst());
+
+        return ResponseEntity.ok(new CompletingLessonInfoResponse(
+                xp,
+                completed,
+                mistakes
+        ));
+    }
 }

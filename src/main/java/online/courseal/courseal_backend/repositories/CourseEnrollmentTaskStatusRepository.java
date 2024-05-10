@@ -14,4 +14,6 @@ public interface CourseEnrollmentTaskStatusRepository extends JpaRepository<Cour
     Optional<CourseEnrollmentTaskStatus> findByCourseEnrollmentTaskStatusId(Integer courseEnrollmentTaskStatusId);
 
     List<CourseEnrollmentTaskStatus> findByCourseEnrollmentAndCourseTask(CourseEnrollment courseEnrollment, CourseTask courseTask);
+
+    Boolean existsByCourseEnrollmentAndCourseTask(CourseEnrollment courseEnrollment, CourseTask courseTask);
 }

@@ -12,7 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "lesson_token",
         uniqueConstraints = {
-        @UniqueConstraint(columnNames = "lesson_token_id")
+        @UniqueConstraint(columnNames = "lesson_token_id"),
+        @UniqueConstraint(columnNames = "lesson_token")
         })
 public class LessonToken {
     @Id
@@ -23,7 +24,7 @@ public class LessonToken {
     @Setter
     private String lessonToken;
     @Setter
-    @Column(name = "isActive", nullable = false)
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
     @Setter
     @ManyToOne(fetch=FetchType.LAZY)
