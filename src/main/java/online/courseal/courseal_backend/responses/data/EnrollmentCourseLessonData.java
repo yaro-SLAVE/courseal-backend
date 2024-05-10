@@ -11,6 +11,8 @@ public class EnrollmentCourseLessonData {
     private Integer lessonId;
     @JsonProperty("lesson_name")
     private String lessonName;
+    @JsonProperty("type")
+    private String type;
     @JsonProperty("lesson_progress")
     private Integer lessonProgress;
     @JsonProperty("lesson_progress_needed")

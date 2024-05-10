@@ -24,9 +24,7 @@ public class LessonTokenService {
         return lessonTokenRepository.findByLessonToken(lessonToken);
     }
 
-    public LessonToken createLessonToken(CourseLesson courseLesson) {
-        List<Integer> tasksId = new ArrayList<>();
-
+    public LessonToken createLessonToken(CourseLesson courseLesson, List<Integer> tasksId) {
         LessonToken lessonToken = new LessonToken(
                 UUID.randomUUID().toString(),
                 true,

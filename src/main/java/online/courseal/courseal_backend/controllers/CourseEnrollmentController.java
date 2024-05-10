@@ -1,12 +1,28 @@
 package online.courseal.courseal_backend.controllers;
 
+import online.courseal.courseal_backend.coursedata.enrolltasks.EnrollTask;
+import online.courseal.courseal_backend.coursedata.enrolltasks.EnrollTaskExam;
+import online.courseal.courseal_backend.coursedata.enrolltasks.EnrollTaskLecture;
+import online.courseal.courseal_backend.coursedata.enrolltasks.EnrollTaskPracticeTraining;
+import online.courseal.courseal_backend.coursedata.enrolltasks.data.CoursealLessonEnrollExamTask;
+import online.courseal.courseal_backend.coursedata.enrolltasks.data.CoursealLessonEnrollPracticeTask;
+import online.courseal.courseal_backend.coursedata.examtasks.CoursealExamTask;
+import online.courseal.courseal_backend.coursedata.examtasks.CoursealExamTaskMultiple;
+import online.courseal.courseal_backend.coursedata.examtasks.CoursealExamTaskSingle;
+import online.courseal.courseal_backend.coursedata.examtasks.data.ExamTaskMultipleOption;
+import online.courseal.courseal_backend.coursedata.tasks.CoursealTask;
+import online.courseal.courseal_backend.coursedata.tasks.CoursealTaskMultiple;
+import online.courseal.courseal_backend.coursedata.tasks.CoursealTaskSingle;
+import online.courseal.courseal_backend.coursedata.tasks.TaskMultipleOption;
 import online.courseal.courseal_backend.errors.exceptions.CourseNotFoundException;
 import online.courseal.courseal_backend.errors.exceptions.LessonNotFoundException;
 import online.courseal.courseal_backend.models.*;
+import online.courseal.courseal_backend.models.enums.LessonType;
 import online.courseal.courseal_backend.requests.EnrollingIntoCourseRequest;
 import online.courseal.courseal_backend.requests.EnrollmentCourseUserRatingRequest;
 import online.courseal.courseal_backend.requests.LessonCompletingRequest;
 import online.courseal.courseal_backend.responses.EnrolledCoursesListResponse;
+import online.courseal.courseal_backend.responses.EnrollmentCourseGettingTasksResponse;
 import online.courseal.courseal_backend.responses.EnrollmentCourseInfoResponse;
 import online.courseal.courseal_backend.responses.EnrollmentCourseUserRatingResponse;
 import online.courseal.courseal_backend.responses.data.EnrollmentCourseLessonData;
@@ -120,9 +136,18 @@ public class CourseEnrollmentController {
                     boolean currentLevelCanBeDone = previousLevelIsCompleted;
 
                     for (CourseLesson courseLesson : courseLessons1.stream().toList()) {
+                        String type = "";
+                        switch(courseLesson.getLessonType()) {
+                            case EXAM -> type = "exam";
+                            case PRACTICE -> type = "practice";
+                            case PRACTICE_TRAINING -> type = "training";
+                            case LECTURE -> type = "lecture";
+                        }
+
                         data.add(new EnrollmentCourseLessonData(
                                 courseLesson.getCourseLessonId(),
                                 courseLesson.getLessonName(),
+                                type,
                                 !courseLesson.getCourseEnrollmentLessonStatuses().isEmpty()
                                         ? courseLesson.getCourseEnrollmentLessonStatuses().getFirst().getProgress()
                                         : 0,
@@ -226,9 +251,67 @@ public class CourseEnrollmentController {
             throw new LessonNotFoundException();
         }
 
-        //LessonToken lessonToken = lessonTokenService.createLessonToken(courseLessons.get());
+        ArrayList<Integer> tasksId = new ArrayList<>();
+        EnrollTask tasks = null;
 
-        return null;
+        switch (courseLessons.get().getLessonType()) {
+            case LECTURE -> tasks = new EnrollTaskLecture(courseLessons.get().getCourseLessonLecture().getLecture());
+
+            case EXAM -> {
+                List<CoursealLessonEnrollExamTask> examList = new ArrayList<>();
+                for (CourseLessonTask courseLessonTask: courseLessons.get().getCourseLessonTasks()) {
+                    tasksId.add(courseLessonTask.getCourseTask().getCourseTaskId());
+
+                    CoursealExamTask examTask;
+                    switch (courseLessonTask.getCourseTask().getTask()) {
+                        case CoursealTaskSingle single -> examTask = new CoursealExamTaskSingle(
+                                single.getBody(),
+                                single.getOptions()
+                        );
+
+                        case CoursealTaskMultiple multiple -> {
+                            List<ExamTaskMultipleOption> options = new ArrayList<>();
+
+                            for (TaskMultipleOption option: multiple.getOptions()) {
+                                options.add(new ExamTaskMultipleOption(option.getText()));
+                            }
+
+                            examTask = new CoursealExamTaskMultiple(
+                                    multiple.getBody(),
+                                    options
+                            );
+                        }
+                    }
+
+                    examList.add(new CoursealLessonEnrollExamTask(
+                            courseLessonTask.getCourseTask().getCourseTaskId(),
+                            examTask
+                    ));
+                }
+
+                tasks = new EnrollTaskExam(examList);
+            }
+
+            case PRACTICE, PRACTICE_TRAINING -> {
+                List<CoursealLessonEnrollPracticeTask> taskList = new ArrayList<>();
+                for (CourseLessonTask courseLessonTask: courseLessons.get().getCourseLessonTasks()) {
+                    tasksId.add(courseLessonTask.getCourseTask().getCourseTaskId());
+
+                    CoursealTask task = courseLessonTask.getCourseTask().getTask();
+                    taskList.add(new CoursealLessonEnrollPracticeTask(
+                            courseLessonTask.getCourseTask().getCourseTaskId(),
+                            task
+                    ));
+                }
+                
+                tasks = new EnrollTaskPracticeTraining(taskList);
+            }
+
+        }
+
+        LessonToken lessonToken = lessonTokenService.createLessonToken(courseLessons.get(), tasksId);
+
+        return ResponseEntity.ok(new EnrollmentCourseGettingTasksResponse(lessonToken.getLessonToken(), tasks));
     }
 
     @PutMapping("/{course_id}/lesson/{lesson_id}")
