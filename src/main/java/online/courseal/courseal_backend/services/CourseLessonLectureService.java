@@ -18,15 +18,13 @@ public class CourseLessonLectureService {
         return courseLessonLectureRepository.findByCourseLessonLectureId(courseLessonLectureId);
     }
 
-    public CourseLessonLecture createCourseLessonLecture(CourseLesson courseLesson, EditorJSContent lecture) {
+    public void createCourseLessonLecture(CourseLesson courseLesson, EditorJSContent lecture) {
         CourseLessonLecture courseLessonLecture = new CourseLessonLecture(
                 courseLesson,
                 lecture
         );
 
-        courseLessonLecture = courseLessonLectureRepository.save(courseLessonLecture);
-
-        return courseLessonLecture;
+        courseLessonLectureRepository.save(courseLessonLecture);
     }
 
     public void save(CourseLessonLecture courseLessonLecture) {

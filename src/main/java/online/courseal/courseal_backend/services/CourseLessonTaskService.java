@@ -18,15 +18,13 @@ public class CourseLessonTaskService {
         return courseLessonTaskRepository.findByCourseLessonTaskId(courseLessonTaskId);
     }
 
-    public CourseLessonTask createCourseLessonTask(CourseLesson courseLesson, CourseTask courseTask) {
+    public void createCourseLessonTask(CourseLesson courseLesson, CourseTask courseTask) {
         CourseLessonTask courseLessonTask = new CourseLessonTask(
                 courseLesson,
                 courseTask
         );
 
-        courseLessonTask = courseLessonTaskRepository.save(courseLessonTask);
-
-        return courseLessonTask;
+        courseLessonTaskRepository.save(courseLessonTask);
     }
 
     public void save(CourseLessonTask courseLessonTask) {

@@ -60,7 +60,7 @@ public class CourseStructureManagementController {
                     .filter(c -> c.getLessonLevel() != null)
                     .max(Comparator.comparing(CourseLesson::getLessonLevel));
 
-            if (!courseLessons.isEmpty()) {
+            if (courseLessons.isPresent()) {
                 Integer maxLevel = courseLessons.get().getLessonLevel();
 
                 for (int i = 0; i <= maxLevel; ++i) {
@@ -110,7 +110,7 @@ public class CourseStructureManagementController {
             for (CourseStructureUpdatingData id: list) {
                 Optional<CourseLesson> courseLessons = courseLessonService.findByCourseLessonId(id.getLessonId());
 
-                if (!courseLessons.isEmpty() && courses.get().getCourseLessons().contains(courseLessons.get())) {
+                if (courseLessons.isPresent() && courses.get().getCourseLessons().contains(courseLessons.get())) {
                     courseLessons.get().setLessonLevel(index);
                     courseLessons.get().setLastUpdated(LocalDateTime.now());
                     courseLessonService.save(courseLessons.get());

@@ -104,7 +104,7 @@ public class CourseEnrollmentController {
             throw new CourseNotFoundException();
         }
 
-        CourseEnrollment courseEnrollment = courseEnrollmentService.createCourseEnrollment(courses.get(), users.get());
+        courseEnrollmentService.createCourseEnrollment(courses.get(), users.get());
 
         return HttpStatus.CREATED;
     }
@@ -134,7 +134,7 @@ public class CourseEnrollmentController {
                     .filter(c -> c.getLessonLevel() != null)
                     .max(Comparator.comparing(CourseLesson::getLessonLevel));
 
-            if (!courseLessons.isEmpty()) {
+            if (courseLessons.isPresent()) {
                 Integer maxLevel = courseLessons.get().getLessonLevel();
 
                 boolean previousLevelIsCompleted = true;
@@ -357,13 +357,12 @@ public class CourseEnrollmentController {
         boolean completed = false;
 
         switch (lessonCompletingRequest.getTask()) {
-            case EnrollTasksCompleteLecture lecture -> {
+            case EnrollTasksCompleteLecture ignored -> {
                 if (!courseEnrollmentLessonStatusService.existsByCourseEnrollmentAndCourseLesson(courseEnrollments.getFirst(), courseLessons.get())) {
                     courseEnrollmentLessonStatusService.createCourseEnrollmentLessonStatus(
                             courseEnrollments.getFirst(),
                             courseLessons.get(),
-                            1,
-                            lessonCompletingRequest.getTimeZone()
+                            1
                     );
 
                     xp += 15;
@@ -469,8 +468,7 @@ public class CourseEnrollmentController {
                     courseEnrollmentLessonStatusService.createCourseEnrollmentLessonStatus(
                             courseEnrollments.getFirst(),
                             courseLessons.get(),
-                            1,
-                            lessonCompletingRequest.getTimeZone()
+                            1
                     );
                 } else {
                     List<CourseEnrollmentLessonStatus> courseEnrollmentLessonStatuses= courseEnrollmentLessonStatusService
@@ -481,7 +479,7 @@ public class CourseEnrollmentController {
 
                     courseEnrollmentLessonStatuses.getFirst().setProgress(courseEnrollmentLessonStatuses.getFirst().getProgress() + 1);
 
-                    LocalDateTime timeFinished = LocalDateTime.now().atZone(lessonCompletingRequest.getTimeZone().toZoneId()).toLocalDateTime();
+                    LocalDateTime timeFinished = LocalDateTime.now();
 
                     if (courseEnrollmentLessonStatuses.getFirst().getProgress().equals(courseLessons.get().getProgressNeeded())) {
                         xp += 15;
@@ -547,8 +545,7 @@ public class CourseEnrollmentController {
                     courseEnrollmentLessonStatusService.createCourseEnrollmentLessonStatus(
                             courseEnrollments.getFirst(),
                             courseLessons.get(),
-                            1,
-                            lessonCompletingRequest.getTimeZone()
+                            1
                     );
                 } else {
                     List<CourseEnrollmentLessonStatus> courseEnrollmentLessonStatuses= courseEnrollmentLessonStatusService
@@ -559,7 +556,7 @@ public class CourseEnrollmentController {
 
                     courseEnrollmentLessonStatuses.getFirst().setProgress(courseEnrollmentLessonStatuses.getFirst().getProgress() + 1);
 
-                    LocalDateTime timeFinished = LocalDateTime.now().atZone(lessonCompletingRequest.getTimeZone().toZoneId()).toLocalDateTime();
+                    LocalDateTime timeFinished = LocalDateTime.now();
 
                     if (courseEnrollmentLessonStatuses.getFirst().getProgress().equals(courseLessons.get().getProgressNeeded())) {
                         xp += 15;

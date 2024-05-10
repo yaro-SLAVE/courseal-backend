@@ -27,14 +27,13 @@ public class CourseEnrollmentService {
         return courseEnrollmentRepository.findByCourseAndUser(course, user);
     }
 
-    public CourseEnrollment createCourseEnrollment(Course course, User user) {
+    public void createCourseEnrollment(Course course, User user) {
         CourseEnrollment courseEnrollment = new CourseEnrollment(
                 course,
                 user
         );
 
-        courseEnrollment = courseEnrollmentRepository.save(courseEnrollment);
-        return courseEnrollment;
+        courseEnrollmentRepository.save(courseEnrollment);
     }
 
     public void save(CourseEnrollment courseEnrollment) {

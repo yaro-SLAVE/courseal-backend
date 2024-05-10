@@ -96,7 +96,7 @@ public class LessonManagementController {
                         throw new BadRequestException();
                     }
 
-                    CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLesson, courseTasks.get());
+                    courseLessonTaskService.createCourseLessonTask(courseLesson, courseTasks.get());
 
                     courseLesson.setLessonType(LessonType.EXAM);
                 }
@@ -114,7 +114,7 @@ public class LessonManagementController {
                         throw new BadRequestException();
                     }
 
-                    CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLesson, courseTasks.get());
+                    courseLessonTaskService.createCourseLessonTask(courseLesson, courseTasks.get());
 
                     courseLesson.setLessonType(LessonType.PRACTICE);
                 }
@@ -258,7 +258,7 @@ public class LessonManagementController {
                         throw new BadRequestException();
                     }
 
-                    CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLessons.get(), courseTasks.get());
+                    courseLessonTaskService.createCourseLessonTask(courseLessons.get(), courseTasks.get());
 
                     courseLessons.get().setLessonType(LessonType.EXAM);
                 }
@@ -276,7 +276,7 @@ public class LessonManagementController {
                         throw new BadRequestException();
                     }
 
-                    CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLessons.get(), courseTasks.get());
+                    courseLessonTaskService.createCourseLessonTask(courseLessons.get(), courseTasks.get());
 
                     courseLessons.get().setLessonType(LessonType.PRACTICE);
                 }

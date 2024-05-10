@@ -29,12 +29,12 @@ public class CourseEnrollmentLessonStatusService {
         return courseEnrollmentLessonStatusRepository.existsByCourseEnrollmentAndCourseLesson(courseEnrollment, courseLesson);
     }
 
-    public void createCourseEnrollmentLessonStatus(CourseEnrollment courseEnrollment, CourseLesson courseLesson, Integer lessonProgress, TimeZone timezone) {
+    public void createCourseEnrollmentLessonStatus(CourseEnrollment courseEnrollment, CourseLesson courseLesson, Integer lessonProgress) {
         CourseEnrollmentLessonStatus courseEnrollmentLessonStatus = new CourseEnrollmentLessonStatus(
                 courseEnrollment,
                 courseLesson,
                 lessonProgress,
-                LocalDateTime.now().atZone(timezone.toZoneId()).toLocalDateTime()
+                LocalDateTime.now()
         );
 
         courseEnrollmentLessonStatusRepository.save(courseEnrollmentLessonStatus);
