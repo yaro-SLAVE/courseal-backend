@@ -38,6 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -71,6 +72,9 @@ public class CourseEnrollmentController {
 
     @Autowired
     CourseTaskService courseTaskService;
+
+    @Autowired
+    UserActivityService userActivityService;
 
     @GetMapping
     public ResponseEntity<?> getEnrolledCoursesList() {
@@ -574,12 +578,25 @@ public class CourseEnrollmentController {
                     courseEnrollmentLessonStatuses.getFirst().setLastDone(timeFinished);
 
                     courseEnrollmentLessonStatusService.save(courseEnrollmentLessonStatuses.getFirst());
+
+
                 }
             }
         }
 
         courseEnrollments.getFirst().setXp(xp);
         courseEnrollmentService.save(courseEnrollments.getFirst());
+
+        LocalDate day = LocalDateTime.now().atZone(lessonCompletingRequest.getTimeZone().toZoneId()).toLocalDate();
+
+        List<UserActivity> userActivities = userActivityService.findByUserAndDay(users.get(), day);
+
+        if (!userActivities.isEmpty()) {
+            userActivities.getFirst().setXp(userActivities.getFirst().getXp() + xp);
+            userActivityService.save(userActivities.getFirst());
+        } else {
+            userActivityService.createUserActivity(users.get(), day, xp);
+        }
 
         return ResponseEntity.ok(new CompletingLessonInfoResponse(
                 xp,
