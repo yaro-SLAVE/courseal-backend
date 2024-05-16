@@ -371,6 +371,8 @@ public class CourseEnrollmentController {
 
                     xp += 15;
                     completed = true;
+                } else {
+                    completed = true;
                 }
             }
 
@@ -584,7 +586,7 @@ public class CourseEnrollmentController {
             }
         }
 
-        courseEnrollments.getFirst().setXp(xp);
+        courseEnrollments.getFirst().setXp(courseEnrollments.getFirst().getXp() + xp);
         courseEnrollmentService.save(courseEnrollments.getFirst());
 
         LocalDate day = LocalDateTime.now().atZone(lessonCompletingRequest.getTimeZone().toZoneId()).toLocalDate();
