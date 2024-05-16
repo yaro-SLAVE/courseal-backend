@@ -1,6 +1,7 @@
 package online.courseal.courseal_backend.controllers;
 
 import online.courseal.courseal_backend.errors.exceptions.BadRequestException;
+import online.courseal.courseal_backend.errors.exceptions.CourseNotFoundException;
 import online.courseal.courseal_backend.models.Course;
 import online.courseal.courseal_backend.models.CourseLesson;
 import online.courseal.courseal_backend.models.User;
@@ -42,7 +43,7 @@ public class CourseStructureManagementController {
         Optional<Course> courses = courseService.findByCourseId(courseId);
 
         if (courses.isEmpty()){
-            throw new BadRequestException();
+            throw new CourseNotFoundException();
         }
 
         boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
@@ -59,7 +60,7 @@ public class CourseStructureManagementController {
                     .filter(c -> c.getLessonLevel() != null)
                     .max(Comparator.comparing(CourseLesson::getLessonLevel));
 
-            if (!courseLessons.isEmpty()) {
+            if (courseLessons.isPresent()) {
                 Integer maxLevel = courseLessons.get().getLessonLevel();
 
                 for (int i = 0; i <= maxLevel; ++i) {
@@ -86,7 +87,7 @@ public class CourseStructureManagementController {
         Optional<Course> courses = courseService.findByCourseId(courseId);
 
         if (courses.isEmpty()){
-            throw new BadRequestException();
+            throw new CourseNotFoundException();
         }
 
         boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
@@ -109,7 +110,7 @@ public class CourseStructureManagementController {
             for (CourseStructureUpdatingData id: list) {
                 Optional<CourseLesson> courseLessons = courseLessonService.findByCourseLessonId(id.getLessonId());
 
-                if (!courseLessons.isEmpty() && courses.get().getCourseLessons().contains(courseLessons.get())) {
+                if (courseLessons.isPresent() && courses.get().getCourseLessons().contains(courseLessons.get())) {
                     courseLessons.get().setLessonLevel(index);
                     courseLessons.get().setLastUpdated(LocalDateTime.now());
                     courseLessonService.save(courseLessons.get());

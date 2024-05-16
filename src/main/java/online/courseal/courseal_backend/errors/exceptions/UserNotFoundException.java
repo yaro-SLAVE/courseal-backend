@@ -6,7 +6,7 @@ public class UserNotFoundException extends ApplicationException {
     public UserNotFoundException() {
         status = HttpStatus.NOT_FOUND;
         error = "user-not-found";
-        errorMessage = "";
-        description = "";
+        errorMessage = "User not found";
+        description = "User not found";
     }
 }

@@ -7,6 +7,6 @@ public class RegistrationEnabledException extends ApplicationException {
         status = HttpStatus.FORBIDDEN;
         error = "registration-is-disabled";
         errorMessage = "Registration of new accounts is disabled";
-        description = "";
+        description = "Registration of new accounts is disabled";
     }
 }

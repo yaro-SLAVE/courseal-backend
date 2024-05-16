@@ -6,6 +6,7 @@ import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonLecture
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonPractice;
 import online.courseal.courseal_backend.coursedata.lessons.CoursealLessonTraining;
 import online.courseal.courseal_backend.errors.exceptions.BadRequestException;
+import online.courseal.courseal_backend.errors.exceptions.CourseNotFoundException;
 import online.courseal.courseal_backend.models.*;
 import online.courseal.courseal_backend.models.enums.LessonType;
 import online.courseal.courseal_backend.requests.LessonCreatingOrUpdatingRequest;
@@ -95,7 +96,7 @@ public class LessonManagementController {
                         throw new BadRequestException();
                     }
 
-                    CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLesson, courseTasks.get());
+                    courseLessonTaskService.createCourseLessonTask(courseLesson, courseTasks.get());
 
                     courseLesson.setLessonType(LessonType.EXAM);
                 }
@@ -106,14 +107,14 @@ public class LessonManagementController {
                     Optional<CourseTask> courseTasks = courseTaskService.findByCourseTaskId(courseTaskId);
 
                     if (courseTasks.isEmpty()) {
-                        throw new BadRequestException();
+                        throw new CourseNotFoundException();
                     }
 
                     if (!courses.get().getCourseTasks().contains(courseTasks.get())) {
                         throw new BadRequestException();
                     }
 
-                    CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLesson, courseTasks.get());
+                    courseLessonTaskService.createCourseLessonTask(courseLesson, courseTasks.get());
 
                     courseLesson.setLessonType(LessonType.PRACTICE);
                 }
@@ -136,7 +137,7 @@ public class LessonManagementController {
         Optional<Course> courses = courseService.findByCourseId(courseId);
 
         if (courses.isEmpty()){
-            throw new BadRequestException();
+            throw new CourseNotFoundException();
         }
 
         boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
@@ -208,7 +209,7 @@ public class LessonManagementController {
         Optional<Course> courses = courseService.findByCourseId(courseId);
 
         if (courses.isEmpty()){
-            throw new BadRequestException();
+            throw new CourseNotFoundException();
         }
 
         boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());
@@ -257,7 +258,7 @@ public class LessonManagementController {
                         throw new BadRequestException();
                     }
 
-                    CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLessons.get(), courseTasks.get());
+                    courseLessonTaskService.createCourseLessonTask(courseLessons.get(), courseTasks.get());
 
                     courseLessons.get().setLessonType(LessonType.EXAM);
                 }
@@ -275,7 +276,7 @@ public class LessonManagementController {
                         throw new BadRequestException();
                     }
 
-                    CourseLessonTask courseLessonTask = courseLessonTaskService.createCourseLessonTask(courseLessons.get(), courseTasks.get());
+                    courseLessonTaskService.createCourseLessonTask(courseLessons.get(), courseTasks.get());
 
                     courseLessons.get().setLessonType(LessonType.PRACTICE);
                 }
@@ -301,7 +302,7 @@ public class LessonManagementController {
         Optional<Course> courses = courseService.findByCourseId(courseId);
 
         if (courses.isEmpty()){
-            throw new BadRequestException();
+            throw new CourseNotFoundException();
         }
 
         boolean userIsMaintainer = courseService.verifyMaintainer(courses.get(), users.get());

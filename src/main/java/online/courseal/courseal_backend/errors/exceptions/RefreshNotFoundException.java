@@ -8,7 +8,7 @@ public class RefreshNotFoundException extends ApplicationException {
     public RefreshNotFoundException() {
         status = HttpStatus.NOT_FOUND;
         error = "refresh-not-found";
-        errorMessage = "";
-        description = "";
+        errorMessage = "Refresh token found";
+        description = "This Refresh token not found";
     }
 }

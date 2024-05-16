@@ -6,7 +6,7 @@ public class IncorrectUsertagException extends ApplicationException {
     public IncorrectUsertagException() {
         status = HttpStatus.BAD_REQUEST;
         error = "usertag-incorrect";
-        errorMessage = "";
-        description = "";
+        errorMessage = "Usertag is incorrect";
+        description = "This usertag is incorrect";
     }
 }
