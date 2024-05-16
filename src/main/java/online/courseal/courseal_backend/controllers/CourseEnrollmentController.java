@@ -157,22 +157,24 @@ public class CourseEnrollmentController {
                             case LECTURE -> type = "lecture";
                         }
 
+                        List<CourseEnrollmentLessonStatus> courseEnrollmentLessonStatuses = courseEnrollmentLessonStatusService.findByCourseEnrollmentAndCourseLesson(courseEnrollments.getFirst(), courseLesson);
+
                         data.add(new EnrollmentCourseLessonData(
                                 courseLesson.getCourseLessonId(),
                                 courseLesson.getLessonName(),
                                 type,
                                 !courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().isEmpty()
-                                        ? courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().getFirst().getProgress()
+                                        ? courseEnrollmentLessonStatuses.getFirst().getProgress()
                                         : 0,
                                 courseLesson.getProgressNeeded(),
                                 currentLevelCanBeDone
                         ));
 
                         if (courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().isEmpty() ||
-                                courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().getFirst().getProgress() <
+                                courseEnrollmentLessonStatuses.getFirst().getProgress() <
                                         courseLesson.getProgressNeeded()) {
                             previousLevelIsCompleted = false;
-                        } else if (courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().getFirst().getProgress() >=
+                        } else if (courseEnrollmentLessonStatuses.getFirst().getProgress() >=
                                 courseLesson.getProgressNeeded()) {
                             previousLevelIsCompleted = true;
                         }
