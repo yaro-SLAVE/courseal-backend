@@ -6,7 +6,7 @@ public class BadRequestException extends ApplicationException{
     public BadRequestException(){
         status = HttpStatus.BAD_REQUEST;
         error = "bad-request";
-        errorMessage = "";
-        description = "";
+        errorMessage = "Bad request";
+        description = "This is bad request";
     }
 }

@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 public class AccountAlreadyExistsException extends ApplicationException{
     public AccountAlreadyExistsException(){
         status = HttpStatus.CONFLICT;
-        error = "account-already-exist";
-        errorMessage = "";
-        description = "";
+        error = "account-already-exists";
+        errorMessage = "Account already exists";
+        description = "Account with this usertag already exists";
     }
 }

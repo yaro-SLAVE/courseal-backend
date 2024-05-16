@@ -17,14 +17,4 @@ public class CoursealBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CoursealBackendApplication.class, args);
 	}
-
-	@GetMapping("api/user/change-name")
-	public String apiUserChangeName(){
-		return "user/change-name";
-	}
-
-	@GetMapping("api/course-management/create-course")
-	public String apiCourseManagementCreateCourse(){
-		return "course-management/create-course";
-	}
 }

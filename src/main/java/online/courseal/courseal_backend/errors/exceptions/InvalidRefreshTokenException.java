@@ -6,7 +6,7 @@ public class InvalidRefreshTokenException extends ApplicationException{
     public InvalidRefreshTokenException(){
         status = HttpStatus.FORBIDDEN;
         error = "refresh-invalid";
-        errorMessage = "";
-        description = "";
+        errorMessage = "Provided Refresh is invalid";
+        description = "The provided Refresh either has expired or its cryptographic signature doesn't match the server's private key";
     }
 }

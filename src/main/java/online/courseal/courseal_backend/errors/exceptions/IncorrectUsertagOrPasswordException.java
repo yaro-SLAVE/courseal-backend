@@ -6,7 +6,7 @@ public class IncorrectUsertagOrPasswordException extends ApplicationException{
     public IncorrectUsertagOrPasswordException(){
         status = HttpStatus.FORBIDDEN;
         error = "usertag-or-password-incorrect";
-        errorMessage = "";
-        description = "";
+        errorMessage = "Incorrect usertag or password";
+        description = "You input incorrect usertag or password";
     }
 }

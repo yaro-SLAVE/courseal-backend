@@ -6,7 +6,7 @@ public class LessonTokenNotFoundException extends ApplicationException {
     public LessonTokenNotFoundException() {
         status = HttpStatus.NOT_FOUND;
         error = "lesson_token_not_found";
-        errorMessage = "";
-        description = "";
+        errorMessage = "Lesson token not found";
+        description = "This Lesson token not found";
     }
 }
