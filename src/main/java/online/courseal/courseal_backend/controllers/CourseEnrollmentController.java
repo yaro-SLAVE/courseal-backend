@@ -487,10 +487,10 @@ public class CourseEnrollmentController {
 
                     LocalDateTime timeFinished = LocalDateTime.now();
 
-                    if (courseEnrollmentLessonStatuses.getFirst().getProgress().equals(courseLessons.get().getProgressNeeded())) {
+                    if (courseEnrollmentLessonStatuses.getFirst().getProgress() == courseLessons.get().getProgressNeeded()) {
                         xp += 15;
                         completed = true;
-                    } else if (courseEnrollmentLessonStatuses.getFirst().getProgress().equals(courseLessons.get().getProgressNeeded())) {
+                    } else if (courseEnrollmentLessonStatuses.getFirst().getProgress() > courseLessons.get().getProgressNeeded()) {
                         xp += 10;
 
                         if (courseEnrollmentLessonStatuses.getFirst().getLastDone().plusMinutes(10).isAfter(timeFinished)) {
@@ -564,10 +564,10 @@ public class CourseEnrollmentController {
 
                     LocalDateTime timeFinished = LocalDateTime.now();
 
-                    if (courseEnrollmentLessonStatuses.getFirst().getProgress().equals(courseLessons.get().getProgressNeeded())) {
+                    if (courseEnrollmentLessonStatuses.getFirst().getProgress() == courseLessons.get().getProgressNeeded()) {
                         xp += 15;
                         completed = true;
-                    } else if (courseEnrollmentLessonStatuses.getFirst().getProgress().equals(courseLessons.get().getProgressNeeded())) {
+                    } else if (courseEnrollmentLessonStatuses.getFirst().getProgress() > courseLessons.get().getProgressNeeded()) {
                         xp += 10;
 
                         if (courseEnrollmentLessonStatuses.getFirst().getLastDone().plusMinutes(10).isAfter(timeFinished)) {
