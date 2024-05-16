@@ -161,7 +161,7 @@ public class CourseEnrollmentController {
                                 courseLesson.getCourseLessonId(),
                                 courseLesson.getLessonName(),
                                 type,
-                                !courseLesson.getCourseEnrollmentLessonStatuses().isEmpty()
+                                !courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().isEmpty()
                                         ? courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().getFirst().getProgress()
                                         : 0,
                                 courseLesson.getProgressNeeded(),
