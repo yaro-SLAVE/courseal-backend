@@ -162,17 +162,17 @@ public class CourseEnrollmentController {
                                 courseLesson.getLessonName(),
                                 type,
                                 !courseLesson.getCourseEnrollmentLessonStatuses().isEmpty()
-                                        ? courseLesson.getCourseEnrollmentLessonStatuses().getFirst().getProgress()
+                                        ? courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().getFirst().getProgress()
                                         : 0,
                                 courseLesson.getProgressNeeded(),
                                 currentLevelCanBeDone
                         ));
 
-                        if (courseLesson.getCourseEnrollmentLessonStatuses().isEmpty() ||
-                                courseLesson.getCourseEnrollmentLessonStatuses().getFirst().getProgress() <
+                        if (courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().isEmpty() ||
+                                courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().getFirst().getProgress() <
                                         courseLesson.getProgressNeeded()) {
                             previousLevelIsCompleted = false;
-                        } else if (courseLesson.getCourseEnrollmentLessonStatuses().getFirst().getProgress() >=
+                        } else if (courseEnrollments.getFirst().getCourseEnrollmentLessonStatuses().getFirst().getProgress() >=
                                 courseLesson.getProgressNeeded()) {
                             previousLevelIsCompleted = true;
                         }
