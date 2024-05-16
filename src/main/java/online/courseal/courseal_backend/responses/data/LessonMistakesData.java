@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class LessonMistakesData {
-    @JsonProperty("lesson_id")
-    private Integer lessonId;
+    @JsonProperty("task_id")
+    private Integer taskId;
     @JsonProperty("correct")
     private boolean correct;
 }
