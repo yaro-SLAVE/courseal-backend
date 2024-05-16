@@ -133,7 +133,7 @@ public class CourseEnrollmentController {
         List<List<EnrollmentCourseLessonData>> dataList = new ArrayList<>();
 
         if (!courses.get().getCourseLessons().isEmpty()) {
-            Optional<CourseLesson> courseLessons = courses.get()
+            Optional<CourseLesson> courseLessons = courseEnrollments.getFirst().getCourse()
                     .getCourseLessons().stream()
                     .filter(c -> c.getLessonLevel() != null)
                     .max(Comparator.comparing(CourseLesson::getLessonLevel));
@@ -144,7 +144,7 @@ public class CourseEnrollmentController {
                 boolean previousLevelIsCompleted = true;
 
                 for (int i = 0; i <= maxLevel; ++i) {
-                    List<CourseLesson> courseLessons1 = courseLessonService.findByLessonLevelAndCourse(i, courses.get());
+                    List<CourseLesson> courseLessons1 = courseLessonService.findByLessonLevelAndCourse(i, courseEnrollments.getFirst().getCourse());
                     ArrayList<EnrollmentCourseLessonData> data = new ArrayList<>();
                     boolean currentLevelCanBeDone = previousLevelIsCompleted;
 
